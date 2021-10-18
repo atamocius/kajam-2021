@@ -7,6 +7,12 @@ import { routes as r } from '..';
 import { useKeyDownNoRepeat } from '../../utils/keyboard';
 import Shutter from '../../components/shutter';
 
+import {
+  SpotLight,
+  PointLight,
+  SpotLightHelper,
+  PointLightHelper,
+} from 'three';
 import { Canvas } from '@react-three/fiber';
 import {
   Box,
@@ -17,19 +23,11 @@ import {
 } from '@react-three/drei';
 
 import loadLevel from '../../utils/level-loader';
-
 import levelData from '../../assets/levels/sample';
-
-import {
-  SpotLight,
-  PointLight,
-  SpotLightHelper,
-  PointLightHelper,
-} from 'three';
 
 import InstancedModelsProvider from '../../meshes/instanced';
 import BasicEnemy2 from '../../models/compound/enemies/basic-enemy-2';
-// import BasicRobot from '../../models/compound/enemies/basic-robot';
+import BasicRobot from '../../models/compound/enemies/basic-robot';
 
 const instancedModelsConfig = {
   enemies: {
@@ -161,9 +159,9 @@ function Enemies() {
         </group>
       </group>
 
-      {/* <group position={[0, 0, 0]}>
+      <group position={[0, 0, 0]}>
         <BasicRobot />
-      </group> */}
+      </group>
     </InstancedModelsProvider>
   );
 }

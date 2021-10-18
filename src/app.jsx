@@ -13,15 +13,15 @@ export default function App() {
   return (
     <Display>
       <RouterProvider>
-        <Route name={r.mainMenu}>
+        {/* <Route name={r.mainMenu}>
           <MainMenu />
-        </Route>
+        </Route> */}
         <Route name={r.gameplay}>
           <Gameplay />
         </Route>
-        <Route name={r.gameOver}>
+        {/* <Route name={r.gameOver}>
           <GameOver />
-        </Route>
+        </Route> */}
       </RouterProvider>
     </Display>
   );

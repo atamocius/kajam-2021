@@ -1,13 +1,17 @@
 import React, { forwardRef, useMemo } from 'react';
 
+import { BufferGeometryLoader } from 'three';
+import { useLoader } from '@react-three/fiber';
+
 import InstancedModel from '../../../helpers/instanced-model';
-import { processGeometryData } from '../../../helpers/geometry-utils';
 
 import { star32Mat as material } from '../../../materials';
-import data from './geometry.json';
+
+const data = '/models/enemies/test-robot.json';
 
 const TestRobotTemplate = forwardRef(({ count }, ref) => {
-  const geometry = useMemo(() => processGeometryData(data), []);
+  const geometry = useLoader(BufferGeometryLoader, data);
+
   const def = [
     {
       geometry,

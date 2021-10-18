@@ -97,16 +97,13 @@ function useRefs(config) {
  */
 function calcCounts(config) {
   const {
-    enemies: {
-      sampleEnemy2 = 0,
-      // testRobot = 0
-    },
+    enemies: { sampleEnemy2 = 0, testRobot = 0 },
   } = config;
 
   return {
     enemies: {
       sampleEnemy2,
-      // testRobot,
+      testRobot,
     },
   };
 }
