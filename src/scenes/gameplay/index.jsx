@@ -26,6 +26,10 @@ import loadLevel from '../../utils/level-loader';
 // import levelData from '../../assets/levels/sample';
 // import level0Data from '../../assets/levels/level0';
 
+import Gizmo from '../../components/gizmo';
+
+import LevelMesh from '../../components/level-mesh';
+
 import InstancedModelsProvider from '../../meshes/instanced';
 import BasicEnemy2 from '../../models/compound/enemies/basic-enemy-2';
 import BasicRobot from '../../models/compound/enemies/basic-robot';
@@ -119,26 +123,8 @@ export default function Gameplay() {
           gl={{ alpha: false }}
           camera={{ position: [0, 2, 2], fov: 50 }}
         >
-          {/* <color attach='background' args={['#a1eeee']} /> */}
-          <hemisphereLight intensity={0.35} />
-          <directionalLight
-            position={[5, 5, 5]}
-            penumbra={1}
-            intensity={1}
-            castShadow
-            shadow-mapSize-width={256}
-            shadow-mapSize-height={256}
-          />
-
-          {/* <ambientLight intensity={0.01} />
-          <Flashlight
-            position={[1.5, 0.5, 1.5]}
-            rotation={[0, Math.PI / 2, 0]}
-          /> */}
-
           <Suspense fallback={null}>
-            <LevelMesh />
-            <Enemies />
+            <Level0 />
           </Suspense>
 
           <Gizmo />
@@ -206,7 +192,7 @@ function Flashlight({ position, rotation }) {
   );
 }
 
-function LevelMesh() {
+function Level0() {
   const level = loadLevel(
     '/levels/level0/data.json',
     '/levels/level0/geometry.json'
@@ -215,30 +201,26 @@ function LevelMesh() {
   const { atlas, geometry } = level;
 
   return (
-    <mesh castShadow receiveShadow geometry={geometry}>
-      <meshPhongMaterial attach='material' map={atlas} />
-    </mesh>
-  );
-}
-
-function Gizmo() {
-  const ref = useRef();
-
-  return (
     <>
-      <gridHelper renderOrder={999} args={[1000, 1000, 0xaa0000, 0x222222]} />
+      {/* <color attach='background' args={['#a1eeee']} /> */}
+      <hemisphereLight intensity={0.35} />
+      <directionalLight
+        position={[5, 5, 5]}
+        penumbra={1}
+        intensity={1}
+        castShadow
+        shadow-mapSize-width={256}
+        shadow-mapSize-height={256}
+      />
 
-      <GizmoHelper
-        renderPriority={0}
-        alignment='bottom-right'
-        margin={[100, 100]}
-        onTarget={() => ref.current.target}
-        onUpdate={() => ref.current.update()}
-      >
-        <GizmoViewport hideNegativeAxes />
-      </GizmoHelper>
+      {/* <ambientLight intensity={0.01} />
+      <Flashlight
+        position={[1.5, 0.5, 1.5]}
+        rotation={[0, Math.PI / 2, 0]}
+      /> */}
 
-      <OrbitControls ref={ref} />
+      <LevelMesh atlas={atlas} geometry={geometry} />
+      <Enemies />
     </>
   );
 }
