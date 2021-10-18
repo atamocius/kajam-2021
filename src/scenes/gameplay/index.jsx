@@ -24,6 +24,7 @@ import {
 
 import loadLevel from '../../utils/level-loader';
 import levelData from '../../assets/levels/sample';
+import level0Data from '../../assets/levels/level0';
 
 import InstancedModelsProvider from '../../meshes/instanced';
 import BasicEnemy2 from '../../models/compound/enemies/basic-enemy-2';
@@ -159,9 +160,9 @@ function Enemies() {
         </group>
       </group>
 
-      <group position={[0, 0, 0]}>
+      {/* <group position={[0, 0, 0]}>
         <BasicRobot />
-      </group>
+      </group> */}
     </InstancedModelsProvider>
   );
 }
@@ -169,8 +170,6 @@ function Enemies() {
 function Flashlight({ position, rotation }) {
   const spotLightRef = useRef();
   // const pointLightRef = useRef();
-
-  // const target = useMemo(() => new Object3D(), []);
 
   const spotLight = useMemo(() => new SpotLight(), []);
   // const pointLight = useMemo(() => new PointLight(), []);
@@ -195,7 +194,6 @@ function Flashlight({ position, rotation }) {
       <primitive object={spotLight.target} position={[0, 0, 1]} />
       <pointLight
         // ref={pointLightRef}
-        // object={pointLight}
         position={[0, 0, 1]}
         // color={0xffffff}
         distance={2}
@@ -209,90 +207,7 @@ function Flashlight({ position, rotation }) {
 }
 
 function LevelMesh() {
-  // const [colorMap] = useTexture([wallTexPng]);
-  // colorMap.magFilter = NearestFilter;
-  // colorMap.minFilter = LinearMipMapLinearFilter;
-
-  // const vertexBuffer = [];
-  // const normalBuffer = [];
-  // const uvBuffer = [];
-  // const indexBuffer = [];
-
-  // tessellateSouthWall(
-  //   1,
-  //   9,
-  //   3,
-  //   4,
-  //   vertexBuffer,
-  //   normalBuffer,
-  //   uvBuffer,
-  //   indexBuffer
-  // );
-
-  // // prettier-ignore
-  // const vertices = new Float32Array([
-  //   -0.5, -0.5,  0.0, // left bottom
-  //    0.5, -0.5,  0.0, // right bottom
-  //   -0.5,  0.5,  0.0, // left top
-  //    0.5,  0.5,  0.0, // right top
-  // ]);
-
-  // // prettier-ignore
-  // const normals = new Float32Array([
-  //    1.0,  0.0,  0.0, // left bottom
-  //    1.0,  0.0,  0.0, // right bottom
-  //    1.0,  0.0,  0.0, // left top
-  //    1.0,  0.0,  0.0, // right top
-  // ]);
-
-  // prettier-ignore
-  // const uvs = new Float32Array([
-  //   0.0,  0.0, // left bottom
-  //   0.25, 0.0, // right bottom
-  //   0.0,  0.25, // left top
-  //   0.25, 0.25, // right top
-  // ]);
-
-  // // prettier-ignore
-  // const vertices = new Float32Array([
-  //   -0.5,  0.0,  0.5, // left top
-  //    0.5,  0.0,  0.5, // right top
-  //   -0.5,  0.0, -0.5, // left bottom
-  //    0.5,  0.0, -0.5, // right bottom
-  // ]);
-
-  // // prettier-ignore
-  // const vertices = new Float32Array([
-  //   -1.0,  0.0,  0.0, // bottom left
-  //   -1.0,  0.0,  1.0, // bottom right
-  //    0.0,  0.0,  0.0, // top left
-  //    0.0,  0.0,  1.0, // top right
-  // ]);
-
-  // // prettier-ignore
-  // const vertices = new Float32Array(mapIndexToFloorVertices(1, 3));
-
-  // // prettier-ignore
-  // const normals = new Float32Array([
-  //   0.0,  1.0,  0.0, // bottom left
-  //   0.0,  1.0,  0.0, // bottom right
-  //   0.0,  1.0,  0.0, // top left
-  //   0.0,  1.0,  0.0, // top right
-  // ]);
-
-  // const uvs = new Float32Array(atlasIndexToUVs(9, 4));
-
-  // // prettier-ignore
-  // const indices = new Uint32Array([
-  //   0,  1,  2,   2,  1,  3,
-  // ]);
-
-  // const vertices = new Float32Array(vertexBuffer);
-  // const normals = new Float32Array(normalBuffer);
-  // const uvs = new Float32Array(uvBuffer);
-  // const indices = new Uint32Array(indexBuffer);
-
-  const level = loadLevel(levelData);
+  const level = loadLevel(level0Data);
 
   const { atlas, vertices, normals, uvs, indices } = level.geometry;
 
@@ -324,8 +239,7 @@ function LevelMesh() {
           itemSize={2}
         />
       </bufferGeometry>
-      {/* <meshBasicMaterial attach="material" color={0xff0000} /> */}
-      <meshStandardMaterial attach='material' map={atlas} />
+      <meshPhongMaterial attach='material' map={atlas} />
     </mesh>
   );
 }
