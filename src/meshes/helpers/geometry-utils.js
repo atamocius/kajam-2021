@@ -6,7 +6,7 @@ export function processGeometryData({ vertices, normals, uvs, indices }) {
   const vb = new Float32Array(vertices);
   const nb = new Float32Array(normals);
   const tb = new Float32Array(uvs);
-  const ib = new Uint32Array(indices);
+  const ib = new Uint16Array(indices);
 
   geometry
     .setAttribute('position', new BufferAttribute(vb, 3))
