@@ -1,9 +1,7 @@
-import mapPng from './walls.png';
-
 export default {
   atlas: {
     width: 4,
-    src: mapPng,
+    src: '/levels/sample/walls.png',
   },
   entities: {},
   map: {

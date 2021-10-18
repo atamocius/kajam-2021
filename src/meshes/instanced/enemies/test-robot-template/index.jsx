@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react';
+import React, { forwardRef } from 'react';
 
 import { BufferGeometryLoader } from 'three';
 import { useLoader } from '@react-three/fiber';
