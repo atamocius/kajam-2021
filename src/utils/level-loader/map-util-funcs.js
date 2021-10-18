@@ -1,6 +1,6 @@
 /**
- * @typedef {import('./types.js').LevelData} LevelData
- * @typedef {import('./types.js').UtilFuncs} UtilFuncs
+ * @typedef {import('./types.js').MapData} MapData
+ * @typedef {import('./types.js').MapUtilFuncs} MapUtilFuncs
  * @typedef {import('./types.js').Direction} Direction
  */
 
@@ -9,33 +9,13 @@ import memoize from 'lodash-es/memoize';
 import { Direction } from './common.js';
 
 /**
- * @param {LevelData} levelData
- * @return {UtilFuncs}
+ * @param {MapData} map
+ * @return {MapUtilFuncs}
  */
-export default function createUtilFuncs({ atlas, map }) {
+export default function createMapUtilFuncs(map) {
   const { tiles: mapTiles, ceilings: ceilingTiles } = map;
   const { width: mapWidth } = map.size;
   const { floors: floorTileIndices, walls: wallTileIndices } = map.types;
-
-  const { width: atlasWidth } = atlas;
-
-  const atlasIndexToCoords = memoize(
-    /**
-     * @param {number} index Index referring to the atlas tile. Index starts at
-     * 1 (0 is null).
-     */
-    index => {
-      const i = index - 1;
-      const x = i % atlasWidth;
-      const y = Math.floor(i / atlasWidth);
-      return {
-        u: x / atlasWidth,
-        v: 1 - y / atlasWidth,
-      };
-    }
-  );
-
-  const atlasTileUnitSize = 1 / atlasWidth;
 
   const indexToCoords = memoize(
     /**
@@ -139,21 +119,15 @@ export default function createUtilFuncs({ atlas, map }) {
   };
 
   return {
-    atlasUtils: {
-      indexToCoords: atlasIndexToCoords,
-      tileUnitSize: atlasTileUnitSize,
-    },
-    mapUtils: {
-      indexToCoords,
-      coordsToIndex,
-      isFloor,
-      isWall,
-      getValue,
-      getValueByIndex,
-      getCeilingValue,
-      getCeilingValueByIndex,
-      getAdjacentValue,
-      getAdjacentValueByIndex,
-    },
+    indexToCoords,
+    coordsToIndex,
+    isFloor,
+    isWall,
+    getValue,
+    getValueByIndex,
+    getCeilingValue,
+    getCeilingValueByIndex,
+    getAdjacentValue,
+    getAdjacentValueByIndex,
   };
 }

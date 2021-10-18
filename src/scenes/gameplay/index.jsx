@@ -23,8 +23,8 @@ import {
 } from '@react-three/drei';
 
 import loadLevel from '../../utils/level-loader';
-import levelData from '../../assets/levels/sample';
-import level0Data from '../../assets/levels/level0';
+// import levelData from '../../assets/levels/sample';
+// import level0Data from '../../assets/levels/level0';
 
 import InstancedModelsProvider from '../../meshes/instanced';
 import BasicEnemy2 from '../../models/compound/enemies/basic-enemy-2';
@@ -160,9 +160,9 @@ function Enemies() {
         </group>
       </group>
 
-      {/* <group position={[0, 0, 0]}>
+      <group position={[0, 0, 0]}>
         <BasicRobot />
-      </group> */}
+      </group>
     </InstancedModelsProvider>
   );
 }
@@ -207,38 +207,15 @@ function Flashlight({ position, rotation }) {
 }
 
 function LevelMesh() {
-  const level = loadLevel(level0Data);
+  const level = loadLevel(
+    '/levels/level0/data.json',
+    '/levels/level0/geometry.json'
+  );
 
-  const { atlas, vertices, normals, uvs, indices } = level.geometry;
+  const { atlas, geometry } = level;
 
   return (
-    <mesh castShadow receiveShadow>
-      <bufferGeometry attach='geometry' index={indices}>
-        <bufferAttribute
-          attach='index'
-          array={indices}
-          count={indices.length}
-          itemSize={1}
-        />
-        <bufferAttribute
-          attachObject={['attributes', 'position']}
-          array={vertices}
-          count={vertices.length / 3}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attachObject={['attributes', 'normal']}
-          array={normals}
-          count={normals.length / 3}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attachObject={['attributes', 'uv']}
-          array={uvs}
-          count={uvs.length / 2}
-          itemSize={2}
-        />
-      </bufferGeometry>
+    <mesh castShadow receiveShadow geometry={geometry}>
       <meshPhongMaterial attach='material' map={atlas} />
     </mesh>
   );

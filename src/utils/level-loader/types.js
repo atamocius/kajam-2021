@@ -1,24 +1,17 @@
 /**
  * @typedef {import('three').Texture} Texture
+ * @typedef {import('three').BufferGeometry} BufferGeometry
  */
 
 export {};
 
 /**
  * @typedef {Object} LoadedLevelData
+ * @property {Texture} atlas
  * @property {MapSize} size
  * @property {MapLogic} logic
- * @property {GeometryData} geometry
+ * @property {BufferGeometry} geometry
  * @property {MapUtilFuncs} utils
- */
-
-/**
- * @typedef {Object} GeometryData
- * @property {Texture} atlas
- * @property {Float32Array} vertices
- * @property {Float32Array} normals
- * @property {Float32Array} uvs
- * @property {Uint32Array} indices
  */
 
 /**
@@ -67,25 +60,7 @@ export {};
  */
 
 /**
- * @typedef {Object} AtlasCoords
- * @property {number} u
- * @property {number} v
- */
-
-/**
  * @typedef {'north' | 'south' | 'west' | 'east'} Direction
- */
-
-/**
- * @typedef {Object} UtilFuncs
- * @property {AtlasUtilFuncs} atlasUtils
- * @property {MapUtilFuncs} mapUtils
- */
-
-/**
- * @typedef {Object} AtlasUtilFuncs
- * @property {(index: number) => AtlasCoords} indexToCoords
- * @property {number} tileUnitSize
  */
 
 /**
@@ -100,14 +75,4 @@ export {};
  * @property {(index: number) => number} getCeilingValueByIndex
  * @property {(x: number, z: number, dir: Direction) => number} getAdjacentValue
  * @property {(index: number, dir: Direction) => number} getAdjacentValueByIndex
- */
-
-/**
- * @typedef {Object} TessellationFuncs
- * @property {(mapIndex: number) => boolean} tessellateFloor
- * @property {(mapIndex: number) => void} tessellateCeiling
- * @property {(mapIndex: number) => void} tessellateNorthWall
- * @property {(mapIndex: number) => void} tessellateSouthWall
- * @property {(mapIndex: number) => void} tessellateWestWall
- * @property {(mapIndex: number) => void} tessellateEastWall
  */
