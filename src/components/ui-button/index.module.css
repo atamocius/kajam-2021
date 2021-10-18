@@ -1,0 +1,33 @@
+.base {
+  cursor: pointer;
+}
+
+.button {
+  fill: black;
+  fill-opacity: 0.25;
+
+  /* transition: fill-opacity 200ms; */
+  /* transition: all 150ms; */
+  /* transition-property: fill, fill-opacity; */
+}
+
+.base:hover .button {
+  /* fill: red; */
+  fill-opacity: 0.35;
+
+  transition-duration: 500ms;
+}
+
+.base:active .button {
+  fill: blue;
+  transition-duration: 50ms;
+}
+
+.text {
+  /* fill: violet; */
+  /* transform: translate(50%, 50%); */
+  /* font-size: 2em; */
+  font-weight: 600;
+  font-style: italic;
+  line-height: 2em;
+}

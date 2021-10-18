@@ -1,0 +1,22 @@
+.base {
+  --aspect-width: 16;
+  --aspect-height: 9;
+
+  position: relative;
+
+  width: 100vw;
+  height: calc(var(--aspect-height) / var(--aspect-width) * 100vw);
+
+  max-width: calc(var(--aspect-width) / var(--aspect-height) * 100vh);
+  max-height: 100vh;
+}
+
+.content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  display: block;
+}

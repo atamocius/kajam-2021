@@ -1,0 +1,39 @@
+.base {
+  --fade-duration: 300ms;
+
+  background-color: #1f1f1f;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.base.open {
+  opacity: 0;
+  animation: fade-out var(--fade-duration) ease-in-out;
+}
+
+.base.closed {
+  opacity: 1;
+  animation: fade-in var(--fade-duration) ease-in-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
