@@ -25,7 +25,7 @@ const instancedModelsConfig = {
 
 export default function Level0() {
   /**
-   * @type {React.Ref<PlayerApi>}
+   * @type {React.MutableRefObject<PlayerApi>}
    */
   const playerRef = useRef();
 

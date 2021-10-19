@@ -11,6 +11,7 @@ import Flashlight from './flashlight';
 import {
   mapXToPosX,
   mapZToPosZ,
+  directionAngle,
   directionQuats,
   rotationRightLookup,
   rotationLeftLookup,
@@ -20,6 +21,8 @@ import {
   strafeLeftOffsetLookup,
 } from '../../levels/common';
 import { Direction } from '../../utils/level-loader/common';
+
+import PlayerAnimationController from './animation-controller';
 
 /**
  * @typedef {Object} PlayerProps
@@ -34,7 +37,7 @@ const Player = forwardRef(
    */
   ({ position, rotation }, fwdRef) => {
     /**
-     * @type {React.Ref<GroupProps>}
+     * @type {React.MutableRefObject<GroupProps>}
      */
     const ref = useRef();
 
@@ -62,15 +65,17 @@ export default Player;
  * @property {() => Promise<void>} rotateLeft
  * @property {() => Promise<void>} moveForward
  * @property {() => Promise<void>} moveBackward
- * @property {() => Promise<void>} strafeRight
  * @property {() => Promise<void>} strafeLeft
+ * @property {() => Promise<void>} strafeRight
  */
 
 /**
- * @param {React.Ref<GroupProps>} ref
+ * @param {React.MutableRefObject<GroupProps>} ref
  * @return {PlayerApi}
  */
 function makeApi(ref) {
+  const pac = new PlayerAnimationController(ref);
+
   // TODO: Pass from context
   const data = {
     position: {
@@ -79,6 +84,8 @@ function makeApi(ref) {
     },
     look: Direction.south,
   };
+
+  let isAnimRunning = false;
 
   const setMapPos = (x, z) => {
     data.position.x = x;
@@ -92,39 +99,137 @@ function makeApi(ref) {
   const setLook = look => {
     data.look = look;
 
-    const q = directionQuats[look];
-    ref.current.setRotationFromQuaternion(q);
+    const ry = directionAngle[look];
+    ref.current.rotation.set(0, ry, 0);
+  };
+
+  const rotateLeft = async () => {
+    if (isAnimRunning) return;
+
+    isAnimRunning = true;
+
+    const fromLook = data.look;
+    const toLook = rotationLeftLookup[data.look];
+
+    // Update prior to animate
+    data.look = toLook;
+
+    // Animate
+    pac.reset(data.position.x, data.position.z, fromLook);
+    await pac.rotateLeft();
+
+    isAnimRunning = false;
   };
 
   const rotateRight = async () => {
-    data.look = rotationRightLookup[data.look];
+    if (isAnimRunning) return;
 
-    const q = directionQuats[data.look];
-    ref.current.setRotationFromQuaternion(q);
-  };
-  const rotateLeft = async () => {
-    data.look = rotationLeftLookup[data.look];
+    isAnimRunning = true;
 
-    const q = directionQuats[data.look];
-    ref.current.setRotationFromQuaternion(q);
+    const fromLook = data.look;
+    const toLook = rotationRightLookup[data.look];
+
+    // Update prior to animate
+    data.look = toLook;
+
+    // Animate
+    pac.reset(data.position.x, data.position.z, fromLook);
+    await pac.rotateRight();
+
+    isAnimRunning = false;
   };
 
   // TODO: Add map bounds, map props, and enemy pos validation
   const moveForward = async () => {
+    if (isAnimRunning) return;
+
+    isAnimRunning = true;
+
     const { x, z } = moveForwardOffsetLookup[data.look];
-    setMapPos(data.position.x + x, data.position.z + z);
+
+    const fromX = data.position.x;
+    const fromZ = data.position.z;
+    const toX = fromX + x;
+    const toZ = fromZ + z;
+
+    // Update prior to animate
+    data.position.x = toX;
+    data.position.z = toZ;
+
+    // Animate
+    pac.reset(fromX, fromZ, data.look);
+    await pac.moveForward();
+
+    isAnimRunning = false;
   };
+
   const moveBackward = async () => {
+    if (isAnimRunning) return;
+
+    isAnimRunning = true;
+
     const { x, z } = moveBackwardOffsetLookup[data.look];
-    setMapPos(data.position.x + x, data.position.z + z);
+
+    const fromX = data.position.x;
+    const fromZ = data.position.z;
+    const toX = fromX + x;
+    const toZ = fromZ + z;
+
+    // Update prior to animate
+    data.position.x = toX;
+    data.position.z = toZ;
+
+    // Animate
+    pac.reset(fromX, fromZ, data.look);
+    await pac.moveBackward();
+
+    isAnimRunning = false;
   };
-  const strafeRight = async () => {
-    const { x, z } = strafeRightOffsetLookup[data.look];
-    setMapPos(data.position.x + x, data.position.z + z);
-  };
+
   const strafeLeft = async () => {
+    if (isAnimRunning) return;
+
+    isAnimRunning = true;
+
     const { x, z } = strafeLeftOffsetLookup[data.look];
-    setMapPos(data.position.x + x, data.position.z + z);
+
+    const fromX = data.position.x;
+    const fromZ = data.position.z;
+    const toX = fromX + x;
+    const toZ = fromZ + z;
+
+    // Update prior to animate
+    data.position.x = toX;
+    data.position.z = toZ;
+
+    // Animate
+    pac.reset(fromX, fromZ, data.look);
+    await pac.strafeLeft();
+
+    isAnimRunning = false;
+  };
+
+  const strafeRight = async () => {
+    if (isAnimRunning) return;
+
+    isAnimRunning = true;
+
+    const { x, z } = strafeRightOffsetLookup[data.look];
+
+    const fromX = data.position.x;
+    const fromZ = data.position.z;
+    const toX = fromX + x;
+    const toZ = fromZ + z;
+
+    // Update prior to animate
+    data.position.x = toX;
+    data.position.z = toZ;
+
+    // Animate
+    pac.reset(fromX, fromZ, data.look);
+    await pac.strafeRight();
+
+    isAnimRunning = false;
   };
 
   return {
@@ -136,7 +241,7 @@ function makeApi(ref) {
 
     moveForward,
     moveBackward,
-    strafeRight,
     strafeLeft,
+    strafeRight,
   };
 }
