@@ -10,8 +10,9 @@ import { useKeyDownNoRepeat } from '../../utils/keyboard';
 import Shutter from '../../components/shutter';
 import Gizmo from '../../components/gizmo';
 
-import Level0 from '../../data/level0';
+import Level0 from '../../levels/level0';
 
+// TODO: Pass the level as a prop
 export default function Gameplay() {
   const [shutterOpen, setShutterOpen] = useState(true);
   const { changeRoute } = useRouter();
@@ -37,44 +38,6 @@ export default function Gameplay() {
       case 'F1':
         ev.preventDefault();
         console.log('Help');
-        break;
-
-      // WASD
-      case 'KeyW':
-        ev.preventDefault();
-        console.log('Forward');
-        break;
-
-      case 'KeyS':
-        ev.preventDefault();
-        console.log('Backward');
-        break;
-
-      case 'KeyA':
-        ev.preventDefault();
-        console.log('Strafe Left');
-        break;
-
-      case 'KeyD':
-        ev.preventDefault();
-        console.log('Strafe Right');
-        break;
-
-      // Turn
-      case 'KeyQ':
-        ev.preventDefault();
-        console.log('Turn Left');
-        break;
-
-      case 'KeyE':
-        ev.preventDefault();
-        console.log('Turn Right');
-        break;
-
-      // Reload
-      case 'KeyR':
-        ev.preventDefault();
-        console.log('Reload');
         break;
 
       default:
