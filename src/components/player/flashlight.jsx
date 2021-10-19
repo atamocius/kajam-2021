@@ -25,7 +25,8 @@ export default function Flashlight({ position, rotation }) {
         position={[0, 0, 0]}
         // color={0xffffff}
         // angle={Math.PI / 24}
-        angle={Math.PI / 8}
+        angle={Math.PI / 12}
+        // angle={Math.PI / 8}
         distance={8}
         intensity={0.7}
         castShadow
