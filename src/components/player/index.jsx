@@ -14,6 +14,10 @@ import {
   directionQuats,
   rotationRightLookup,
   rotationLeftLookup,
+  moveForwardOffsetLookup,
+  moveBackwardOffsetLookup,
+  strafeRightOffsetLookup,
+  strafeLeftOffsetLookup,
 } from '../../levels/common';
 import { Direction } from '../../utils/level-loader/common';
 
@@ -52,10 +56,14 @@ export default Player;
 
 /**
  * @typedef {Object} PlayerApi
- * @property {(mx: number, mz: number) => void} setMapPos
+ * @property {(x: number, z: number) => void} setMapPos
  * @property {(look: Direction) => void} setLook
  * @property {() => Promise<void>} rotateRight
  * @property {() => Promise<void>} rotateLeft
+ * @property {() => Promise<void>} moveForward
+ * @property {() => Promise<void>} moveBackward
+ * @property {() => Promise<void>} strafeRight
+ * @property {() => Promise<void>} strafeLeft
  */
 
 /**
@@ -65,13 +73,20 @@ export default Player;
 function makeApi(ref) {
   // TODO: Pass from context
   const data = {
+    position: {
+      x: 0,
+      z: 0,
+    },
     look: Direction.south,
   };
 
-  const setMapPos = (mx, mz) => {
-    const x = mapXToPosX(mx);
-    const z = mapZToPosZ(mz);
-    ref.current.position.set(x, 0, z);
+  const setMapPos = (x, z) => {
+    data.position.x = x;
+    data.position.z = z;
+
+    const px = mapXToPosX(x);
+    const pz = mapZToPosZ(z);
+    ref.current.position.set(px, 0, pz);
   };
 
   const setLook = look => {
@@ -94,11 +109,34 @@ function makeApi(ref) {
     ref.current.setRotationFromQuaternion(q);
   };
 
+  // TODO: Add map bounds, map props, and enemy pos validation
+  const moveForward = async () => {
+    const { x, z } = moveForwardOffsetLookup[data.look];
+    setMapPos(data.position.x + x, data.position.z + z);
+  };
+  const moveBackward = async () => {
+    const { x, z } = moveBackwardOffsetLookup[data.look];
+    setMapPos(data.position.x + x, data.position.z + z);
+  };
+  const strafeRight = async () => {
+    const { x, z } = strafeRightOffsetLookup[data.look];
+    setMapPos(data.position.x + x, data.position.z + z);
+  };
+  const strafeLeft = async () => {
+    const { x, z } = strafeLeftOffsetLookup[data.look];
+    setMapPos(data.position.x + x, data.position.z + z);
+  };
+
   return {
     setMapPos,
     setLook,
 
     rotateRight,
     rotateLeft,
+
+    moveForward,
+    moveBackward,
+    strafeRight,
+    strafeLeft,
   };
 }

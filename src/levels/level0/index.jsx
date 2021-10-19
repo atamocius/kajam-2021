@@ -57,34 +57,32 @@ export default function Level0() {
       // WASD
       case 'KeyW':
         ev.preventDefault();
-        console.log('Forward');
+        await playerRef.current.moveForward();
         break;
 
       case 'KeyS':
         ev.preventDefault();
-        console.log('Backward');
+        await playerRef.current.moveBackward();
         break;
 
       case 'KeyA':
         ev.preventDefault();
-        console.log('Strafe Left');
+        await playerRef.current.strafeLeft();
         break;
 
       case 'KeyD':
         ev.preventDefault();
-        console.log('Strafe Right');
+        await playerRef.current.strafeRight();
         break;
 
       // Turn
       case 'KeyQ':
         ev.preventDefault();
-        console.log('Turn Left');
         await playerRef.current.rotateLeft();
         break;
 
       case 'KeyE':
         ev.preventDefault();
-        console.log('Turn Right');
         await playerRef.current.rotateRight();
         break;
 

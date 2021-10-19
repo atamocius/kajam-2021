@@ -27,6 +27,34 @@ export const rotationLeftLookup = {
   [Direction.east]: Direction.north,
 };
 
+export const moveForwardOffsetLookup = {
+  [Direction.north]: { x: 0, z: -1 },
+  [Direction.south]: { x: 0, z: 1 },
+  [Direction.west]: { x: -1, z: 0 },
+  [Direction.east]: { x: 1, z: 0 },
+};
+
+export const moveBackwardOffsetLookup = {
+  [Direction.north]: { x: 0, z: 1 },
+  [Direction.south]: { x: 0, z: -1 },
+  [Direction.west]: { x: 1, z: 0 },
+  [Direction.east]: { x: -1, z: 0 },
+};
+
+export const strafeRightOffsetLookup = {
+  [Direction.north]: { x: 1, z: 0 },
+  [Direction.south]: { x: -1, z: 0 },
+  [Direction.west]: { x: 0, z: -1 },
+  [Direction.east]: { x: 0, z: 1 },
+};
+
+export const strafeLeftOffsetLookup = {
+  [Direction.north]: { x: -1, z: 0 },
+  [Direction.south]: { x: 1, z: 0 },
+  [Direction.west]: { x: 0, z: 1 },
+  [Direction.east]: { x: 0, z: -1 },
+};
+
 const UP_AXIS = new Vector3(0, 1, 0);
 
 export const directionQuats = {
