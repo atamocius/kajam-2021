@@ -18,8 +18,8 @@ export default function createRotateLeftAnim(transform, onUpdate) {
       { value: 0, duration: 0 },
       {
         value: Math.PI * 0.5,
-        duration: 1000,
-        easing: 'linear',
+        duration: 300,
+        easing: 'easeInOutSine',
       },
     ],
   });

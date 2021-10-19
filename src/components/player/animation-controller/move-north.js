@@ -19,8 +19,8 @@ export default function createMoveNorthAnim(transform, onUpdate) {
       { value: 0, duration: 0 },
       {
         value: -1,
-        duration: 1000,
-        easing: 'linear',
+        duration: 300,
+        easing: 'easeInOutSine',
       },
     ],
   });
