@@ -53,13 +53,13 @@ export default function Gameplay() {
         <Canvas
           shadows
           gl={{ alpha: false }}
-          camera={{ position: [0, 2, 2], fov: 50 }}
+          // camera={{ position: [0, 2, 2], fov: 50 }}
         >
           <Suspense fallback={null}>
             <Level0 />
           </Suspense>
 
-          <Gizmo />
+          {/* <Gizmo /> */}
         </Canvas>
       </div>
       <Shutter open={shutterOpen} onClosed={handleShutterClosed} />

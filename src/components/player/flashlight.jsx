@@ -8,19 +8,19 @@ import {
 import { useHelper } from '@react-three/drei';
 
 export default function Flashlight({ position, rotation }) {
-  const spotLightRef = useRef();
+  // const spotLightRef = useRef();
   // const pointLightRef = useRef();
 
-  const spotLight = useMemo(() => new SpotLight(), []);
+  // const spotLight = useMemo(() => new SpotLight(), []);
   // const pointLight = useMemo(() => new PointLight(), []);
 
-  useHelper(spotLightRef, SpotLightHelper);
+  // useHelper(spotLightRef, SpotLightHelper);
   // useHelper(pointLightRef, PointLightHelper);
 
   return (
     <group position={position} rotation={rotation}>
-      <primitive
-        ref={spotLightRef}
+      {/* <primitive
+        // ref={spotLightRef}
         object={spotLight}
         position={[0, 0, 0]}
         // color={0xffffff}
@@ -33,8 +33,8 @@ export default function Flashlight({ position, rotation }) {
         shadow-mapSize-width={128}
         shadow-mapSize-height={128}
       />
-      <primitive object={spotLight.target} position={[0, 0, 1]} />
-      <pointLight
+      <primitive object={spotLight.target} position={[0, 0, 1]} /> */}
+      {/* <pointLight
         // ref={pointLightRef}
         position={[0, 0, 1]}
         // color={0xffffff}
@@ -43,6 +43,16 @@ export default function Flashlight({ position, rotation }) {
         // castShadow
         // shadow-mapSize-width={64}
         // shadow-mapSize-height={64}
+      /> */}
+      <pointLight
+        // ref={pointLightRef}
+        position={[0, 0, 0]}
+        // color={0xffffff}
+        distance={8}
+        intensity={0.3}
+        castShadow
+        shadow-mapSize-width={128}
+        shadow-mapSize-height={128}
       />
     </group>
   );

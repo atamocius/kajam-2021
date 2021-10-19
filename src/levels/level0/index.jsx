@@ -106,8 +106,8 @@ export default function Level0() {
         shadow-mapSize-height={256}
       /> */}
 
-      {/* <ambientLight intensity={0.01} /> */}
-      <ambientLight intensity={0.03} />
+      <ambientLight intensity={0.01} />
+      {/* <ambientLight intensity={0.03} /> */}
 
       <Player
         ref={playerRef}

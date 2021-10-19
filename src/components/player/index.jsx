@@ -1,11 +1,13 @@
 /**
  * @typedef {import('three').Vector3} Vector3
  * @typedef {import('three').Euler} Euler
+ * @typedef {import('@react-three/fiber').PerspectiveCameraProps} PerspectiveCameraProps
  * @typedef {import('@react-three/fiber').GroupProps} GroupProps
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  */
 
 import React, { useRef, useMemo, forwardRef, useEffect } from 'react';
+import { PerspectiveCamera } from '@react-three/drei';
 
 import Flashlight from './flashlight';
 import {
@@ -40,15 +42,30 @@ const Player = forwardRef(
      */
     const ref = useRef();
 
+    /**
+     * @type {React.MutableRefObject<PerspectiveCameraProps>}
+     */
+    const camRef = useRef();
+
     useEffect(() => {
       if (!fwdRef) return;
       fwdRef.current = makeApi(ref);
       return () => (fwdRef.current = null);
     }, []);
 
+    useEffect(() => {
+      camRef.current.lookAt(0, 0.5, 1);
+    }, []);
+
     return (
       <group ref={ref} position={position} rotation={rotation}>
         <Flashlight position={[0, 0.5, 0]} />
+        <PerspectiveCamera
+          ref={camRef}
+          makeDefault
+          position={[0, 0.5, 0]}
+          fov={50}
+        />
       </group>
     );
   }
