@@ -12,7 +12,6 @@ import {
   mapXToPosX,
   mapZToPosZ,
   directionAngle,
-  directionQuats,
   rotationRightLookup,
   rotationLeftLookup,
   moveForwardOffsetLookup,
