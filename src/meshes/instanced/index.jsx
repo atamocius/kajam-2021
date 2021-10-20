@@ -68,7 +68,7 @@ const InstancedModelsContext = createContext();
 /**
  * @param {{config: CountConfig, children: React.ReactChildren}} param0
  */
-export default function InstancedModelsProvider({ config, children }) {
+export function InstancedModelsProvider({ config, children }) {
   const { refs, renders } = useRefs(config);
 
   return (
