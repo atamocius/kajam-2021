@@ -97,4 +97,8 @@ export {};
  * @property {(index: number) => number} getCeilingValueByIndex
  * @property {(x: number, z: number, dir: Direction) => number} getAdjacentValue
  * @property {(index: number, dir: Direction) => number} getAdjacentValueByIndex
+ *
+ * @property {(x: number, z: number) => StagePropEntity} getStageProp
+ *
+ * @property {(x: number, z: number) => boolean} isWalkable
  */

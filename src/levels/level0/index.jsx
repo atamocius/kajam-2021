@@ -48,7 +48,7 @@ export default function Level0() {
     '/levels/level0/geometry.json'
   );
 
-  const { atlas, geometry, logic } = level;
+  const { atlas, geometry, logic, utils } = level;
 
   const { start, goal, entities } = logic;
 
@@ -119,6 +119,7 @@ export default function Level0() {
           ref={playerRef}
           // position={playerPos}
           // rotation={[0, playerRotY, 0]}
+          utils={utils}
         />
         <LevelMesh atlas={atlas} geometry={geometry} />
         {/* <Enemies /> */}

@@ -16,6 +16,7 @@ export default function createMapUtilFuncs(map) {
   const { tiles: mapTiles, ceilings: ceilingTiles } = map;
   const { width: mapWidth } = map.size;
   const { floors: floorTileIndices, walls: wallTileIndices } = map.types;
+  const { props, enemies } = map.logic.entities;
 
   const indexToCoords = memoize(
     /**
@@ -118,6 +119,28 @@ export default function createMapUtilFuncs(map) {
     return getValueByIndex(f(index));
   };
 
+  const getStageProp = memoize(
+    /**
+     * @param {number} x
+     * @param {number} z
+     */
+    (x, z) => props.find(p => p.position.x === x && p.position.z === z),
+    (x, z) => `${x}_${z}`
+  );
+
+  const isWalkable = memoize(
+    /**
+     * @param {number} x
+     * @param {number} z
+     */
+    (x, z) => {
+      const mapValue = getValue(x, z);
+      const stageProp = getStageProp(x, z);
+      return isFloor(mapValue) && !(stageProp && stageProp.isMoveBlocker);
+    },
+    (x, z) => `${x}_${z}`
+  );
+
   return {
     indexToCoords,
     coordsToIndex,
@@ -129,5 +152,11 @@ export default function createMapUtilFuncs(map) {
     getCeilingValueByIndex,
     getAdjacentValue,
     getAdjacentValueByIndex,
+
+    // Stage Props
+    getStageProp,
+
+    // Validation
+    isWalkable,
   };
 }

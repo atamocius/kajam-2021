@@ -4,6 +4,7 @@
  * @typedef {import('@react-three/fiber').PerspectiveCameraProps} PerspectiveCameraProps
  * @typedef {import('@react-three/fiber').GroupProps} GroupProps
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
+ * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  */
 
 import { DEBUG_MODE } from '../../settings';
@@ -31,6 +32,7 @@ import PlayerAnimationController from './animation-controller';
  * @typedef {Object} PlayerProps
  * @property {Vector3} position
  * @property {Euler} rotation
+ * @property {MapUtilFuncs} utils
  */
 
 const Player = forwardRef(
@@ -38,7 +40,7 @@ const Player = forwardRef(
    * @param {PlayerProps} param0
    * @param {React.ForwardedRef<PlayerApi>} fwdRef
    */
-  ({ position, rotation }, fwdRef) => {
+  ({ position, rotation, utils }, fwdRef) => {
     /**
      * @type {React.MutableRefObject<GroupProps>}
      */
@@ -51,7 +53,7 @@ const Player = forwardRef(
 
     useEffect(() => {
       if (!fwdRef) return;
-      fwdRef.current = makeApi(ref);
+      fwdRef.current = makeApi(ref, utils);
       return () => (fwdRef.current = null);
     }, []);
 
@@ -92,10 +94,12 @@ export default Player;
 
 /**
  * @param {React.MutableRefObject<GroupProps>} ref
+ * @param {MapUtilFuncs} utils
  * @return {PlayerApi}
  */
-function makeApi(ref) {
+function makeApi(ref, utils) {
   const pac = new PlayerAnimationController(ref);
+  const { isWalkable } = utils;
 
   // TODO: Pass from context
   const data = {
@@ -173,6 +177,11 @@ function makeApi(ref) {
     const toX = fromX + x;
     const toZ = fromZ + z;
 
+    if (!isWalkable(toX, toZ)) {
+      isAnimRunning = false;
+      return;
+    }
+
     // Update prior to animate
     data.position.x = toX;
     data.position.z = toZ;
@@ -195,6 +204,11 @@ function makeApi(ref) {
     const fromZ = data.position.z;
     const toX = fromX + x;
     const toZ = fromZ + z;
+
+    if (!isWalkable(toX, toZ)) {
+      isAnimRunning = false;
+      return;
+    }
 
     // Update prior to animate
     data.position.x = toX;
@@ -219,6 +233,11 @@ function makeApi(ref) {
     const toX = fromX + x;
     const toZ = fromZ + z;
 
+    if (!isWalkable(toX, toZ)) {
+      isAnimRunning = false;
+      return;
+    }
+
     // Update prior to animate
     data.position.x = toX;
     data.position.z = toZ;
@@ -241,6 +260,11 @@ function makeApi(ref) {
     const fromZ = data.position.z;
     const toX = fromX + x;
     const toZ = fromZ + z;
+
+    if (!isWalkable(toX, toZ)) {
+      isAnimRunning = false;
+      return;
+    }
 
     // Update prior to animate
     data.position.x = toX;
