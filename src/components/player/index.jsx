@@ -6,6 +6,8 @@
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  */
 
+import { DEBUG_MODE } from '../../settings';
+
 import React, { useRef, useMemo, forwardRef, useEffect } from 'react';
 import { PerspectiveCamera } from '@react-three/drei';
 
@@ -53,19 +55,22 @@ const Player = forwardRef(
       return () => (fwdRef.current = null);
     }, []);
 
-    // useEffect(() => {
-    //   camRef.current.lookAt(0, 0.5, 1);
-    // }, []);
+    useEffect(() => {
+      if (!camRef.current) return;
+      camRef.current.lookAt(0, 0.5, 1);
+    }, []);
 
     return (
       <group ref={ref} position={position} rotation={rotation}>
         <Flashlight position={[0, 0.5, 0]} />
-        {/* <PerspectiveCamera
-          ref={camRef}
-          makeDefault
-          position={[0, 0.5, 0]}
-          fov={50}
-        /> */}
+        {!DEBUG_MODE && (
+          <PerspectiveCamera
+            ref={camRef}
+            makeDefault
+            position={[0, 0.5, 0]}
+            fov={50}
+          />
+        )}
       </group>
     );
   }

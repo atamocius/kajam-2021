@@ -1,3 +1,5 @@
+import { DEBUG_MODE } from '../../settings';
+
 import React, { useRef, useMemo } from 'react';
 import {
   SpotLight,
@@ -15,7 +17,10 @@ export default function Flashlight({ position, rotation }) {
   // const pointLight = useMemo(() => new PointLight(), []);
 
   // useHelper(spotLightRef, SpotLightHelper);
-  useHelper(pointLightRef, PointLightHelper, 0.5);
+
+  if (DEBUG_MODE) {
+    useHelper(pointLightRef, PointLightHelper, 0.5);
+  }
 
   return (
     <group position={position} rotation={rotation}>

@@ -1,5 +1,7 @@
 import classes from './index.module.css';
 
+import { DEBUG_MODE } from '../../settings';
+
 import React, { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 
@@ -8,9 +10,10 @@ import { routes as r } from '..';
 import { useKeyDownNoRepeat } from '../../utils/keyboard';
 
 import Shutter from '../../components/shutter';
-import Gizmo from '../../components/gizmo';
 
 import Level0 from '../../levels/level0';
+
+import Gizmo from '../../components/gizmo';
 
 // TODO: Pass the level as a prop
 export default function Gameplay() {
@@ -59,7 +62,7 @@ export default function Gameplay() {
             <Level0 />
           </Suspense>
 
-          <Gizmo />
+          {DEBUG_MODE && <Gizmo />}
         </Canvas>
       </div>
       <Shutter open={shutterOpen} onClosed={handleShutterClosed} />
