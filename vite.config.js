@@ -8,6 +8,9 @@ export default defineConfig({
       localsConvention: 'camelCaseOnly',
     },
   },
+  build: {
+    minify: false,
+  },
   server: {
     host: '0.0.0.0',
     hmr: {
