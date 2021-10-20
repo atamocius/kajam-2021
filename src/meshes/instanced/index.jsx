@@ -2,7 +2,7 @@
  * @typedef {import('../types').InstanceApi} InstanceApi
  */
 
-import React, { createContext, useRef } from 'react';
+import React, { createContext, useContext, useRef } from 'react';
 
 import stagePropRenders from './stage-props';
 import enemyRenders from './enemies';
@@ -63,7 +63,7 @@ import enemyRenders from './enemies';
  */
 
 /** @type {React.Context<Refs>} */
-export const InstancedModelsContext = createContext();
+const InstancedModelsContext = createContext();
 
 /**
  * @param {{config: CountConfig, children: React.ReactChildren}} param0
@@ -79,6 +79,18 @@ export default function InstancedModelsProvider({ config, children }) {
       </InstancedModelsContext.Provider>
     </>
   );
+}
+
+export function useInstancedModels() {
+  const ctx = useContext(InstancedModelsContext);
+
+  if (ctx === undefined) {
+    throw new Error(
+      'useInstancedModels must be used within a InstancedModelsProvider'
+    );
+  }
+
+  return ctx;
 }
 
 /**
