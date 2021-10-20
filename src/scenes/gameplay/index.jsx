@@ -1,7 +1,5 @@
 import classes from './index.module.css';
 
-import { DEBUG_MODE } from '../../settings';
-
 import React, { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 
@@ -62,7 +60,7 @@ export default function Gameplay() {
             <Level0 />
           </Suspense>
 
-          {DEBUG_MODE && <Gizmo />}
+          <Gizmo />
         </Canvas>
       </div>
       <Shutter open={shutterOpen} onClosed={handleShutterClosed} />
