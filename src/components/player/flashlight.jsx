@@ -9,13 +9,13 @@ import { useHelper } from '@react-three/drei';
 
 export default function Flashlight({ position, rotation }) {
   // const spotLightRef = useRef();
-  // const pointLightRef = useRef();
+  const pointLightRef = useRef();
 
   // const spotLight = useMemo(() => new SpotLight(), []);
   // const pointLight = useMemo(() => new PointLight(), []);
 
   // useHelper(spotLightRef, SpotLightHelper);
-  // useHelper(pointLightRef, PointLightHelper);
+  useHelper(pointLightRef, PointLightHelper, 0.5);
 
   return (
     <group position={position} rotation={rotation}>
@@ -45,7 +45,7 @@ export default function Flashlight({ position, rotation }) {
         // shadow-mapSize-height={64}
       /> */}
       <pointLight
-        // ref={pointLightRef}
+        ref={pointLightRef}
         position={[0, 0, 0]}
         // color={0xffffff}
         distance={8}

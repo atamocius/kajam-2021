@@ -53,19 +53,19 @@ const Player = forwardRef(
       return () => (fwdRef.current = null);
     }, []);
 
-    useEffect(() => {
-      camRef.current.lookAt(0, 0.5, 1);
-    }, []);
+    // useEffect(() => {
+    //   camRef.current.lookAt(0, 0.5, 1);
+    // }, []);
 
     return (
       <group ref={ref} position={position} rotation={rotation}>
         <Flashlight position={[0, 0.5, 0]} />
-        <PerspectiveCamera
+        {/* <PerspectiveCamera
           ref={camRef}
           makeDefault
           position={[0, 0.5, 0]}
           fov={50}
-        />
+        /> */}
       </group>
     );
   }

@@ -59,7 +59,7 @@ export default function Gameplay() {
             <Level0 />
           </Suspense>
 
-          {/* <Gizmo /> */}
+          <Gizmo />
         </Canvas>
       </div>
       <Shutter open={shutterOpen} onClosed={handleShutterClosed} />

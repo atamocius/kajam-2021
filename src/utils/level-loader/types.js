@@ -45,6 +45,28 @@ export {};
  * @typedef {Object} MapLogic
  * @property {MapCoords & { look: Direction }} start
  * @property {MapCoords} goal
+ * @property {Entities} entities
+ */
+
+/**
+ * @typedef {Object} Entities
+ * @property {StagePropEntity[]} props
+ * @property {EnemyEntity[]} enemies
+ */
+
+/**
+ * @typedef {Object} StagePropEntity
+ * @property {string} kind
+ * @property {MapCoords} position
+ * @property {{ x: number, y: number, z: number }} rotation
+ * @property {boolean} isMoveBlocker
+ * @property {boolean} isVisionBlocker
+ */
+
+/**
+ * @typedef {Object} EnemyEntity
+ * @property {string} kind
+ * @property {MapCoords} position
  */
 
 /**

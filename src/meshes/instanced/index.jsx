@@ -4,11 +4,18 @@
 
 import React, { createContext, useRef } from 'react';
 
+import stagePropRenders from './stage-props';
 import enemyRenders from './enemies';
 
 /**
  * @typedef {Object} CountConfig
+ * @property {StagePropsCountConfig} stageProps
  * @property {EnemiesCountConfig} enemies
+ */
+
+/**
+ * @typedef {Object} StagePropsCountConfig
+ * @property {number} crates
  */
 
 /**
@@ -21,7 +28,13 @@ import enemyRenders from './enemies';
 
 /**
  * @typedef {Object} Counts
+ * @property {StagePropCounts} stageProps
  * @property {EnemyCounts} enemies
+ */
+
+/**
+ * @typedef {Object} StagePropCounts
+ * @property {number} crates
  */
 
 /**
@@ -34,7 +47,13 @@ import enemyRenders from './enemies';
 
 /**
  * @typedef {Object} Refs
+ * @property {StagePropRefs} stageProps
  * @property {EnemyRefs} enemies
+ */
+
+/**
+ * @typedef {Object} StagePropRefs
+ * @property {React.MutableRefObject<InstanceApi>} crates
  */
 
 /**
@@ -70,10 +89,21 @@ function useRefs(config) {
   const counts = calcCounts(config);
 
   const refs = {
+    stageProps: {},
     enemies: {},
   };
 
   const renders = [];
+
+  Object.entries(counts.stageProps).forEach(c => {
+    const [key, count] = c;
+    const ref = useRef();
+    refs.stageProps[key] = ref;
+    const StagePropInstances = stagePropRenders[key];
+    renders.push(
+      <StagePropInstances key={`stageProps_${key}`} ref={ref} count={count} />
+    );
+  });
 
   Object.entries(counts.enemies).forEach(c => {
     const [key, count] = c;
@@ -97,10 +127,14 @@ function useRefs(config) {
  */
 function calcCounts(config) {
   const {
+    stageProps: { crates = 0 },
     enemies: { sampleEnemy2 = 0, testRobot = 0 },
   } = config;
 
   return {
+    stageProps: {
+      crates,
+    },
     enemies: {
       sampleEnemy2,
       testRobot,

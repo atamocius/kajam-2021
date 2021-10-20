@@ -6,8 +6,8 @@ import React, { useRef, useMemo, useState, useEffect } from 'react';
 
 import loadLevel from '../../utils/level-loader';
 import LevelMesh from '../../components/level-mesh';
+import StageProps from '../../components/stage-props';
 
-import { mapPosToPos, directionAngle } from '../common';
 import { useKeyDownNoRepeat } from '../../utils/keyboard';
 
 import Player from '../../components/player';
@@ -16,10 +16,24 @@ import InstancedModelsProvider from '../../meshes/instanced';
 import BasicEnemy2 from '../../models/compound/enemies/basic-enemy-2';
 import BasicRobot from '../../models/compound/enemies/basic-robot';
 
+import Crates from '../../models/stage-props/crates';
+
 const instancedModelsConfig = {
+  stageProps: {
+    crates: 25,
+  },
   enemies: {
     sampleEnemy2: 25,
     testRobot: 25,
+  },
+};
+
+const entityModelLookup = {
+  stageProps: {
+    crates: Crates,
+  },
+  enemies: {
+    basic_enemy: BasicEnemy2,
   },
 };
 
@@ -36,7 +50,7 @@ export default function Level0() {
 
   const { atlas, geometry, logic } = level;
 
-  const { start, goal } = logic;
+  const { start, goal, entities } = logic;
 
   // const playerPos = mapPosToPos(start.x, start.z);
   // const playerRotY = directionAngle[start.look];
@@ -96,8 +110,8 @@ export default function Level0() {
   return (
     <>
       {/* <color attach='background' args={['#a1eeee']} /> */}
-      {/* <hemisphereLight intensity={0.35} />
-      <directionalLight
+      <hemisphereLight intensity={0.35} />
+      {/* <directionalLight
         position={[5, 5, 5]}
         penumbra={1}
         intensity={1}
@@ -106,23 +120,29 @@ export default function Level0() {
         shadow-mapSize-height={256}
       /> */}
 
-      <ambientLight intensity={0.01} />
-      {/* <ambientLight intensity={0.03} /> */}
+      <InstancedModelsProvider config={instancedModelsConfig}>
+        {/* <ambientLight intensity={0.01} /> */}
+        {/* <ambientLight intensity={0.03} /> */}
 
-      <Player
-        ref={playerRef}
-        // position={playerPos}
-        // rotation={[0, playerRotY, 0]}
-      />
-      <LevelMesh atlas={atlas} geometry={geometry} />
-      {/* <Enemies /> */}
+        <Player
+          ref={playerRef}
+          // position={playerPos}
+          // rotation={[0, playerRotY, 0]}
+        />
+        <LevelMesh atlas={atlas} geometry={geometry} />
+        {/* <Enemies /> */}
+        <StageProps
+          data={entities.props}
+          modelLookup={entityModelLookup.stageProps}
+        />
+      </InstancedModelsProvider>
     </>
   );
 }
 
 function Enemies() {
   return (
-    <InstancedModelsProvider config={instancedModelsConfig}>
+    <>
       <group position={[2.5, 0, 1.5]}>
         <group scale={[1, 1, 1]}>
           <group position={[0, 0.5, 0]}>
@@ -134,6 +154,6 @@ function Enemies() {
       <group position={[0, 0, 0]}>
         <BasicRobot />
       </group>
-    </InstancedModelsProvider>
+    </>
   );
 }
