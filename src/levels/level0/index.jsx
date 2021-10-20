@@ -110,18 +110,9 @@ export default function Level0() {
   return (
     <>
       {/* <color attach='background' args={['#a1eeee']} /> */}
-      <hemisphereLight intensity={0.35} />
-      {/* <directionalLight
-        position={[5, 5, 5]}
-        penumbra={1}
-        intensity={1}
-        castShadow
-        shadow-mapSize-width={256}
-        shadow-mapSize-height={256}
-      /> */}
 
       <InstancedModelsProvider config={instancedModelsConfig}>
-        {/* <ambientLight intensity={0.01} /> */}
+        <ambientLight intensity={0.01} />
         {/* <ambientLight intensity={0.03} /> */}
 
         <Player

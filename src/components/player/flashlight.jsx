@@ -1,25 +1,18 @@
 import { DEBUG_MODE } from '../../settings';
 
 import React, { useRef, useMemo } from 'react';
-import {
-  SpotLight,
-  PointLight,
-  SpotLightHelper,
-  PointLightHelper,
-} from 'three';
+import { SpotLight, SpotLightHelper, PointLightHelper } from 'three';
 import { useHelper } from '@react-three/drei';
 
 export default function Flashlight({ position, rotation }) {
   const spotLightRef = useRef();
-  const pointLightRef = useRef();
+  // const pointLightRef = useRef();
 
   const spotLight = useMemo(() => new SpotLight(), []);
-  // const pointLight = useMemo(() => new PointLight(), []);
-
-  // useHelper(spotLightRef, SpotLightHelper);
 
   if (DEBUG_MODE) {
-    useHelper(pointLightRef, PointLightHelper, 0.5);
+    useHelper(spotLightRef, SpotLightHelper);
+    // useHelper(pointLightRef, PointLightHelper, 0.5);
   }
 
   return (

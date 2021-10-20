@@ -12,6 +12,16 @@ export default function Gizmo() {
 
   return (
     <>
+      <hemisphereLight intensity={0.35} />
+      <directionalLight
+        position={[5, 5, 5]}
+        penumbra={1}
+        intensity={1}
+        // castShadow
+        // shadow-mapSize-width={256}
+        // shadow-mapSize-height={256}
+      />
+
       <gridHelper renderOrder={999} args={[1000, 1000, 0xaa0000, 0x222222]} />
 
       <GizmoHelper
