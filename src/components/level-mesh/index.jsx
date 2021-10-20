@@ -11,7 +11,7 @@ import React from 'react';
 export default function LevelMesh({ atlas, geometry }) {
   return (
     <mesh castShadow receiveShadow geometry={geometry}>
-      <meshPhongMaterial attach='material' map={atlas} />
+      <meshPhongMaterial attach='material' map={atlas} shininess={10} />
     </mesh>
   );
 }

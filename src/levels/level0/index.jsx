@@ -112,7 +112,7 @@ export default function Level0() {
       {/* <color attach='background' args={['#a1eeee']} /> */}
 
       <InstancedModelsProvider config={instancedModelsConfig}>
-        <ambientLight intensity={0.01} />
+        <ambientLight intensity={0.02} />
         {/* <ambientLight intensity={0.03} /> */}
 
         <Player

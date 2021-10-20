@@ -24,7 +24,7 @@ export default function Flashlight({ position, rotation }) {
         // color={0xffffff}
         // angle={Math.PI / 24}
         // angle={Math.PI / 12}
-        angle={Math.PI / 9}
+        angle={Math.PI / 6}
         distance={8}
         intensity={0.7}
         penumbra={0.2}
@@ -33,16 +33,16 @@ export default function Flashlight({ position, rotation }) {
         shadow-mapSize-height={128}
       />
       <primitive object={spotLight.target} position={[0, 0, 1]} />
-      <pointLight
+      {/* <pointLight
         // ref={pointLightRef}
         position={[0, 0, 1]}
         // color={0xffffff}
         distance={2}
-        intensity={0.15}
+        intensity={0.1}
         // castShadow
         // shadow-mapSize-width={64}
         // shadow-mapSize-height={64}
-      />
+      /> */}
       {/* <pointLight
         ref={pointLightRef}
         position={[0, 0, 0]}
