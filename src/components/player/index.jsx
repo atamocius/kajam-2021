@@ -70,7 +70,7 @@ const Player = forwardRef(
             ref={camRef}
             makeDefault
             position={[0, 0.5, 0]}
-            fov={50}
+            fov={65}
           />
         )}
       </group>
