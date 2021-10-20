@@ -1,6 +1,21 @@
 {
   "atlas": { "width": 4, "src": "/levels/level0/atlas.png" },
-  "entities": {},
+  "entities": {
+    "props": [
+      { "model": "crates", "position": { "x": 9, "z": 1 } },
+      { "model": "crates", "position": { "x": 10, "z": 4 } },
+      { "model": "crates", "position": { "x": 5, "z": 8 } },
+      { "model": "crates", "position": { "x": 2, "z": 11 } },
+      { "model": "crates", "position": { "x": 2, "z": 18 } },
+      { "model": "crates", "position": { "x": 9, "z": 14 } },
+      { "model": "crates", "position": { "x": 15, "z": 16 } },
+      { "model": "crates", "position": { "x": 16, "z": 16 } },
+      { "model": "crates", "position": { "x": 14, "z": 5 } },
+      { "model": "crates", "position": { "x": 17, "z": 8 } },
+      { "model": "crates", "position": { "x": 2, "z": 3 } },
+      { "model": "crates", "position": { "x": 6, "z": 3 } }
+    ]
+  },
   "map": {
     "size": { "width": 20, "length": 20 },
     "logic": {
