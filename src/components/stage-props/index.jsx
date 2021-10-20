@@ -20,12 +20,10 @@ export default function StageProps({ data, modelLookup }) {
       position: { x, z },
       rotation: { y: rotY },
     } = d;
-    const Component = modelLookup[kind];
+    const StageProp = modelLookup[kind];
 
     return (
-      <group key={i} position={mapPosToPos(x, z)} rotation={[0, rotY, 0]}>
-        <Component />
-      </group>
+      <StageProp key={i} position={mapPosToPos(x, z)} rotation={[0, rotY, 0]} />
     );
   });
 }
