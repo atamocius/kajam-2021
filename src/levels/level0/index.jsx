@@ -17,6 +17,7 @@ import Enemies from '../../components/enemies';
 
 import { InstancedModelsProvider } from '../../meshes/instanced';
 import LevelDataProvider from '../../utils/level-data-provider';
+import { GameLogicProvider } from '../../logic/game-logic';
 
 const instancedModelsConfig = {
   stageProps: {
@@ -95,10 +96,8 @@ export default function Level0() {
   useKeyDownNoRepeat(handleKeyDown);
 
   return (
-    <>
-      {/* <color attach='background' args={['#a1eeee']} /> */}
-
-      <LevelDataProvider levelData={level}>
+    <LevelDataProvider levelData={level}>
+      <GameLogicProvider>
         <InstancedModelsProvider config={instancedModelsConfig}>
           <Lighting />
 
@@ -107,8 +106,8 @@ export default function Level0() {
           <Enemies />
           <StageProps />
         </InstancedModelsProvider>
-      </LevelDataProvider>
-    </>
+      </GameLogicProvider>
+    </LevelDataProvider>
   );
 }
 
