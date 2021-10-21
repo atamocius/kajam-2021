@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../../utils/level-loader/types').LoadedLevelData} LoadedLevelData
+ * @typedef {import('../level-loader/types').LoadedLevelData} LoadedLevelData
  */
 
 import React, { createContext, useContext } from 'react';

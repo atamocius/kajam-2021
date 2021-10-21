@@ -6,7 +6,7 @@
 
 import React, { useRef, forwardRef, useEffect } from 'react';
 
-import { useLevelData } from '../../logic/level-data-provider';
+import { useLevelData } from '../../utils/level-data-provider';
 
 import Camera from './camera';
 import Flashlight from './flashlight';

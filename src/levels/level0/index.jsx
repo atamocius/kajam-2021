@@ -16,7 +16,7 @@ import Player from '../../components/player';
 import Enemies from '../../components/enemies';
 
 import { InstancedModelsProvider } from '../../meshes/instanced';
-import LevelDataProvider from '../../logic/level-data-provider';
+import LevelDataProvider from '../../utils/level-data-provider';
 
 const instancedModelsConfig = {
   stageProps: {

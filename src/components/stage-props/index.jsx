@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useLevelData } from '../../logic/level-data-provider';
+import { useLevelData } from '../../utils/level-data-provider';
 import registry from '../../models';
 import { mapPosToPos } from '../../levels/common';
 
