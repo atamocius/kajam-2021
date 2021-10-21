@@ -1,29 +1,26 @@
-/**
- * @typedef {import('../../utils/level-loader/types').StagePropEntity} StagePropEntity
- */
-
 import React from 'react';
 
+import { useLevelData } from '../../logic/level-data-provider';
+import registry from '../../models';
 import { mapPosToPos } from '../../levels/common';
 
-/**
- * @typedef {{ [x: string]: (props: any) => JSX.Element }} ModelLookup
- */
+export default function StageProps() {
+  const {
+    logic: {
+      entities: { props },
+    },
+  } = useLevelData();
 
-/**
- * @param {{ data: StagePropEntity[], modelLookup: ModelLookup }} param0
- */
-export default function StageProps({ data, modelLookup }) {
-  return data.map((d, i) => {
+  return props.map((d, i) => {
     const {
       kind,
       position: { x, z },
       rotation: { y: rotY },
     } = d;
-    const StageProp = modelLookup[kind];
+    const Component = registry.stageProps[kind];
 
     return (
-      <StageProp key={i} position={mapPosToPos(x, z)} rotation={[0, rotY, 0]} />
+      <Component key={i} position={mapPosToPos(x, z)} rotation={[0, rotY, 0]} />
     );
   });
 }

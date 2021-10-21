@@ -11,12 +11,10 @@ import StageProps from '../../components/stage-props';
 import { useKeyDownNoRepeat } from '../../utils/keyboard';
 
 import Player from '../../components/player';
+import Enemies from '../../components/enemies';
 
 import { InstancedModelsProvider } from '../../meshes/instanced';
-import BasicEnemy2 from '../../models/compound/enemies/basic-enemy-2';
-import BasicRobot from '../../models/compound/enemies/basic-robot';
-
-import Crates from '../../models/stage-props/crates';
+import LevelDataProvider from '../../logic/level-data-provider';
 
 const instancedModelsConfig = {
   stageProps: {
@@ -25,15 +23,7 @@ const instancedModelsConfig = {
   enemies: {
     sampleEnemy2: 25,
     testRobot: 25,
-  },
-};
-
-const entityModelLookup = {
-  stageProps: {
-    crates: Crates,
-  },
-  enemies: {
-    basic_enemy: BasicEnemy2,
+    bot: 25,
   },
 };
 
@@ -47,13 +37,8 @@ export default function Level0() {
     '/levels/level0/data.json',
     '/levels/level0/geometry.json'
   );
-
   const { atlas, geometry, logic, utils } = level;
-
   const { start, goal, entities } = logic;
-
-  // const playerPos = mapPosToPos(start.x, start.z);
-  // const playerRotY = directionAngle[start.look];
 
   useEffect(() => {
     // if (!playerRef) {
@@ -111,41 +96,16 @@ export default function Level0() {
     <>
       {/* <color attach='background' args={['#a1eeee']} /> */}
 
-      <InstancedModelsProvider config={instancedModelsConfig}>
-        <ambientLight intensity={0.02} />
-        {/* <ambientLight intensity={0.03} /> */}
+      <LevelDataProvider levelData={level}>
+        <InstancedModelsProvider config={instancedModelsConfig}>
+          <ambientLight intensity={0.02} />
 
-        <Player
-          ref={playerRef}
-          // position={playerPos}
-          // rotation={[0, playerRotY, 0]}
-          utils={utils}
-        />
-        <LevelMesh atlas={atlas} geometry={geometry} />
-        {/* <Enemies /> */}
-        <StageProps
-          data={entities.props}
-          modelLookup={entityModelLookup.stageProps}
-        />
-      </InstancedModelsProvider>
-    </>
-  );
-}
-
-function Enemies() {
-  return (
-    <>
-      <group position={[2.5, 0, 1.5]}>
-        <group scale={[1, 1, 1]}>
-          <group position={[0, 0.5, 0]}>
-            <BasicEnemy2 />
-          </group>
-        </group>
-      </group>
-
-      <group position={[0, 0, 0]}>
-        <BasicRobot />
-      </group>
+          <Player ref={playerRef} />
+          <LevelMesh />
+          <Enemies />
+          <StageProps />
+        </InstancedModelsProvider>
+      </LevelDataProvider>
     </>
   );
 }

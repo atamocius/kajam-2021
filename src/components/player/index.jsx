@@ -1,17 +1,14 @@
 /**
- * @typedef {import('three').Vector3} Vector3
- * @typedef {import('three').Euler} Euler
- * @typedef {import('@react-three/fiber').PerspectiveCameraProps} PerspectiveCameraProps
  * @typedef {import('@react-three/fiber').GroupProps} GroupProps
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  */
 
-import { DEBUG_MODE } from '../../settings';
+import React, { useRef, forwardRef, useEffect } from 'react';
 
-import React, { useRef, useMemo, forwardRef, useEffect } from 'react';
-import { PerspectiveCamera } from '@react-three/drei';
+import { useLevelData } from '../../logic/level-data-provider';
 
+import Camera from './camera';
 import Flashlight from './flashlight';
 import {
   mapXToPosX,
@@ -28,28 +25,17 @@ import { Direction } from '../../utils/level-loader/common';
 
 import PlayerAnimationController from './animation-controller';
 
-/**
- * @typedef {Object} PlayerProps
- * @property {Vector3} position
- * @property {Euler} rotation
- * @property {MapUtilFuncs} utils
- */
-
 const Player = forwardRef(
   /**
-   * @param {PlayerProps} param0
    * @param {React.ForwardedRef<PlayerApi>} fwdRef
    */
-  ({ position, rotation, utils }, fwdRef) => {
+  (_, fwdRef) => {
     /**
      * @type {React.MutableRefObject<GroupProps>}
      */
     const ref = useRef();
 
-    /**
-     * @type {React.MutableRefObject<PerspectiveCameraProps>}
-     */
-    const camRef = useRef();
+    const { utils } = useLevelData();
 
     useEffect(() => {
       if (!fwdRef) return;
@@ -57,22 +43,10 @@ const Player = forwardRef(
       return () => (fwdRef.current = null);
     }, []);
 
-    useEffect(() => {
-      if (!camRef.current) return;
-      camRef.current.lookAt(0, 0.5, 1);
-    }, []);
-
     return (
-      <group ref={ref} position={position} rotation={rotation}>
+      <group ref={ref}>
         <Flashlight position={[0, 0.5, 0]} />
-        {!DEBUG_MODE && (
-          <PerspectiveCamera
-            ref={camRef}
-            makeDefault
-            position={[0, 0.5, 0]}
-            fov={65}
-          />
-        )}
+        <Camera position={[0, 0.5, 0]} />
       </group>
     );
   }

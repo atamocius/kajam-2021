@@ -67,6 +67,7 @@ export {};
  * @typedef {Object} EnemyEntity
  * @property {string} kind
  * @property {MapCoords} position
+ * @property {number} sightRange
  */
 
 /**

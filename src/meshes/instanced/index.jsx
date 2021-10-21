@@ -22,6 +22,7 @@ import enemyRenders from './enemies';
  * @typedef {Object} EnemiesCountConfig
  * @property {number} sampleEnemy2
  * @property {number} testRobot
+ * @property {number} bot
  */
 
 /********************************/
@@ -41,6 +42,7 @@ import enemyRenders from './enemies';
  * @typedef {Object} EnemyCounts
  * @property {number} sampleEnemy2
  * @property {number} testRobot
+ * @property {number} bot
  */
 
 /********************************/
@@ -60,6 +62,7 @@ import enemyRenders from './enemies';
  * @typedef {Object} EnemyRefs
  * @property {React.MutableRefObject<InstanceApi>} sampleEnemy2
  * @property {React.MutableRefObject<InstanceApi>} testRobot
+ * @property {React.MutableRefObject<InstanceApi>} bot
  */
 
 /** @type {React.Context<Refs>} */
@@ -140,7 +143,7 @@ function useRefs(config) {
 function calcCounts(config) {
   const {
     stageProps: { crates = 0 },
-    enemies: { sampleEnemy2 = 0, testRobot = 0 },
+    enemies: { sampleEnemy2 = 0, testRobot = 0, bot = 0 },
   } = config;
 
   return {
@@ -150,6 +153,7 @@ function calcCounts(config) {
     enemies: {
       sampleEnemy2,
       testRobot,
+      bot,
     },
   };
 }

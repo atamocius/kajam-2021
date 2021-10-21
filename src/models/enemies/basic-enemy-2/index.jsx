@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SampleEnemy2 from '../../../enemies/sample-enemy-2';
+import SampleEnemy2 from './sample-enemy-2';
 
 export default function BasicEnemy2({ ...rest }) {
   return (

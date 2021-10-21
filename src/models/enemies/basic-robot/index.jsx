@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TestRobot from '../../../enemies/test-robot';
+import TestRobot from './test-robot';
 
 export default function BasicRobot({ ...rest }) {
   return (
