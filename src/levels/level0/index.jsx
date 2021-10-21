@@ -2,6 +2,8 @@
  * @typedef {import('../../components/player').PlayerApi} PlayerApi
  */
 
+import { DEBUG_MODE } from '../../settings';
+
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 
 import loadLevel from '../../utils/level-loader';
@@ -98,7 +100,7 @@ export default function Level0() {
 
       <LevelDataProvider levelData={level}>
         <InstancedModelsProvider config={instancedModelsConfig}>
-          <ambientLight intensity={0.02} />
+          <Lighting />
 
           <Player ref={playerRef} />
           <LevelMesh />
@@ -106,6 +108,19 @@ export default function Level0() {
           <StageProps />
         </InstancedModelsProvider>
       </LevelDataProvider>
+    </>
+  );
+}
+
+function Lighting() {
+  if (DEBUG_MODE) {
+    return null;
+  }
+
+  return (
+    <>
+      <ambientLight intensity={0.03} />
+      <fog attach='fog' color={0x000000} near={8} far={15} />
     </>
   );
 }
