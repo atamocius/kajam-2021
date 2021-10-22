@@ -13,7 +13,7 @@ import { Direction } from '../../../utils/level-loader/common';
 
 import EnemyAnimationController from './animation-controller';
 
-export default function Enemy({ id, children }) {
+export default function Enemy({ index, children }) {
   /**
    * @type {React.MutableRefObject<GroupProps>}
    */
@@ -23,7 +23,7 @@ export default function Enemy({ id, children }) {
 
   useEffect(() => {
     const api = makeApi(ref);
-    return enemies.register(id, api);
+    return enemies.get(index).register(api);
   }, []);
 
   return <group ref={ref}>{children}</group>;

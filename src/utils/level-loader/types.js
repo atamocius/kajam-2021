@@ -43,9 +43,13 @@ export {};
 
 /**
  * @typedef {Object} MapLogic
- * @property {MapCoords & { look: Direction }} start
+ * @property {PlayerStartData} start
  * @property {MapCoords} goal
  * @property {Entities} entities
+ */
+
+/**
+ * @typedef {MapCoords & { look: Direction }} PlayerStartData
  */
 
 /**

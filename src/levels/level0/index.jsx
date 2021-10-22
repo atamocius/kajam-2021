@@ -15,6 +15,8 @@ import { InstancedModelsProvider } from '../../meshes/instanced';
 import LevelDataProvider from '../../utils/level-data-provider';
 import { GameLogicProvider, useGameLogic } from '../../logic/game-logic';
 
+import { Mutex } from 'async-mutex';
+
 export default function Level0() {
   const level = loadLevel(
     '/levels/level0/data.json',
@@ -43,6 +45,8 @@ export default function Level0() {
   );
 }
 
+const mutex = new Mutex();
+
 function Content() {
   const { player } = useGameLogic();
 
@@ -50,42 +54,44 @@ function Content() {
    * @param {KeyboardEvent} ev
    */
   const handleKeyDown = async ev => {
-    switch (ev.code) {
-      // WASD
-      case 'KeyW':
-        ev.preventDefault();
-        await player.moveForward();
-        break;
+    await mutex.runExclusive(async () => {
+      switch (ev.code) {
+        // WASD
+        case 'KeyW':
+          ev.preventDefault();
+          await player.moveForward();
+          break;
 
-      case 'KeyS':
-        ev.preventDefault();
-        await player.moveBackward();
-        break;
+        case 'KeyS':
+          ev.preventDefault();
+          await player.moveBackward();
+          break;
 
-      case 'KeyA':
-        ev.preventDefault();
-        await player.strafeLeft();
-        break;
+        case 'KeyA':
+          ev.preventDefault();
+          await player.strafeLeft();
+          break;
 
-      case 'KeyD':
-        ev.preventDefault();
-        await player.strafeRight();
-        break;
+        case 'KeyD':
+          ev.preventDefault();
+          await player.strafeRight();
+          break;
 
-      // Turn
-      case 'KeyQ':
-        ev.preventDefault();
-        await player.rotateLeft();
-        break;
+        // Turn
+        case 'KeyQ':
+          ev.preventDefault();
+          await player.rotateLeft();
+          break;
 
-      case 'KeyE':
-        ev.preventDefault();
-        await player.rotateRight();
-        break;
+        case 'KeyE':
+          ev.preventDefault();
+          await player.rotateRight();
+          break;
 
-      default:
-        break;
-    }
+        default:
+          break;
+      }
+    });
   };
 
   useKeyDownNoRepeat(handleKeyDown);

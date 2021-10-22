@@ -17,7 +17,7 @@ export default function Enemies() {
     const Component = registry.enemies[kind];
 
     return (
-      <Enemy key={i} id={i}>
+      <Enemy key={i} index={i}>
         <Component position={[0, 0, 0]} />
       </Enemy>
     );

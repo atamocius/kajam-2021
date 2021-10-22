@@ -16,7 +16,7 @@ export default function createMapUtilFuncs(map) {
   const { tiles: mapTiles, ceilings: ceilingTiles } = map;
   const { width: mapWidth } = map.size;
   const { floors: floorTileIndices, walls: wallTileIndices } = map.types;
-  const { props, enemies } = map.logic.entities;
+  const { props } = map.logic.entities;
 
   const indexToCoords = memoize(
     /**
