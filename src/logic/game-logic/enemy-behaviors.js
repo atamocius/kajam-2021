@@ -110,11 +110,8 @@ export class EnemyBehavior {
       sightRange,
     } = this.#state;
 
-    const dist = distance(x, z, px, pz);
-
-    console.log(sightRange);
-
     // NO: Beyond sight range
+    const dist = distance(x, z, px, pz);
     if (dist > sightRange) {
       return false;
     }
