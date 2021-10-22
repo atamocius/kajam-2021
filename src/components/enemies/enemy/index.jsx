@@ -1,43 +1,36 @@
 /**
  * @typedef {import('@react-three/fiber').GroupProps} GroupProps
- * @typedef {import('../../utils/level-loader/types').Direction} Direction
- * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
+ * @typedef {import('../../../utils/level-loader/types').Direction} Direction
+ * @typedef {import('../../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  */
 
 import React, { useRef, useEffect } from 'react';
 
-import { useGameLogic } from '../../logic/game-logic';
+import { useGameLogic } from '../../../logic/game-logic';
 
-import Camera from './camera';
-import Flashlight from './flashlight';
-import { mapXToPosX, mapZToPosZ, directionAngle } from '../../levels/common';
-import { Direction } from '../../utils/level-loader/common';
+import { mapXToPosX, mapZToPosZ, directionAngle } from '../../../levels/common';
+import { Direction } from '../../../utils/level-loader/common';
 
-import PlayerAnimationController from './animation-controller';
+import EnemyAnimationController from './animation-controller';
 
-export default function Player() {
+export default function Enemy({ children }) {
   /**
    * @type {React.MutableRefObject<GroupProps>}
    */
   const ref = useRef();
 
-  const { player } = useGameLogic();
+  const { enemies } = useGameLogic();
 
   useEffect(() => {
     const api = makeApi(ref);
-    return player.register(api);
+    return enemies.register(api);
   }, []);
 
-  return (
-    <group ref={ref}>
-      <Flashlight position={[0, 0.5, 0]} />
-      <Camera position={[0, 0.5, 0]} />
-    </group>
-  );
+  return <group ref={ref}>{children}</group>;
 }
 
 /**
- * @typedef {Object} PlayerApi
+ * @typedef {Object} EnemyApi
  * @property {(x: number, z: number) => void} setMapPos
  * @property {(look: Direction) => void} setLook
  * @property {() => Promise<void>} rotateRight
@@ -50,10 +43,10 @@ export default function Player() {
 
 /**
  * @param {React.MutableRefObject<GroupProps>} ref
- * @return {PlayerApi}
+ * @return {EnemyApi}
  */
 function makeApi(ref) {
-  const pac = new PlayerAnimationController(ref);
+  const pac = new EnemyAnimationController(ref);
 
   const setMapPos = (x, z) => {
     const px = mapXToPosX(x);

@@ -25,5 +25,3 @@ export default function Enemies() {
     return <Component key={i} position={mapPosToPos(x, z)} />;
   });
 }
-
-function Enemy() {}

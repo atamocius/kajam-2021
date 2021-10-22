@@ -43,6 +43,12 @@ export function GameLogicProvider({ children }) {
 
   const api = {
     player: createPlayerBehaviors(playerState, enemyState, utils),
+    enemies: {
+      register: view => {
+        // TODO: generate ID
+        return () => {};
+      },
+    },
   };
 
   return (

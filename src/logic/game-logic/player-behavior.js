@@ -35,10 +35,10 @@ export default function createPlayerBehaviors(
     playerState.view = view;
     playerState.view.setMapPos(x, z);
     playerState.view.setLook(look);
-  };
 
-  const unregister = () => {
-    playerState.view = null;
+    return () => {
+      playerState.view = null;
+    };
   };
 
   const setPosition = (x, z) => {
@@ -215,7 +215,6 @@ export default function createPlayerBehaviors(
 
   return {
     register,
-    unregister,
 
     setPosition,
     setLook,

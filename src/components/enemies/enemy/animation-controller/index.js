@@ -1,11 +1,11 @@
 /**
  * @typedef {import('@react-three/fiber').GroupProps} GroupProps
- * @typedef {import('../../../utils/level-loader/types').Direction} Direction
- * @typedef {import('..').PlayerApi} PlayerApi
+ * @typedef {import('../../../../utils/level-loader/types').Direction} Direction
+ * @typedef {import('..').EnemyApi} EnemyApi
  */
 
 /**
- * @typedef {Object} PlayerAnimationTransform
+ * @typedef {Object} EnemyAnimationTransform
  * @property {number} x
  * @property {number} y
  * @property {number} z
@@ -14,8 +14,12 @@
  * @property {number} rotZ
  */
 
-import { mapXToPosX, mapZToPosZ, directionAngle } from '../../../levels/common';
-import { Direction } from '../../../utils/level-loader/common';
+import {
+  mapXToPosX,
+  mapZToPosZ,
+  directionAngle,
+} from '../../../../levels/common';
+import { Direction } from '../../../../utils/level-loader/common';
 
 import createMoveNorthAnim from './move-north';
 import createMoveSouthAnim from './move-south';
@@ -24,7 +28,7 @@ import createMoveEastAnim from './move-east';
 import createRotateLeftAnim from './rotate-left';
 import createRotateRightAnim from './rotate-right';
 
-export default class PlayerAnimationController {
+export default class EnemyAnimationController {
   #playerRef;
 
   #transform;
@@ -52,7 +56,7 @@ export default class PlayerAnimationController {
   constructor(playerRef) {
     this.#playerRef = playerRef;
 
-    /** @type {PlayerAnimationTransform} */
+    /** @type {EnemyAnimationTransform} */
     this.#transform = {
       x: 0,
       // y: 0,
@@ -150,7 +154,7 @@ export default class PlayerAnimationController {
   }
 
   /**
-   * @param {PlayerAnimationTransform} transform
+   * @param {EnemyAnimationTransform} transform
    */
   #update = transform => {
     if (!this.#playerRef.current) {
