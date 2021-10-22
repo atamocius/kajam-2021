@@ -17,29 +17,43 @@ import Enemies from '../../components/enemies';
 
 import { InstancedModelsProvider } from '../../meshes/instanced';
 import LevelDataProvider from '../../utils/level-data-provider';
-import { GameLogicProvider } from '../../logic/game-logic';
-
-const instancedModelsConfig = {
-  stageProps: {
-    crates: 25,
-  },
-  enemies: {
-    sampleEnemy2: 25,
-    testRobot: 25,
-    bot: 25,
-  },
-};
+import { GameLogicProvider, useGameLogic } from '../../logic/game-logic';
 
 export default function Level0() {
+  const level = loadLevel(
+    '/levels/level0/data.json',
+    '/levels/level0/geometry.json'
+  );
+
+  const instancedModelsConfig = {
+    stageProps: {
+      crates: 25,
+    },
+    enemies: {
+      sampleEnemy2: 25,
+      testRobot: 25,
+      bot: 25,
+    },
+  };
+
+  return (
+    <LevelDataProvider levelData={level}>
+      <GameLogicProvider>
+        <InstancedModelsProvider config={instancedModelsConfig}>
+          <Content />
+        </InstancedModelsProvider>
+      </GameLogicProvider>
+    </LevelDataProvider>
+  );
+}
+
+function Content() {
   /**
    * @type {React.MutableRefObject<PlayerApi>}
    */
   const playerRef = useRef();
 
-  const level = loadLevel(
-    '/levels/level0/data.json',
-    '/levels/level0/geometry.json'
-  );
+  const gameLogic = useGameLogic();
 
   useEffect(() => {
     if (!playerRef) return;
@@ -91,17 +105,13 @@ export default function Level0() {
   useKeyDownNoRepeat(handleKeyDown);
 
   return (
-    <LevelDataProvider levelData={level}>
-      <GameLogicProvider>
-        <InstancedModelsProvider config={instancedModelsConfig}>
-          <Lighting />
-          <Player ref={playerRef} />
-          <LevelMesh />
-          <Enemies />
-          <StageProps />
-        </InstancedModelsProvider>
-      </GameLogicProvider>
-    </LevelDataProvider>
+    <>
+      <Lighting />
+      <Player ref={playerRef} />
+      <LevelMesh />
+      <Enemies />
+      <StageProps />
+    </>
   );
 }
 
