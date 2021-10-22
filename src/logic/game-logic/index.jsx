@@ -1,23 +1,30 @@
+/**
+ * @typedef {import('../../components/player').PlayerApi} PlayerApi
+ * @typedef {import('../../components/enemies/enemy').EnemyApi} EnemyApi
+ * @typedef {import('../../utils/level-loader/types').MapCoords} MapCoords
+ * @typedef {import('../../utils/level-loader/types').Direction} Direction
+ * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
+ * @typedef {import('./index').PlayerState} PlayerState
+ * @typedef {import('./index').EnemyState} EnemyState
+ */
+
 import React, { createContext, useContext } from 'react';
 
 import { useLevelData } from '../../utils/level-data-provider';
 import { Direction } from '../../utils/level-loader/common';
 import PlayerBehavior from './player-behavior';
+import EnemyBehaviors from './enemy-behaviors';
+import { default as createPlayerState } from './player-state';
+import { default as createEnemyStates } from './enemy-states';
 
-/** @type {React.Context<any>} */
+/**
+ * @typedef {Object} GameLogicApi
+ * @property {PlayerBehavior} player
+ * @property {EnemyBehaviors} enemies
+ */
+
+/** @type {React.Context<GameLogicApi>} */
 const GameLogicContext = createContext();
-
-/**
- * @typedef {Object} PlayerState
- * @property {PlayerApi} view
- * @property {MapCoords} position
- * @property {Direction} look
- * @property {boolean} isAnimating
- */
-
-/**
- * @typedef {Object} EnemyState
- */
 
 export function GameLogicProvider({ children }) {
   const { logic, utils } = useLevelData();
@@ -27,30 +34,29 @@ export function GameLogicProvider({ children }) {
     entities: { enemies },
   } = logic;
 
-  /** @type {PlayerState} */
-  const playerState = {
-    view: null,
-    position: {
-      x: start.x,
-      z: start.z,
-    },
-    look: start.look,
-    isAnimating: false,
-  };
+  const [playerState, playerStateHelpers] = createPlayerState(
+    start.x,
+    start.z,
+    start.look
+  );
 
-  /** @type {EnemyState} */
-  const enemyState = {};
+  const [enemyStates, enemyStatesHelpers] = createEnemyStates(enemies);
 
   const api = {
-    player: new PlayerBehavior(playerState, enemyState, utils),
-    enemies: {
-      register: (id, view) => {
-        // TODO: Pair the view with its data via the ID
-        const { x, z } = enemies[id].position;
-        view.setMapPos(x, z);
-        return () => {};
-      },
-    },
+    player: new PlayerBehavior(
+      playerState,
+      playerStateHelpers,
+      enemyStates,
+      enemyStatesHelpers,
+      utils
+    ),
+    enemies: new EnemyBehaviors(
+      enemyStates,
+      enemyStatesHelpers,
+      playerState,
+      playerStateHelpers,
+      utils
+    ),
   };
 
   return (

@@ -12,93 +12,123 @@
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 9, "z": 1 },
-            "rotation": { "x": 0, "y": 1.8354677587798045, "z": 0 }
+            "rotation": { "x": 0, "y": 5.440565827468611, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 10, "z": 4 },
-            "rotation": { "x": 0, "y": 2.3079794205663458, "z": 0 }
+            "rotation": { "x": 0, "y": 2.895054896593328, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 5, "z": 8 },
-            "rotation": { "x": 0, "y": 2.9640998576639257, "z": 0 }
+            "rotation": { "x": 0, "y": 5.7983314810966995, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 2, "z": 11 },
-            "rotation": { "x": 0, "y": 0.2837386412778072, "z": 0 }
+            "rotation": { "x": 0, "y": 5.664316559611644, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 2, "z": 18 },
-            "rotation": { "x": 0, "y": 1.3351297425071307, "z": 0 }
+            "rotation": { "x": 0, "y": 0.01995825824536671, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 9, "z": 14 },
-            "rotation": { "x": 0, "y": 0.6550436171979207, "z": 0 }
+            "rotation": { "x": 0, "y": 3.877995162868595, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 15, "z": 16 },
-            "rotation": { "x": 0, "y": 1.0357808494607381, "z": 0 }
+            "rotation": { "x": 0, "y": 2.60100072056573, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 16, "z": 16 },
-            "rotation": { "x": 0, "y": 1.3316848442153584, "z": 0 }
+            "rotation": { "x": 0, "y": 3.177769630228316, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 14, "z": 5 },
-            "rotation": { "x": 0, "y": 2.6405130867566395, "z": 0 }
+            "rotation": { "x": 0, "y": 3.0141004030313625, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 17, "z": 8 },
-            "rotation": { "x": 0, "y": 4.059937045736564, "z": 0 }
+            "rotation": { "x": 0, "y": 0.4573022260595264, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 2, "z": 3 },
-            "rotation": { "x": 0, "y": 3.9475658064279844, "z": 0 }
+            "rotation": { "x": 0, "y": 0.9149868091073926, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 6, "z": 3 },
-            "rotation": { "x": 0, "y": 3.8818556851455512, "z": 0 }
+            "rotation": { "x": 0, "y": 2.4574884002666257, "z": 0 }
           }
         ],
         "enemies": [
-          { "kind": "bot", "sightRange": 6, "position": { "x": 5, "z": 2 } },
-          { "kind": "bot", "sightRange": 6, "position": { "x": 3, "z": 15 } },
-          { "kind": "bot", "sightRange": 6, "position": { "x": 16, "z": 13 } },
-          { "kind": "bot", "sightRange": 6, "position": { "x": 17, "z": 5 } },
-          { "kind": "bot", "sightRange": 6, "position": { "x": 7, "z": 11 } },
-          { "kind": "bot", "sightRange": 6, "position": { "x": 4, "z": 8 } }
+          {
+            "kind": "bot",
+            "sightRange": 6,
+            "position": { "x": 5, "z": 2 },
+            "look": "east"
+          },
+          {
+            "kind": "bot",
+            "sightRange": 6,
+            "position": { "x": 3, "z": 15 },
+            "look": "north"
+          },
+          {
+            "kind": "bot",
+            "sightRange": 6,
+            "position": { "x": 16, "z": 13 },
+            "look": "west"
+          },
+          {
+            "kind": "bot",
+            "sightRange": 6,
+            "position": { "x": 17, "z": 5 },
+            "look": "south"
+          },
+          {
+            "kind": "bot",
+            "sightRange": 6,
+            "position": { "x": 7, "z": 11 },
+            "look": "east"
+          },
+          {
+            "kind": "bot",
+            "sightRange": 6,
+            "position": { "x": 4, "z": 8 },
+            "look": "west"
+          }
         ]
       }
     },
