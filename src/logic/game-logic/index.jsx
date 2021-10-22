@@ -1,20 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
 import { useLevelData } from '../../utils/level-data-provider';
-
 import { Direction } from '../../utils/level-loader/common';
-import {
-  mapXToPosX,
-  mapZToPosZ,
-  directionAngle,
-  rotationRightLookup,
-  rotationLeftLookup,
-  moveForwardOffsetLookup,
-  moveBackwardOffsetLookup,
-  strafeRightOffsetLookup,
-  strafeLeftOffsetLookup,
-} from '../../levels/common';
-
 import createPlayerBehaviors from './player-behavior';
 
 /** @type {React.Context<any>} */
@@ -50,6 +37,7 @@ export function GameLogicProvider({ children }) {
     look: start.look,
     isAnimating: false,
   };
+
   /** @type {EnemyState} */
   const enemyState = {};
 
