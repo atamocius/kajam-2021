@@ -40,15 +40,10 @@ export default function Level0() {
     '/levels/level0/data.json',
     '/levels/level0/geometry.json'
   );
-  const { atlas, geometry, logic, utils } = level;
-  const { start, goal, entities } = logic;
 
   useEffect(() => {
-    // if (!playerRef) {
-    //   return;
-    // }
-    playerRef.current.setMapPos(start.x, start.z);
-    playerRef.current.setLook(start.look);
+    if (!playerRef) return;
+    playerRef.current.init();
   }, []);
 
   /**
@@ -100,7 +95,6 @@ export default function Level0() {
       <GameLogicProvider>
         <InstancedModelsProvider config={instancedModelsConfig}>
           <Lighting />
-
           <Player ref={playerRef} />
           <LevelMesh />
           <Enemies />
