@@ -17,95 +17,117 @@ import {
   strafeLeftOffsetLookup,
 } from '../../levels/common';
 
-/**
- * @param {PlayerState} playerState
- * @param {EnemyState} enemyState
- * @param {MapUtilFuncs} mapUtils
- */
-export default function createPlayerBehaviors(
-  playerState,
-  enemyState,
-  mapUtils
-) {
-  const register = view => {
+export default class PlayerBehavior {
+  #state;
+  #enemyState;
+  #mapUtils;
+
+  /**
+   * @param {PlayerState} state
+   * @param {EnemyState} enemyState
+   * @param {MapUtilFuncs} mapUtils
+   */
+  constructor(state, enemyState, mapUtils) {
+    this.#state = state;
+    this.#enemyState = enemyState;
+    this.#mapUtils = mapUtils;
+  }
+
+  /**
+   * @param {PlayerApi} view
+   * @returns {() => void} Returns an unregister function.
+   */
+  register = view => {
     const {
       position: { x, z },
       look,
-    } = playerState;
-    playerState.view = view;
-    playerState.view.setMapPos(x, z);
-    playerState.view.setLook(look);
+    } = this.#state;
+    this.#state.view = view;
+    this.#state.view.setMapPos(x, z);
+    this.#state.view.setLook(look);
 
     return () => {
-      playerState.view = null;
+      this.#state.view = null;
     };
   };
 
-  const setPosition = (x, z) => {
-    playerState.view.setMapPos(x, z);
-    playerState.position.x = x;
-    playerState.position.z = z;
+  /**
+   * @param {number} x
+   * @param {number} z
+   */
+  setPosition = (x, z) => {
+    this.#state.view.setMapPos(x, z);
+    this.#state.position.x = x;
+    this.#state.position.z = z;
   };
 
-  const setLook = look => {
-    playerState.view.setLook(look);
-    playerState.look = look;
+  /**
+   * @param {Direction} look
+   */
+  setLook = look => {
+    this.#state.view.setLook(look);
+    this.#state.look = look;
   };
 
-  const isTileWalkable = (x, z) => {
+  /**
+   * @param {number} x
+   * @param {number} z
+   * @returns
+   */
+  isTileWalkable = (x, z) => {
     // TODO: Check enemy positions
-    return mapUtils.isWalkable(x, z);
+    return this.#mapUtils.isWalkable(x, z);
   };
 
-  const rotateLeft = async () => {
-    if (playerState.isAnimating) return;
-    playerState.isAnimating = true;
+  rotateLeft = async () => {
+    if (this.#state.isAnimating) return;
+    this.#state.isAnimating = true;
 
     const {
       position: { x, z },
       look,
       view,
-    } = playerState;
+    } = this.#state;
 
     const fromLook = look;
     const toLook = rotationLeftLookup[look];
 
     // Update prior to animate
-    playerState.look = toLook;
+    this.#state.look = toLook;
 
     // Animate
     await view.rotateLeft(x, z, fromLook);
 
-    playerState.isAnimating = false;
+    this.#state.isAnimating = false;
   };
 
-  const rotateRight = async () => {
-    if (playerState.isAnimating) return;
-    playerState.isAnimating = true;
+  rotateRight = async () => {
+    if (this.#state.isAnimating) return;
+    this.#state.isAnimating = true;
 
     const {
       position: { x, z },
       look,
       view,
-    } = playerState;
+    } = this.#state;
 
     const fromLook = look;
     const toLook = rotationRightLookup[look];
 
     // Update prior to animate
-    playerState.look = toLook;
+    this.#state.look = toLook;
 
     // Animate
     await view.rotateRight(x, z, fromLook);
 
-    playerState.isAnimating = false;
+    this.#state.isAnimating = false;
   };
 
-  const moveForward = async () => {
-    if (playerState.isAnimating) return;
-    playerState.isAnimating = true;
+  moveForward = async () => {
+    if (this.#state.isAnimating) return;
+    this.#state.isAnimating = true;
 
-    const { position, look, view } = playerState;
+    const { position, look, view } = this.#state;
 
     const { x, z } = moveForwardOffsetLookup[look];
 
@@ -114,26 +136,26 @@ export default function createPlayerBehaviors(
     const toX = fromX + x;
     const toZ = fromZ + z;
 
-    if (!isTileWalkable(toX, toZ)) {
-      playerState.isAnimating = false;
+    if (!this.isTileWalkable(toX, toZ)) {
+      this.#state.isAnimating = false;
       return;
     }
 
     // Update prior to animate
-    playerState.position.x = toX;
-    playerState.position.z = toZ;
+    this.#state.position.x = toX;
+    this.#state.position.z = toZ;
 
     // Animate
     await view.moveForward(fromX, fromZ, look);
 
-    playerState.isAnimating = false;
+    this.#state.isAnimating = false;
   };
 
-  const moveBackward = async () => {
-    if (playerState.isAnimating) return;
-    playerState.isAnimating = true;
+  moveBackward = async () => {
+    if (this.#state.isAnimating) return;
+    this.#state.isAnimating = true;
 
-    const { position, look, view } = playerState;
+    const { position, look, view } = this.#state;
 
     const { x, z } = moveBackwardOffsetLookup[look];
 
@@ -142,26 +164,26 @@ export default function createPlayerBehaviors(
     const toX = fromX + x;
     const toZ = fromZ + z;
 
-    if (!isTileWalkable(toX, toZ)) {
-      playerState.isAnimating = false;
+    if (!this.isTileWalkable(toX, toZ)) {
+      this.#state.isAnimating = false;
       return;
     }
 
     // Update prior to animate
-    playerState.position.x = toX;
-    playerState.position.z = toZ;
+    this.#state.position.x = toX;
+    this.#state.position.z = toZ;
 
     // Animate
     await view.moveBackward(fromX, fromZ, look);
 
-    playerState.isAnimating = false;
+    this.#state.isAnimating = false;
   };
 
-  const strafeLeft = async () => {
-    if (playerState.isAnimating) return;
-    playerState.isAnimating = true;
+  strafeLeft = async () => {
+    if (this.#state.isAnimating) return;
+    this.#state.isAnimating = true;
 
-    const { position, look, view } = playerState;
+    const { position, look, view } = this.#state;
 
     const { x, z } = strafeLeftOffsetLookup[look];
 
@@ -170,26 +192,26 @@ export default function createPlayerBehaviors(
     const toX = fromX + x;
     const toZ = fromZ + z;
 
-    if (!isTileWalkable(toX, toZ)) {
-      playerState.isAnimating = false;
+    if (!this.isTileWalkable(toX, toZ)) {
+      this.#state.isAnimating = false;
       return;
     }
 
     // Update prior to animate
-    playerState.position.x = toX;
-    playerState.position.z = toZ;
+    this.#state.position.x = toX;
+    this.#state.position.z = toZ;
 
     // Animate
     await view.strafeLeft(fromX, fromZ, look);
 
-    playerState.isAnimating = false;
+    this.#state.isAnimating = false;
   };
 
-  const strafeRight = async () => {
-    if (playerState.isAnimating) return;
-    playerState.isAnimating = true;
+  strafeRight = async () => {
+    if (this.#state.isAnimating) return;
+    this.#state.isAnimating = true;
 
-    const { position, look, view } = playerState;
+    const { position, look, view } = this.#state;
 
     const { x, z } = strafeRightOffsetLookup[look];
 
@@ -198,35 +220,18 @@ export default function createPlayerBehaviors(
     const toX = fromX + x;
     const toZ = fromZ + z;
 
-    if (!isTileWalkable(toX, toZ)) {
-      playerState.isAnimating = false;
+    if (!this.isTileWalkable(toX, toZ)) {
+      this.#state.isAnimating = false;
       return;
     }
 
     // Update prior to animate
-    playerState.position.x = toX;
-    playerState.position.z = toZ;
+    this.#state.position.x = toX;
+    this.#state.position.z = toZ;
 
     // Animate
     await view.strafeRight(fromX, fromZ, look);
 
-    playerState.isAnimating = false;
-  };
-
-  return {
-    register,
-
-    setPosition,
-    setLook,
-
-    isTileWalkable,
-
-    rotateLeft,
-    rotateRight,
-
-    moveForward,
-    moveBackward,
-    strafeLeft,
-    strafeRight,
+    this.#state.isAnimating = false;
   };
 }

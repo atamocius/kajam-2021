@@ -2,7 +2,7 @@ import React, { createContext, useContext } from 'react';
 
 import { useLevelData } from '../../utils/level-data-provider';
 import { Direction } from '../../utils/level-loader/common';
-import createPlayerBehaviors from './player-behavior';
+import PlayerBehavior from './player-behavior';
 
 /** @type {React.Context<any>} */
 const GameLogicContext = createContext();
@@ -42,7 +42,7 @@ export function GameLogicProvider({ children }) {
   const enemyState = {};
 
   const api = {
-    player: createPlayerBehaviors(playerState, enemyState, utils),
+    player: new PlayerBehavior(playerState, enemyState, utils),
     enemies: {
       register: (id, view) => {
         // TODO: Pair the view with its data via the ID

@@ -17,15 +17,19 @@ import {
   strafeLeftOffsetLookup,
 } from '../../levels/common';
 
-/**
- * @param {EnemyState} enemyState
- * @param {PlayerState} playerState
- * @param {MapUtilFuncs} mapUtils
- */
-export default function createEnemyBehaviors(
-  enemyState,
-  playerState,
-  mapUtils
-) {
-  return {};
+export default class EnemyBehavior {
+  #state;
+  #playerState;
+  #mapUtils;
+
+  /**
+   * @param {EnemyState} state
+   * @param {PlayerState} playerState
+   * @param {MapUtilFuncs} mapUtils
+   */
+  constructor(state, playerState, mapUtils) {
+    this.#state = state;
+    this.#playerState = playerState;
+    this.#mapUtils = mapUtils;
+  }
 }
