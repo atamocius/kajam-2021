@@ -26,6 +26,7 @@ export default function Player() {
   useEffect(() => {
     const api = makeApi(ref);
     player.register(api);
+    return () => player.unregister();
   }, []);
 
   return (
