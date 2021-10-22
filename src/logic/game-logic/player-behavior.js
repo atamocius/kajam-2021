@@ -216,11 +216,15 @@ export default function createPlayerBehaviors(
   return {
     register,
     unregister,
+
     setPosition,
     setLook,
+
     isTileWalkable,
+
     rotateLeft,
     rotateRight,
+
     moveForward,
     moveBackward,
     strafeLeft,
