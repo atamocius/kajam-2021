@@ -1,12 +1,9 @@
-/**
- * @typedef {import('../../utils/level-loader/types').EnemyEntity} EnemyEntity
- */
-
-import React, { createContext, useContext, useEffect } from 'react';
+import React from 'react';
 
 import { useLevelData } from '../../utils/level-data-provider';
 import registry from '../../models';
-import { mapPosToPos } from '../../levels/common';
+
+import Enemy from './enemy';
 
 export default function Enemies() {
   const {
@@ -16,12 +13,13 @@ export default function Enemies() {
   } = useLevelData();
 
   return enemies.map((d, i) => {
-    const {
-      kind,
-      position: { x, z },
-    } = d;
+    const { kind } = d;
     const Component = registry.enemies[kind];
 
-    return <Component key={i} position={mapPosToPos(x, z)} />;
+    return (
+      <Enemy key={i} id={i}>
+        <Component position={[0, 0, 0]} />
+      </Enemy>
+    );
   });
 }

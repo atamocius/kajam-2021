@@ -44,8 +44,10 @@ export function GameLogicProvider({ children }) {
   const api = {
     player: createPlayerBehaviors(playerState, enemyState, utils),
     enemies: {
-      register: view => {
-        // TODO: generate ID
+      register: (id, view) => {
+        // TODO: Pair the view with its data via the ID
+        const { x, z } = enemies[id].position;
+        view.setMapPos(x, z);
         return () => {};
       },
     },
