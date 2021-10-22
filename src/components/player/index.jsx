@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@react-three/fiber').GroupProps} GroupProps
+ * @typedef {import('three').Object3D} Object3D
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  */
@@ -49,7 +49,7 @@ export default function Player() {
  */
 
 /**
- * @param {React.MutableRefObject<GroupProps>} ref
+ * @param {React.MutableRefObject<Object3D>} ref
  * @return {PlayerApi}
  */
 function makeApi(ref) {

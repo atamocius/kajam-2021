@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@react-three/fiber').GroupProps} GroupProps
+ * @typedef {import('three').Object3D} Object3D
  * @typedef {import('../../../utils/level-loader/types').Direction} Direction
  * @typedef {import('..').PlayerApi} PlayerApi
  */
@@ -47,7 +47,7 @@ export default class PlayerAnimationController {
   #rotateRightAnim;
 
   /**
-   * @param {React.MutableRefObject<GroupProps>} playerRef
+   * @param {React.MutableRefObject<Object3D>} playerRef
    */
   constructor(playerRef) {
     this.#playerRef = playerRef;
