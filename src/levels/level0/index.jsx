@@ -48,7 +48,7 @@ export default function Level0() {
 const mutex = new Mutex();
 
 function Content() {
-  const { player } = useGameLogic();
+  const { player, enemies } = useGameLogic();
 
   /**
    * @param {KeyboardEvent} ev
@@ -56,6 +56,13 @@ function Content() {
   const handleKeyDown = async ev => {
     await mutex.runExclusive(async () => {
       switch (ev.code) {
+        case 'KeyM':
+          ev.preventDefault();
+          // await player.moveForward();
+          const c = enemies.get(0).canSeePlayer();
+          console.log(c);
+          break;
+
         // WASD
         case 'KeyW':
           ev.preventDefault();

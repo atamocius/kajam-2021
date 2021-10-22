@@ -3,10 +3,7 @@
  * @typedef {import('../../utils/level-loader/types').MapCoords} MapCoords
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
- * @typedef {import('./player-state').PlayerState} PlayerState
- * @typedef {import('./player-state').PlayerStateHelpers} PlayerStateHelpers
- * @typedef {import('./enemy-states').EnemyState} EnemyState
- * @typedef {import('./enemy-states').EnemyStatesHelpers} EnemyStatesHelpers
+ * @typedef {import('./game-state').EnemyState} EnemyState
  */
 
 import GameState from './game-state';
@@ -19,6 +16,7 @@ import {
   strafeRightOffsetLookup,
   strafeLeftOffsetLookup,
 } from '../../levels/common';
+import { distance, line } from '../../utils/math';
 
 export default class EnemyBehaviors {
   #behaviors;
@@ -40,20 +38,98 @@ export default class EnemyBehaviors {
 
 export class EnemyBehavior {
   #state;
+  #playerState;
   #mutex;
   #isTileWalkable;
+  #rotationTable;
 
   /**
    * @param {EnemyState} state
    * @param {GameState} gs
    */
   constructor(state, gs) {
-    const { mutex, isTileWalkableByEnemy } = gs;
+    const {
+      mutex,
+      state: { player },
+      isTileWalkableByEnemy,
+    } = gs;
 
     this.#state = state;
+    this.#playerState = player;
     this.#mutex = mutex;
     this.#isTileWalkable = isTileWalkableByEnemy;
+
+    this.#rotationTable = {
+      [Direction.north]: {
+        [Direction.north]: [],
+        [Direction.south]: [this.rotateRight, this.rotateRight],
+        [Direction.west]: [this.rotateLeft],
+        [Direction.east]: [this.rotateRight],
+      },
+      [Direction.south]: {
+        [Direction.north]: [this.rotateRight, this.rotateRight],
+        [Direction.south]: [],
+        [Direction.west]: [this.rotateRight],
+        [Direction.east]: [this.rotateLeft],
+      },
+      [Direction.west]: {
+        [Direction.north]: [this.rotateRight],
+        [Direction.south]: [this.rotateLeft],
+        [Direction.west]: [],
+        [Direction.east]: [this.rotateRight, this.rotateRight],
+      },
+      [Direction.east]: {
+        [Direction.north]: [this.rotateLeft],
+        [Direction.south]: [this.rotateRight],
+        [Direction.west]: [this.rotateRight, this.rotateRight],
+        [Direction.east]: [],
+      },
+    };
   }
+
+  /**
+   * @param {Direction} dir
+   */
+  moveTo = async dir => {
+    const { look } = this.#state;
+
+    // Rotate to orient towards target direction
+    const rotations = this.#rotationTable[look][dir];
+    for (const r of rotations) {
+      await r();
+    }
+    await this.moveForward();
+  };
+
+  canSeePlayer = () => {
+    const {
+      position: { x: px, z: pz },
+    } = this.#playerState;
+    const {
+      position: { x, z },
+      sightRange,
+    } = this.#state;
+
+    const dist = distance(x, z, px, pz);
+
+    console.log(sightRange);
+
+    // NO: Beyond sight range
+    if (dist > sightRange) {
+      return false;
+    }
+
+    const visibilityLine = line({ x, y: z }, { x: px, y: pz });
+    for (const v of visibilityLine) {
+      // YES: Has line of sight
+      if (v.x === px && v.y === pz) {
+        return true;
+      }
+    }
+
+    // NO: Within sight range, but no line of sight
+    return false;
+  };
 
   /**
    * @param {EnemyApi} view

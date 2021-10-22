@@ -3,10 +3,7 @@
  * @typedef {import('../../utils/level-loader/types').MapCoords} MapCoords
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
- * @typedef {import('./player-state').PlayerState} PlayerState
- * @typedef {import('./player-state').PlayerStateHelpers} PlayerStateHelpers
- * @typedef {import('./enemy-states').EnemyState} EnemyState
- * @typedef {import('./enemy-states').EnemyStatesHelpers} EnemyStatesHelpers
+ * @typedef {import('./game-state').PlayerState} PlayerState
  */
 
 import GameState from './game-state';
