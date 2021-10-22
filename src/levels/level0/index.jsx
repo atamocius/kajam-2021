@@ -1,7 +1,3 @@
-/**
- * @typedef {import('../../components/player').PlayerApi} PlayerApi
- */
-
 import { DEBUG_MODE } from '../../settings';
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
@@ -48,17 +44,7 @@ export default function Level0() {
 }
 
 function Content() {
-  /**
-   * @type {React.MutableRefObject<PlayerApi>}
-   */
-  const playerRef = useRef();
-
-  const gameLogic = useGameLogic();
-
-  useEffect(() => {
-    if (!playerRef) return;
-    playerRef.current.init();
-  }, []);
+  const { player } = useGameLogic();
 
   /**
    * @param {KeyboardEvent} ev
@@ -68,33 +54,33 @@ function Content() {
       // WASD
       case 'KeyW':
         ev.preventDefault();
-        await playerRef.current.moveForward();
+        await player.moveForward();
         break;
 
       case 'KeyS':
         ev.preventDefault();
-        await playerRef.current.moveBackward();
+        await player.moveBackward();
         break;
 
       case 'KeyA':
         ev.preventDefault();
-        await playerRef.current.strafeLeft();
+        await player.strafeLeft();
         break;
 
       case 'KeyD':
         ev.preventDefault();
-        await playerRef.current.strafeRight();
+        await player.strafeRight();
         break;
 
       // Turn
       case 'KeyQ':
         ev.preventDefault();
-        await playerRef.current.rotateLeft();
+        await player.rotateLeft();
         break;
 
       case 'KeyE':
         ev.preventDefault();
-        await playerRef.current.rotateRight();
+        await player.rotateRight();
         break;
 
       default:
@@ -107,7 +93,7 @@ function Content() {
   return (
     <>
       <Lighting />
-      <Player ref={playerRef} />
+      <Player />
       <LevelMesh />
       <Enemies />
       <StageProps />

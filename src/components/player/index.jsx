@@ -4,59 +4,40 @@
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  */
 
-import React, { useRef, forwardRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { useGameLogic } from '../../logic/game-logic';
 
 import Camera from './camera';
 import Flashlight from './flashlight';
-import {
-  mapXToPosX,
-  mapZToPosZ,
-  directionAngle,
-  rotationRightLookup,
-  rotationLeftLookup,
-  moveForwardOffsetLookup,
-  moveBackwardOffsetLookup,
-  strafeRightOffsetLookup,
-  strafeLeftOffsetLookup,
-} from '../../levels/common';
+import { mapXToPosX, mapZToPosZ, directionAngle } from '../../levels/common';
 import { Direction } from '../../utils/level-loader/common';
 
 import PlayerAnimationController from './animation-controller';
 
-const Player = forwardRef(
+export default function Player() {
   /**
-   * @param {React.ForwardedRef<PlayerApi>} fwdRef
+   * @type {React.MutableRefObject<GroupProps>}
    */
-  (_, fwdRef) => {
-    /**
-     * @type {React.MutableRefObject<GroupProps>}
-     */
-    const ref = useRef();
+  const ref = useRef();
 
-    const gameLogic = useGameLogic();
+  const { player } = useGameLogic();
 
-    useEffect(() => {
-      if (!fwdRef) return;
-      fwdRef.current = makeApi(ref, gameLogic);
-      return () => (fwdRef.current = null);
-    }, []);
+  useEffect(() => {
+    const api = makeApi(ref);
+    player.register(api);
+  }, []);
 
-    return (
-      <group ref={ref}>
-        <Flashlight position={[0, 0.5, 0]} />
-        <Camera position={[0, 0.5, 0]} />
-      </group>
-    );
-  }
-);
-
-export default Player;
+  return (
+    <group ref={ref}>
+      <Flashlight position={[0, 0.5, 0]} />
+      <Camera position={[0, 0.5, 0]} />
+    </group>
+  );
+}
 
 /**
  * @typedef {Object} PlayerApi
- * @property {() => void} init
  * @property {(x: number, z: number) => void} setMapPos
  * @property {(look: Direction) => void} setLook
  * @property {() => Promise<void>} rotateRight
@@ -69,226 +50,53 @@ export default Player;
 
 /**
  * @param {React.MutableRefObject<GroupProps>} ref
- * @param {*} gl
  * @return {PlayerApi}
  */
-function makeApi(ref, gl) {
+function makeApi(ref) {
   const pac = new PlayerAnimationController(ref);
 
-  let isAnimRunning = false;
-
-  const init = () => {
-    const {
-      player: {
-        position: { x, z },
-        look,
-      },
-    } = gl.getState();
-
-    const px = mapXToPosX(x);
-    const pz = mapZToPosZ(z);
-    ref.current.position.set(px, 0, pz);
-
-    const ry = directionAngle[look];
-    ref.current.rotation.set(0, ry, 0);
-  };
-
   const setMapPos = (x, z) => {
-    gl.getState().setPlayerPosition(x, z);
-
     const px = mapXToPosX(x);
     const pz = mapZToPosZ(z);
     ref.current.position.set(px, 0, pz);
   };
 
   const setLook = look => {
-    gl.getState().setPlayerLook(look);
-
     const ry = directionAngle[look];
     ref.current.rotation.set(0, ry, 0);
   };
 
-  const rotateLeft = async () => {
-    if (isAnimRunning) return;
-
-    isAnimRunning = true;
-
-    const {
-      player: { position, look },
-      setPlayerLook,
-    } = gl.getState();
-
-    const fromLook = look;
-    const toLook = rotationLeftLookup[look];
-
-    // Update prior to animate
-    setPlayerLook(toLook);
-
-    // Animate
-    pac.reset(position.x, position.z, fromLook);
+  const rotateLeft = async (x, z, fromLook) => {
+    pac.reset(x, z, fromLook);
     await pac.rotateLeft();
-
-    isAnimRunning = false;
   };
 
-  const rotateRight = async () => {
-    if (isAnimRunning) return;
-
-    isAnimRunning = true;
-
-    const {
-      player: { position, look },
-      setPlayerLook,
-    } = gl.getState();
-
-    const fromLook = look;
-    const toLook = rotationRightLookup[look];
-
-    // Update prior to animate
-    setPlayerLook(toLook);
-
-    // Animate
-    pac.reset(position.x, position.z, fromLook);
+  const rotateRight = async (x, z, fromLook) => {
+    pac.reset(x, z, fromLook);
     await pac.rotateRight();
-
-    isAnimRunning = false;
   };
 
-  const moveForward = async () => {
-    if (isAnimRunning) return;
-
-    isAnimRunning = true;
-
-    const {
-      player: { position, look },
-      setPlayerPosition,
-      isTileWalkableByPlayer,
-    } = gl.getState();
-
-    const { x, z } = moveForwardOffsetLookup[look];
-
-    const fromX = position.x;
-    const fromZ = position.z;
-    const toX = fromX + x;
-    const toZ = fromZ + z;
-
-    if (!isTileWalkableByPlayer(toX, toZ)) {
-      isAnimRunning = false;
-      return;
-    }
-
-    // Update prior to animate
-    setPlayerPosition(toX, toZ);
-
-    // Animate
+  const moveForward = async (fromX, fromZ, look) => {
     pac.reset(fromX, fromZ, look);
     await pac.moveForward();
-
-    isAnimRunning = false;
   };
 
-  const moveBackward = async () => {
-    if (isAnimRunning) return;
-
-    isAnimRunning = true;
-
-    const {
-      player: { position, look },
-      setPlayerPosition,
-      isTileWalkableByPlayer,
-    } = gl.getState();
-
-    const { x, z } = moveBackwardOffsetLookup[look];
-
-    const fromX = position.x;
-    const fromZ = position.z;
-    const toX = fromX + x;
-    const toZ = fromZ + z;
-
-    if (!isTileWalkableByPlayer(toX, toZ)) {
-      isAnimRunning = false;
-      return;
-    }
-
-    // Update prior to animate
-    setPlayerPosition(toX, toZ);
-
-    // Animate
+  const moveBackward = async (fromX, fromZ, look) => {
     pac.reset(fromX, fromZ, look);
     await pac.moveBackward();
-
-    isAnimRunning = false;
   };
 
-  const strafeLeft = async () => {
-    if (isAnimRunning) return;
-
-    isAnimRunning = true;
-
-    const {
-      player: { position, look },
-      setPlayerPosition,
-      isTileWalkableByPlayer,
-    } = gl.getState();
-
-    const { x, z } = strafeLeftOffsetLookup[look];
-
-    const fromX = position.x;
-    const fromZ = position.z;
-    const toX = fromX + x;
-    const toZ = fromZ + z;
-
-    if (!isTileWalkableByPlayer(toX, toZ)) {
-      isAnimRunning = false;
-      return;
-    }
-
-    // Update prior to animate
-    setPlayerPosition(toX, toZ);
-
-    // Animate
+  const strafeLeft = async (fromX, fromZ, look) => {
     pac.reset(fromX, fromZ, look);
     await pac.strafeLeft();
-
-    isAnimRunning = false;
   };
 
-  const strafeRight = async () => {
-    if (isAnimRunning) return;
-
-    isAnimRunning = true;
-
-    const {
-      player: { position, look },
-      setPlayerPosition,
-      isTileWalkableByPlayer,
-    } = gl.getState();
-
-    const { x, z } = strafeRightOffsetLookup[look];
-
-    const fromX = position.x;
-    const fromZ = position.z;
-    const toX = fromX + x;
-    const toZ = fromZ + z;
-
-    if (!isTileWalkableByPlayer(toX, toZ)) {
-      isAnimRunning = false;
-      return;
-    }
-
-    // Update prior to animate
-    setPlayerPosition(toX, toZ);
-
-    // Animate
+  const strafeRight = async (fromX, fromZ, look) => {
     pac.reset(fromX, fromZ, look);
     await pac.strafeRight();
-
-    isAnimRunning = false;
   };
 
   return {
-    init,
-
     setMapPos,
     setLook,
 
