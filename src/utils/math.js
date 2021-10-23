@@ -1,3 +1,5 @@
+import PriorityQueue from 'priorityqueuejs';
+
 export function distance(x1, y1, x2, y2) {
   const a = x2 - x1;
   const b = y2 - y1;
@@ -56,4 +58,8 @@ function roundPoint(p) {
  */
 function lerpPoint(p0, p1, t) {
   return { x: lerp(p0.x, p1.x, t), y: lerp(p0.y, p1.y, t) };
+}
+
+function createPathfinder() {
+  // new PriorityQueue()
 }

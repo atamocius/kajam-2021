@@ -105,13 +105,8 @@ export default class GameState {
   /**
    * @param {number} x
    * @param {number} z
-   * @param {boolean} excludeEnemies
    */
-  isTileWalkableByEnemy = (x, z, excludeEnemies = false) => {
-    if (excludeEnemies) {
-      return this.#mapUtils.isWalkable(x, z) && !this.hasPlayerAt(x, z);
-    }
-
+  isTileWalkableByEnemy = (x, z) => {
     return (
       this.#mapUtils.isWalkable(x, z) &&
       !this.hasPlayerAt(x, z) &&

@@ -40,6 +40,7 @@ export class EnemyBehavior {
   #state;
   #playerState;
   #mutex;
+  #mapUtils;
   #isTileWalkable;
   #rotationTable;
 
@@ -51,12 +52,14 @@ export class EnemyBehavior {
     const {
       mutex,
       state: { player },
+      mapUtils,
       isTileWalkableByEnemy,
     } = gs;
 
     this.#state = state;
     this.#playerState = player;
     this.#mutex = mutex;
+    this.#mapUtils = mapUtils;
     this.#isTileWalkable = isTileWalkableByEnemy;
 
     this.#rotationTable = {
@@ -118,16 +121,15 @@ export class EnemyBehavior {
 
     const visibilityLine = line({ x, y: z }, { x: px, y: pz });
     for (const v of visibilityLine) {
-      if (this.#isTileWalkable(v.x, v.y, true)) {
-        continue;
+      if (this.#mapUtils.isVisionBlocker(v.x, v.y)) {
+        // NO: No line of sight; vision obscured
+        return false;
       }
 
+      // Is current tile the same position as the player?
       if (v.x === px && v.y === pz) {
         // YES: Has line of sight
         return true;
-      } else {
-        // NO: No line of sight; vision obscured
-        return false;
       }
     }
 

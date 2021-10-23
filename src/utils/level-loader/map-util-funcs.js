@@ -141,6 +141,19 @@ export default function createMapUtilFuncs(map) {
     (x, z) => `${x}_${z}`
   );
 
+  const isVisionBlocker = memoize(
+    /**
+     * @param {number} x
+     * @param {number} z
+     */
+    (x, z) => {
+      const mapValue = getValue(x, z);
+      const stageProp = getStageProp(x, z);
+      return isWall(mapValue) || (stageProp && stageProp.isVisionBlocker);
+    },
+    (x, z) => `${x}_${z}`
+  );
+
   return {
     indexToCoords,
     coordsToIndex,
@@ -158,5 +171,6 @@ export default function createMapUtilFuncs(map) {
 
     // Validation
     isWalkable,
+    isVisionBlocker,
   };
 }
