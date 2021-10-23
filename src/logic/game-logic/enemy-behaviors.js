@@ -4,11 +4,15 @@
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  * @typedef {import('./game-state').EnemyState} EnemyState
+ * @typedef {import('../../utils/math').Point} Point
  */
+
+import minBy from 'lodash-es/minBy';
 
 import GameState from './game-state';
 import { Direction } from '../../utils/level-loader/common';
 import {
+  neighborOffsetLookup,
   rotationRightLookup,
   rotationLeftLookup,
   moveForwardOffsetLookup,
@@ -90,6 +94,52 @@ export class EnemyBehavior {
     };
   }
 
+  #neighbors = (x, z) => {
+    const result = [];
+
+    {
+      const o = neighborOffsetLookup[Direction.north];
+      if (this.#isTileWalkable(x + o.x, z + o.z)) {
+        result.push({
+          dir: Direction.north,
+          offset: o,
+        });
+      }
+    }
+
+    {
+      const o = neighborOffsetLookup[Direction.south];
+      if (this.#isTileWalkable(x + o.x, z + o.z)) {
+        result.push({
+          dir: Direction.south,
+          offset: o,
+        });
+      }
+    }
+
+    {
+      const o = neighborOffsetLookup[Direction.west];
+      if (this.#isTileWalkable(x + o.x, z + o.z)) {
+        result.push({
+          dir: Direction.west,
+          offset: o,
+        });
+      }
+    }
+
+    {
+      const o = neighborOffsetLookup[Direction.east];
+      if (this.#isTileWalkable(x + o.x, z + o.z)) {
+        result.push({
+          dir: Direction.east,
+          offset: o,
+        });
+      }
+    }
+
+    return result;
+  };
+
   /**
    * @param {Direction} dir
    */
@@ -135,6 +185,28 @@ export class EnemyBehavior {
 
     // NO: Within sight range, but no line of sight
     return false;
+  };
+
+  moveTowardsPlayer = async () => {
+    const { position: playerPos } = this.#playerState;
+    const {
+      position: { x, z },
+    } = this.#state;
+
+    const neighbors = this.#neighbors(x, z);
+
+    const scores = neighbors.map(({ dir, offset: o }) => {
+      const score = distance(x + o.x, z + o.z, playerPos.x, playerPos.z);
+      return {
+        dir,
+        offset: o,
+        score,
+      };
+    });
+
+    const lowest = minBy(scores, o => o.score);
+
+    await this.moveTo(lowest.dir);
   };
 
   /**

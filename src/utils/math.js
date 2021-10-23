@@ -22,8 +22,14 @@ export function lerp(start, end, t) {
 }
 
 /**
- * @param {{ x: number, y: number }} p0
- * @param {{ x: number, y: number }} p1
+ * @typedef {Object} Point
+ * @property {number} x
+ * @property {number} y
+ */
+
+/**
+ * @param {Point} p0
+ * @param {Point} p1
  */
 export function* line(p0, p1) {
   let n = diagonalDist(p0, p1);
@@ -35,8 +41,8 @@ export function* line(p0, p1) {
 }
 
 /**
- * @param {{ x: number, y: number }} p0
- * @param {{ x: number, y: number }} p1
+ * @param {Point} p0
+ * @param {Point} p1
  */
 function diagonalDist(p0, p1) {
   const dx = p1.x - p0.x;
@@ -45,21 +51,101 @@ function diagonalDist(p0, p1) {
 }
 
 /**
- * @param {{ x: number, y: number }} p
+ * @param {Point} p
  */
 function roundPoint(p) {
   return { x: Math.round(p.x), y: Math.round(p.y) };
 }
 
 /**
- * @param {{ x: number, y: number }} p0
- * @param {{ x: number, y: number }} p1
+ * @param {Point} p0
+ * @param {Point} p1
  * @param {number} t
  */
 function lerpPoint(p0, p1, t) {
   return { x: lerp(p0.x, p1.x, t), y: lerp(p0.y, p1.y, t) };
 }
 
-function createPathfinder() {
-  // new PriorityQueue()
+/**
+ * @param {(p: Point) => Point[]} neighbors
+ */
+export function createPathfinder(neighbors) {
+  /**
+   * @param {Point} a
+   * @param {Point} b
+   */
+  const isPosEqual = (a, b) => a.x === b.x && a.y === b.y;
+
+  /**
+   * @param {Point} a
+   * @param {Point} b
+   */
+  const heuristic = (a, b) => manhattanDist(a.x, a.y, b.x, b.y);
+
+  /**
+   * @param {Map} cameFrom
+   * @param {Point} current
+   */
+  const reconstructPath = (cameFrom, current) => {
+    const path = [current];
+    const keys = Array.from(cameFrom.keys());
+
+    while (keys.includes(current)) {
+      current = cameFrom.get(current);
+      path.unshift(current);
+    }
+
+    return path;
+  };
+
+  // Constant movement cost
+  const MOVE_COST = 1;
+
+  const cameFrom = new Map();
+  const costSoFar = new Map();
+
+  /**
+   * @param {Point} start
+   * @param {Point} goal
+   */
+  return (start, goal) => {
+    console.log(start, goal);
+
+    const frontier = new PriorityQueue((a, b) => b.priority - a.priority);
+    frontier.enq({ p: start, priority: 0 });
+
+    cameFrom.clear();
+    costSoFar.clear();
+
+    cameFrom.set(start, null);
+    costSoFar.set(start, 0);
+
+    let iii = 0;
+    while (!frontier.isEmpty() && iii < 20) {
+      // console.log(iii++, frontier.size());
+
+      const { p: current } = frontier.deq();
+
+      if (isPosEqual(current, goal)) {
+        // break;
+        return reconstructPath(cameFrom, current);
+      }
+
+      const nb = neighbors(current);
+
+      for (const next of nb) {
+        const newCost = costSoFar.get(current) + MOVE_COST;
+
+        if (!costSoFar.has(next) || newCost < costSoFar.get(next)) {
+          costSoFar.set(next, newCost);
+          const priority = newCost + heuristic(next, goal);
+          frontier.enq({ p: next, priority });
+          cameFrom.set(next, current);
+        }
+      }
+    }
+
+    // console.log([...cameFrom.entries()]);
+    // console.log([...costSoFar.entries()]);
+  };
 }

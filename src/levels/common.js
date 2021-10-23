@@ -2,8 +2,6 @@
  * @typedef {import('../utils/level-loader/types').MapCoords} MapCoords
  */
 
-// import { Quaternion, Vector3 } from 'three';
-
 import { Direction } from '../utils/level-loader/common';
 
 export const directionAngle = {
@@ -25,6 +23,13 @@ export const rotationLeftLookup = {
   [Direction.south]: Direction.east,
   [Direction.west]: Direction.south,
   [Direction.east]: Direction.north,
+};
+
+export const neighborOffsetLookup = {
+  [Direction.north]: { x: 0, z: -1 },
+  [Direction.south]: { x: 0, z: 1 },
+  [Direction.west]: { x: -1, z: 0 },
+  [Direction.east]: { x: 1, z: 0 },
 };
 
 export const moveForwardOffsetLookup = {
@@ -54,18 +59,6 @@ export const strafeRightOffsetLookup = {
   [Direction.west]: { x: 0, z: -1 },
   [Direction.east]: { x: 0, z: 1 },
 };
-
-// const UP_AXIS = new Vector3(0, 1, 0);
-
-// export const directionQuats = {
-//   [Direction.north]: new Quaternion().setFromAxisAngle(UP_AXIS, Math.PI),
-//   [Direction.south]: new Quaternion().setFromAxisAngle(UP_AXIS, 0),
-//   [Direction.west]: new Quaternion().setFromAxisAngle(
-//     UP_AXIS,
-//     Math.PI + Math.PI / 2
-//   ),
-//   [Direction.east]: new Quaternion().setFromAxisAngle(UP_AXIS, Math.PI / 2),
-// };
 
 /**
  * @param {number} x

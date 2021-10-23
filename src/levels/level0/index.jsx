@@ -59,8 +59,11 @@ function Content() {
         case 'KeyM':
           ev.preventDefault();
           // await player.moveForward();
-          const c = enemies.get(0).canSeePlayer();
-          console.log(c);
+          const e = enemies.get(0);
+          const c = e.canSeePlayer();
+          console.log('🔫', c);
+          // e.findPathToPlayer();
+          await e.moveTowardsPlayer();
           break;
 
         // WASD
