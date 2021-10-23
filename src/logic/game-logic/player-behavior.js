@@ -21,18 +21,20 @@ export default class PlayerBehavior {
   #pickupState;
   #mapUtils;
   #isTileWalkable;
+  #consumePickupAt;
 
   /**
    * @param {GameState} gs
    */
   constructor(gs) {
-    const { state, mapUtils, isTileWalkableByPlayer } = gs;
+    const { state, mapUtils, isTileWalkableByPlayer, consumePickupAt } = gs;
 
     this.#state = state.player;
     this.#enemyState = state.enemies;
     this.#pickupState = state.pickups;
     this.#mapUtils = mapUtils;
     this.#isTileWalkable = isTileWalkableByPlayer;
+    this.#consumePickupAt = consumePickupAt;
   }
 
   /**
@@ -124,6 +126,9 @@ export default class PlayerBehavior {
     this.#state.position.x = toX;
     this.#state.position.z = toZ;
 
+    // Consume any pickups
+    this.#consumePickupAt(toX, toZ);
+
     // Animate
     await view.moveForward(fromX, fromZ, look);
   };
@@ -145,6 +150,9 @@ export default class PlayerBehavior {
     // Update prior to animate
     this.#state.position.x = toX;
     this.#state.position.z = toZ;
+
+    // Consume any pickups
+    this.#consumePickupAt(toX, toZ);
 
     // Animate
     await view.moveBackward(fromX, fromZ, look);
@@ -168,6 +176,9 @@ export default class PlayerBehavior {
     this.#state.position.x = toX;
     this.#state.position.z = toZ;
 
+    // Consume any pickups
+    this.#consumePickupAt(toX, toZ);
+
     // Animate
     await view.strafeLeft(fromX, fromZ, look);
   };
@@ -189,6 +200,9 @@ export default class PlayerBehavior {
     // Update prior to animate
     this.#state.position.x = toX;
     this.#state.position.z = toZ;
+
+    // Consume any pickups
+    this.#consumePickupAt(toX, toZ);
 
     // Animate
     await view.strafeRight(fromX, fromZ, look);

@@ -81,3 +81,17 @@ export function mapXToPosX(x) {
 export function mapZToPosZ(z) {
   return Math.floor(z) + 0.5;
 }
+
+export const PickupKind = {
+  health: 'health',
+  ammo: 'ammo',
+};
+
+export const pickupDataLookup = {
+  [PickupKind.health]: {
+    value: 30,
+  },
+  [PickupKind.ammo]: {
+    value: 10,
+  },
+};

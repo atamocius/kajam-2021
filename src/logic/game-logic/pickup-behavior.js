@@ -1,8 +1,5 @@
 /**
  * @typedef {import('../../components/pickups').PickupApi} PickupApi
- * @typedef {import('../../utils/level-loader/types').MapCoords} MapCoords
- * @typedef {import('../../utils/level-loader/types').Direction} Direction
- * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  * @typedef {import('./game-state').PickupState} PickupState
  */
 
@@ -46,14 +43,10 @@ export class PickupBehavior {
     } = this.#state;
     this.#state.view = view;
     this.#state.view.setMapPos(x, z);
+    this.#state.enabled = true;
 
     return () => {
       this.#state.view = null;
     };
-  };
-
-  disable = () => {
-    this.#state.view.setVisibility(false);
-    this.#state.enabled = false;
   };
 }

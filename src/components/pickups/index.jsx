@@ -65,7 +65,11 @@ function makeApi(ref) {
   };
 
   const setVisibility = isVisible => {
-    ref.current.visible = isVisible;
+    if (isVisible) {
+      ref.current.position.setY(0);
+    } else {
+      ref.current.position.setY(-100);
+    }
   };
 
   return {

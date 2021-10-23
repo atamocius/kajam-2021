@@ -45,6 +45,8 @@
  * @property {boolean} enabled
  */
 
+import { delay } from '../../utils/promise';
+
 export default class GameState {
   #state;
   #mapUtils;
@@ -107,6 +109,21 @@ export default class GameState {
    */
   getPickupAt = (x, z) =>
     this.#state.pickups.find(p => p.position.x === x && p.position.z === z);
+
+  /**
+   * @param {number} x
+   * @param {number} z
+   */
+  consumePickupAt = async (x, z) => {
+    const pu = this.getPickupAt(x, z);
+    if (!pu || !pu.enabled) return;
+    pu.enabled = false;
+    // TODO: Do calculations and state updates
+
+    // Add a bit of delay so it does not disappear right away
+    await delay(150);
+    pu.view.setVisibility(false);
+  };
 
   /**
    * @param {number} x
