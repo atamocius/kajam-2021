@@ -39,18 +39,15 @@ export default class EnemyBehaviors {
     return this.#behaviors[index];
   }
 
-  moveTowardsPlayer() {
-    for (let i = 0; i < this.#behaviors.length; i++) {
-      const b = this.#behaviors[i];
-      b.moveTowardsPlayer();
-    }
+  async moveTowardsPlayer() {
+    const p = this.#behaviors.map(b => b.moveTowardsPlayer());
+    await Promise.all(p);
   }
 }
 
 export class EnemyBehavior {
   #state;
   #playerState;
-  #mutex;
   #mapUtils;
   #isTileWalkable;
   #rotationTable;
@@ -61,7 +58,6 @@ export class EnemyBehavior {
    */
   constructor(state, gs) {
     const {
-      mutex,
       state: { player },
       mapUtils,
       isTileWalkableByEnemy,
@@ -69,7 +65,6 @@ export class EnemyBehavior {
 
     this.#state = state;
     this.#playerState = player;
-    this.#mutex = mutex;
     this.#mapUtils = mapUtils;
     this.#isTileWalkable = isTileWalkableByEnemy;
 

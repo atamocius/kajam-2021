@@ -20,7 +20,6 @@ import {
 export default class PlayerBehavior {
   #state;
   #enemyState;
-  #mutex;
   #mapUtils;
   #isTileWalkable;
   #hasEnemyAt;
@@ -30,18 +29,11 @@ export default class PlayerBehavior {
    * @param {GameState} gs
    */
   constructor(gs) {
-    const {
-      state,
-      mutex,
-      mapUtils,
-      isTileWalkableByPlayer,
-      hasEnemyAt,
-      getEnemyAt,
-    } = gs;
+    const { state, mapUtils, isTileWalkableByPlayer, hasEnemyAt, getEnemyAt } =
+      gs;
 
     this.#state = state.player;
     this.#enemyState = state.enemies;
-    this.#mutex = mutex;
     this.#mapUtils = mapUtils;
     this.#isTileWalkable = isTileWalkableByPlayer;
     this.#hasEnemyAt = hasEnemyAt;

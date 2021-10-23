@@ -8,8 +8,6 @@
  * @typedef {import('../../utils/level-loader/types').PlayerStartData} PlayerStartData
  */
 
-import { Mutex } from 'async-mutex';
-
 /**
  * @typedef {Object} State
  * @property {PlayerState} player
@@ -34,15 +32,12 @@ import { Mutex } from 'async-mutex';
 
 export default class GameState {
   #state;
-  #mutex;
   #mapUtils;
 
   /**
    * @param {LoadedLevelData} level
    */
   constructor(level) {
-    this.#mutex = new Mutex();
-
     const { logic, utils } = level;
     const {
       start,
@@ -63,10 +58,6 @@ export default class GameState {
    */
   get state() {
     return this.#state;
-  }
-
-  get mutex() {
-    return this.#mutex;
   }
 
   get mapUtils() {
