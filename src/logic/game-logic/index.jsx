@@ -5,11 +5,13 @@ import { useLevelData } from '../../utils/level-data-provider';
 import GameState from './game-state';
 import PlayerBehavior from './player-behavior';
 import EnemyBehaviors from './enemy-behaviors';
+import PickupBehaviors from './pickup-behavior';
 
 /**
  * @typedef {Object} GameLogicApi
  * @property {PlayerBehavior} player
  * @property {EnemyBehaviors} enemies
+ * @property {PickupBehaviors} pickups
  */
 
 /** @type {React.Context<GameLogicApi>} */
@@ -22,6 +24,7 @@ export function GameLogicProvider({ children }) {
   const api = {
     player: new PlayerBehavior(gs),
     enemies: new EnemyBehaviors(gs),
+    pickups: new PickupBehaviors(gs),
   };
 
   return (

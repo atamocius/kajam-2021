@@ -24,9 +24,13 @@ export default function Health(props) {
       rotY: 0,
     };
 
-    createAnim(transform, t => {
+    const anim = createAnim(transform, t => {
       ref.current.rotation.set(0, t.rotY, 0);
     });
+
+    return () => {
+      anim.pause();
+    };
   }, []);
 
   return (

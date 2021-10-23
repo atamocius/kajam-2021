@@ -1,10 +1,7 @@
 /**
  * @typedef {import('../../components/enemies/enemy').EnemyApi} EnemyApi
- * @typedef {import('../../utils/level-loader/types').MapCoords} MapCoords
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
- * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  * @typedef {import('./game-state').EnemyState} EnemyState
- * @typedef {import('../../utils/math').Point} Point
  */
 
 import minBy from 'lodash-es/minBy';
@@ -41,9 +38,9 @@ export default class EnemyBehaviors {
   /**
    * @param {number} index
    */
-  get(index) {
+  get = index => {
     return this.#behaviors[index];
-  }
+  };
 
   get isBusy() {
     return this.#busy;
@@ -107,6 +104,24 @@ export class EnemyBehavior {
       },
     };
   }
+
+  /**
+   * @param {EnemyApi} view
+   * @returns {() => void} Returns an unregister function.
+   */
+  register = view => {
+    const {
+      position: { x, z },
+      look,
+    } = this.#state;
+    this.#state.view = view;
+    this.#state.view.setMapPos(x, z);
+    this.#state.view.setLook(look);
+
+    return () => {
+      this.#state.view = null;
+    };
+  };
 
   #neighbors = (x, z) => {
     const result = [];
@@ -237,24 +252,6 @@ export class EnemyBehavior {
 
     // NO: Within sight range, but no line of sight
     return false;
-  };
-
-  /**
-   * @param {EnemyApi} view
-   * @returns {() => void} Returns an unregister function.
-   */
-  register = view => {
-    const {
-      position: { x, z },
-      look,
-    } = this.#state;
-    this.#state.view = view;
-    this.#state.view.setMapPos(x, z);
-    this.#state.view.setLook(look);
-
-    return () => {
-      this.#state.view = null;
-    };
   };
 
   /**

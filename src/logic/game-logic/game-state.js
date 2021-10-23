@@ -1,8 +1,10 @@
 /**
  * @typedef {import('../../components/player').PlayerApi} PlayerApi
  * @typedef {import('../../components/enemies/enemy').EnemyApi} EnemyApi
+ * @typedef {import('../../components/pickups').PickupApi} PickupApi
  * @typedef {import('../../utils/level-loader/types').LoadedLevelData} LoadedLevelData
  * @typedef {import('../../utils/level-loader/types').EnemyEntity} EnemyEntity
+ * @typedef {import('../../utils/level-loader/types').PickupEntity} PickupEntity
  * @typedef {import('../../utils/level-loader/types').MapCoords} MapCoords
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').PlayerStartData} PlayerStartData
@@ -12,6 +14,7 @@
  * @typedef {Object} State
  * @property {PlayerState} player
  * @property {EnemyState[]} enemies
+ * @property {PickupState[]} pickups
  */
 
 /**
@@ -27,7 +30,19 @@
  * @property {EnemyApi} view
  * @property {MapCoords} position
  * @property {Direction} look
+ * @property {string} kind
  * @property {number} sightRange
+ * @property {number} healthClass
+ * @property {number} speedClass
+ */
+
+/**
+ * @typedef {Object} PickupState
+ * @property {number} index
+ * @property {PickupApi} view
+ * @property {MapCoords} position
+ * @property {string} kind
+ * @property {boolean} enabled
  */
 
 export default class GameState {
@@ -42,7 +57,7 @@ export default class GameState {
     const {
       start,
       goal,
-      entities: { enemies },
+      entities: { enemies, pickups },
     } = logic;
 
     this.#mapUtils = utils;
@@ -50,6 +65,7 @@ export default class GameState {
     this.#state = {
       player: this.#createPlayerState(start),
       enemies: enemies.map(this.#createEnemyState),
+      pickups: pickups.map(this.#createPickupState),
     };
   }
 
@@ -84,6 +100,13 @@ export default class GameState {
    */
   getEnemyAt = (x, z) =>
     this.#state.enemies.find(e => e.position.x === x && e.position.z === z);
+
+  /**
+   * @param {number} x
+   * @param {number} z
+   */
+  getPickupAt = (x, z) =>
+    this.#state.pickups.find(p => p.position.x === x && p.position.z === z);
 
   /**
    * @param {number} x
@@ -132,7 +155,10 @@ export default class GameState {
     const {
       position: { x, z },
       look,
+      kind,
       sightRange,
+      healthClass,
+      speedClass,
     } = entity;
 
     /** @type {EnemyState} */
@@ -144,7 +170,35 @@ export default class GameState {
         z,
       },
       look,
+      kind,
       sightRange,
+      healthClass,
+      speedClass,
+    };
+
+    return state;
+  };
+
+  /**
+   * @param {PickupEntity} entity
+   * @param {number} index
+   */
+  #createPickupState = (entity, index) => {
+    const {
+      position: { x, z },
+      kind,
+    } = entity;
+
+    /** @type {PickupState} */
+    const state = {
+      index,
+      view: null,
+      position: {
+        x,
+        z,
+      },
+      kind,
+      enabled: true,
     };
 
     return state;

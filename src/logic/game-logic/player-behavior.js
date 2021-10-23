@@ -1,8 +1,6 @@
 /**
  * @typedef {import('../../components/player').PlayerApi} PlayerApi
- * @typedef {import('../../utils/level-loader/types').MapCoords} MapCoords
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
- * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  * @typedef {import('./game-state').PlayerState} PlayerState
  */
 
@@ -20,24 +18,21 @@ import {
 export default class PlayerBehavior {
   #state;
   #enemyState;
+  #pickupState;
   #mapUtils;
   #isTileWalkable;
-  #hasEnemyAt;
-  #getEnemyAt;
 
   /**
    * @param {GameState} gs
    */
   constructor(gs) {
-    const { state, mapUtils, isTileWalkableByPlayer, hasEnemyAt, getEnemyAt } =
-      gs;
+    const { state, mapUtils, isTileWalkableByPlayer } = gs;
 
     this.#state = state.player;
     this.#enemyState = state.enemies;
+    this.#pickupState = state.pickups;
     this.#mapUtils = mapUtils;
     this.#isTileWalkable = isTileWalkableByPlayer;
-    this.#hasEnemyAt = hasEnemyAt;
-    this.#getEnemyAt = getEnemyAt;
   }
 
   /**
