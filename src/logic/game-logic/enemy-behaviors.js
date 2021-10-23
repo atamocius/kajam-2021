@@ -23,6 +23,8 @@ import {
 import { distance, line } from '../../utils/math';
 import { delay } from '../../utils/promise';
 
+const THINKING_DELAY = 300;
+
 export default class EnemyBehaviors {
   #behaviors;
   #busy;
@@ -49,7 +51,6 @@ export default class EnemyBehaviors {
 
   async moveTowardsPlayer() {
     this.#busy = true;
-    await delay(300);
     const p = this.#behaviors.map(b => b.moveTowardsPlayer());
     await Promise.all(p);
     this.#busy = false;
@@ -166,29 +167,17 @@ export class EnemyBehavior {
     }
   };
 
-  // /**
-  //  * @param {Direction} dir
-  //  */
-  // moveTowards = async dir => {
-  //   const { look } = this.#state;
-
-  //   // Rotate to orient towards target direction
-  //   const rotations = this.#rotationTable[look][dir];
-  //   for (const r of rotations) {
-  //     await r();
-  //   }
-  //   await this.moveForward();
-  // };
-
   moveTowardsPlayer = async () => {
+    // Exit if there is no view registered yet
+    if (!this.#state.view) return;
+
+    // Thinking time
+    await delay(THINKING_DELAY);
+
     const { position: playerPos } = this.#playerState;
     const {
       position: { x, z },
-      view,
     } = this.#state;
-
-    // Exit if there is no view registered yet
-    if (!view) return;
 
     const neighbors = this.#neighbors(x, z);
 
