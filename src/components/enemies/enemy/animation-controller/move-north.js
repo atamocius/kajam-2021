@@ -7,8 +7,9 @@ import anime from 'animejs';
 /**
  * @param {EnemyAnimationTransform} transform
  * @param {(transform: EnemyAnimationTransform) => void} onUpdate
+ * @param {number} duration
  */
-export default function createMoveNorthAnim(transform, onUpdate) {
+export default function createMoveNorthAnim(transform, onUpdate, duration) {
   return anime({
     update: () => onUpdate(transform),
     autoplay: false,
@@ -19,7 +20,7 @@ export default function createMoveNorthAnim(transform, onUpdate) {
       { value: 0, duration: 0 },
       {
         value: -1,
-        duration: 300,
+        duration,
         easing: 'easeInOutSine',
       },
     ],

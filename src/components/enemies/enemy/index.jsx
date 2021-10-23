@@ -39,6 +39,7 @@ export default function Enemy({ index, children }) {
  * @property {() => Promise<void>} moveBackward
  * @property {() => Promise<void>} strafeLeft
  * @property {() => Promise<void>} strafeRight
+ * @property {() => Promise<void>} attack
  */
 
 /**
@@ -89,6 +90,11 @@ function makeApi(ref) {
     await pac.strafeRight();
   };
 
+  const attack = async (fromX, fromZ, look) => {
+    pac.reset(fromX, fromZ, look);
+    await pac.attack();
+  };
+
   return {
     setMapPos,
     setLook,
@@ -100,5 +106,7 @@ function makeApi(ref) {
     moveBackward,
     strafeLeft,
     strafeRight,
+
+    attack,
   };
 }

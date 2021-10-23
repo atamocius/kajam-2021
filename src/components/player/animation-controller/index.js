@@ -24,6 +24,9 @@ import createMoveEastAnim from './move-east';
 import createRotateLeftAnim from './rotate-left';
 import createRotateRightAnim from './rotate-right';
 
+const MOVE_DURATION = 300;
+const TURN_DURATION = 300;
+
 export default class PlayerAnimationController {
   #playerRef;
 
@@ -164,17 +167,38 @@ export default class PlayerAnimationController {
   };
 
   #buildMoveAnims() {
-    this.#moveNorthAnim = createMoveNorthAnim(this.#transform, this.#update);
-    this.#moveSouthAnim = createMoveSouthAnim(this.#transform, this.#update);
-    this.#moveWestAnim = createMoveWestAnim(this.#transform, this.#update);
-    this.#moveEastAnim = createMoveEastAnim(this.#transform, this.#update);
+    this.#moveNorthAnim = createMoveNorthAnim(
+      this.#transform,
+      this.#update,
+      MOVE_DURATION
+    );
+    this.#moveSouthAnim = createMoveSouthAnim(
+      this.#transform,
+      this.#update,
+      MOVE_DURATION
+    );
+    this.#moveWestAnim = createMoveWestAnim(
+      this.#transform,
+      this.#update,
+      MOVE_DURATION
+    );
+    this.#moveEastAnim = createMoveEastAnim(
+      this.#transform,
+      this.#update,
+      MOVE_DURATION
+    );
   }
 
   #buildRotateAnims() {
-    this.#rotateLeftAnim = createRotateLeftAnim(this.#transform, this.#update);
+    this.#rotateLeftAnim = createRotateLeftAnim(
+      this.#transform,
+      this.#update,
+      TURN_DURATION
+    );
     this.#rotateRightAnim = createRotateRightAnim(
       this.#transform,
-      this.#update
+      this.#update,
+      TURN_DURATION
     );
   }
 }

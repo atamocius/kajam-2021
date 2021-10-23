@@ -150,7 +150,7 @@ export class EnemyBehavior {
   /**
    * @param {Direction} dir
    */
-  moveTo = async dir => {
+  rotateTowards = async dir => {
     const { look } = this.#state;
 
     // Rotate to orient towards target direction
@@ -158,7 +158,50 @@ export class EnemyBehavior {
     for (const r of rotations) {
       await r();
     }
-    await this.moveForward();
+  };
+
+  // /**
+  //  * @param {Direction} dir
+  //  */
+  // moveTowards = async dir => {
+  //   const { look } = this.#state;
+
+  //   // Rotate to orient towards target direction
+  //   const rotations = this.#rotationTable[look][dir];
+  //   for (const r of rotations) {
+  //     await r();
+  //   }
+  //   await this.moveForward();
+  // };
+
+  moveTowardsPlayer = async () => {
+    const { position: playerPos } = this.#playerState;
+    const {
+      position: { x, z },
+    } = this.#state;
+
+    const neighbors = this.#neighbors(x, z);
+
+    const scores = neighbors.map(({ dir, offset: o }) => {
+      const score = distance(x + o.x, z + o.z, playerPos.x, playerPos.z);
+      return {
+        dir,
+        score,
+        pos: { x: x + o.x, z: z + o.z },
+      };
+    });
+
+    const lowest = minBy(scores, o => o.score);
+
+    // Orient towards next position
+    await this.rotateTowards(lowest.dir);
+
+    // If lowest.pos === playerPos, do an attack instead
+    if (lowest.pos.x === playerPos.x && lowest.pos.z === playerPos.z) {
+      await this.attack();
+    } else {
+      await this.moveForward();
+    }
   };
 
   canSeePlayer = () => {
@@ -192,27 +235,6 @@ export class EnemyBehavior {
 
     // NO: Within sight range, but no line of sight
     return false;
-  };
-
-  moveTowardsPlayer = async () => {
-    const { position: playerPos } = this.#playerState;
-    const {
-      position: { x, z },
-    } = this.#state;
-
-    const neighbors = this.#neighbors(x, z);
-
-    const scores = neighbors.map(({ dir, offset: o }) => {
-      const score = distance(x + o.x, z + o.z, playerPos.x, playerPos.z);
-      return {
-        dir,
-        score,
-      };
-    });
-
-    const lowest = minBy(scores, o => o.score);
-
-    await this.moveTo(lowest.dir);
   };
 
   /**
@@ -283,6 +305,19 @@ export class EnemyBehavior {
 
     // Animate
     await view.rotateRight(x, z, fromLook);
+  };
+
+  attack = async () => {
+    const {
+      position: { x, z },
+      look,
+      view,
+    } = this.#state;
+
+    // TODO: Update state
+
+    // Animate
+    await view.attack(x, z, look);
   };
 
   moveForward = async () => {

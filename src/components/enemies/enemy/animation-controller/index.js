@@ -28,6 +28,17 @@ import createMoveEastAnim from './move-east';
 import createRotateLeftAnim from './rotate-left';
 import createRotateRightAnim from './rotate-right';
 
+import createAttackNorthAnim from './attack-north';
+import createAttackSouthAnim from './attack-south';
+import createAttackWestAnim from './attack-west';
+import createAttackEastAnim from './attack-east';
+
+const MOVE_DURATION = 300;
+const TURN_DURATION = 300;
+
+const ATTACK_DURATION = 200;
+const ATTACK_DISTANCE = 0.5;
+
 export default class EnemyAnimationController {
   #playerRef;
 
@@ -49,6 +60,13 @@ export default class EnemyAnimationController {
 
   #rotateLeftAnim;
   #rotateRightAnim;
+
+  #attackNorthAnim;
+  #attackSouthAnim;
+  #attackWestAnim;
+  #attackEastAnim;
+
+  #attackAnimLookup;
 
   /**
    * @param {React.MutableRefObject<GroupProps>} playerRef
@@ -72,6 +90,7 @@ export default class EnemyAnimationController {
 
     this.#buildMoveAnims();
     this.#buildRotateAnims();
+    this.#buildAttackAnims();
 
     this.#moveForwardAnimLookup = {
       [Direction.north]: this.#moveNorthAnim,
@@ -96,6 +115,13 @@ export default class EnemyAnimationController {
       [Direction.south]: this.#moveWestAnim,
       [Direction.west]: this.#moveNorthAnim,
       [Direction.east]: this.#moveSouthAnim,
+    };
+
+    this.#attackAnimLookup = {
+      [Direction.north]: this.#attackNorthAnim,
+      [Direction.south]: this.#attackSouthAnim,
+      [Direction.west]: this.#attackWestAnim,
+      [Direction.east]: this.#attackEastAnim,
     };
   }
 
@@ -153,6 +179,12 @@ export default class EnemyAnimationController {
     await a.finished;
   }
 
+  async attack() {
+    const a = this.#attackAnimLookup[this.#look];
+    a.play();
+    await a.finished;
+  }
+
   /**
    * @param {EnemyAnimationTransform} transform
    */
@@ -168,17 +200,65 @@ export default class EnemyAnimationController {
   };
 
   #buildMoveAnims() {
-    this.#moveNorthAnim = createMoveNorthAnim(this.#transform, this.#update);
-    this.#moveSouthAnim = createMoveSouthAnim(this.#transform, this.#update);
-    this.#moveWestAnim = createMoveWestAnim(this.#transform, this.#update);
-    this.#moveEastAnim = createMoveEastAnim(this.#transform, this.#update);
+    this.#moveNorthAnim = createMoveNorthAnim(
+      this.#transform,
+      this.#update,
+      MOVE_DURATION
+    );
+    this.#moveSouthAnim = createMoveSouthAnim(
+      this.#transform,
+      this.#update,
+      MOVE_DURATION
+    );
+    this.#moveWestAnim = createMoveWestAnim(
+      this.#transform,
+      this.#update,
+      MOVE_DURATION
+    );
+    this.#moveEastAnim = createMoveEastAnim(
+      this.#transform,
+      this.#update,
+      MOVE_DURATION
+    );
   }
 
   #buildRotateAnims() {
-    this.#rotateLeftAnim = createRotateLeftAnim(this.#transform, this.#update);
+    this.#rotateLeftAnim = createRotateLeftAnim(
+      this.#transform,
+      this.#update,
+      TURN_DURATION
+    );
     this.#rotateRightAnim = createRotateRightAnim(
       this.#transform,
-      this.#update
+      this.#update,
+      TURN_DURATION
+    );
+  }
+
+  #buildAttackAnims() {
+    this.#attackNorthAnim = createAttackNorthAnim(
+      this.#transform,
+      this.#update,
+      ATTACK_DURATION,
+      ATTACK_DISTANCE
+    );
+    this.#attackSouthAnim = createAttackSouthAnim(
+      this.#transform,
+      this.#update,
+      ATTACK_DURATION,
+      ATTACK_DISTANCE
+    );
+    this.#attackWestAnim = createAttackWestAnim(
+      this.#transform,
+      this.#update,
+      ATTACK_DURATION,
+      ATTACK_DISTANCE
+    );
+    this.#attackEastAnim = createAttackEastAnim(
+      this.#transform,
+      this.#update,
+      ATTACK_DURATION,
+      ATTACK_DISTANCE
     );
   }
 }

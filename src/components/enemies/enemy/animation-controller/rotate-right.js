@@ -7,8 +7,9 @@ import anime from 'animejs';
 /**
  * @param {EnemyAnimationTransform} transform
  * @param {(transform: EnemyAnimationTransform) => void} onUpdate
+ * @param {number} duration
  */
-export default function createRotateRightAnim(transform, onUpdate) {
+export default function createRotateRightAnim(transform, onUpdate, duration) {
   return anime({
     update: () => onUpdate(transform),
     autoplay: false,
@@ -18,7 +19,7 @@ export default function createRotateRightAnim(transform, onUpdate) {
       { value: 0, duration: 0 },
       {
         value: -Math.PI * 0.5,
-        duration: 300,
+        duration,
         easing: 'easeInOutSine',
       },
     ],

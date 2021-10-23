@@ -8,19 +8,31 @@ import anime from 'animejs';
  * @param {EnemyAnimationTransform} transform
  * @param {(transform: EnemyAnimationTransform) => void} onUpdate
  * @param {number} duration
+ * @param {number} distance
  */
-export default function createRotateLeftAnim(transform, onUpdate, duration) {
+export default function createAttackNorthAnim(
+  transform,
+  onUpdate,
+  duration,
+  distance
+) {
   return anime({
     update: () => onUpdate(transform),
     autoplay: false,
     targets: transform,
 
-    rotY: [
+    x: [{ value: 0, duration: 0 }],
+    z: [
       { value: 0, duration: 0 },
       {
-        value: Math.PI * 0.5,
+        value: -distance,
         duration,
-        easing: 'easeInOutSine',
+        easing: 'easeInSine',
+      },
+      {
+        value: 0,
+        duration,
+        easing: 'easeOutSine',
       },
     ],
   });

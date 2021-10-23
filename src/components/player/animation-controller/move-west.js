@@ -7,8 +7,9 @@ import anime from 'animejs';
 /**
  * @param {PlayerAnimationTransform} transform
  * @param {(transform: PlayerAnimationTransform) => void} onUpdate
+ * @param {number} duration
  */
-export default function createMoveWestAnim(transform, onUpdate) {
+export default function createMoveWestAnim(transform, onUpdate, duration) {
   return anime({
     update: () => onUpdate(transform),
     autoplay: false,
@@ -18,7 +19,7 @@ export default function createMoveWestAnim(transform, onUpdate) {
       { value: 0, duration: 0 },
       {
         value: -1,
-        duration: 300,
+        duration,
         easing: 'easeInOutSine',
       },
     ],

@@ -109,7 +109,7 @@ export default class GameState {
   isTileWalkableByEnemy = (x, z) => {
     return (
       this.#mapUtils.isWalkable(x, z) &&
-      !this.hasPlayerAt(x, z) &&
+      // !this.hasPlayerAt(x, z) &&
       !this.hasEnemyAt(x, z)
     );
   };
