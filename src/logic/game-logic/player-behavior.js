@@ -4,6 +4,8 @@
  * @typedef {import('./game-state').PlayerState} PlayerState
  */
 
+import clamp from 'lodash-es/clamp';
+
 import GameState from './game-state';
 import { Direction } from '../../utils/level-loader/common';
 import {
@@ -13,8 +15,13 @@ import {
   moveBackwardOffsetLookup,
   strafeRightOffsetLookup,
   strafeLeftOffsetLookup,
+  PickupKind,
+  pickupDataLookup,
+  MAX_HEALTH,
+  MAX_AMMO,
 } from '../../levels/common';
 import { distance, line } from '../../utils/math';
+import { delay } from '../../utils/promise';
 
 export default class PlayerBehavior {
   #state;
@@ -22,20 +29,31 @@ export default class PlayerBehavior {
   #pickupState;
   #mapUtils;
   #isTileWalkable;
-  #consumePickupAt;
+  #getPickupAt;
+  #heal;
+  #addAmmo;
 
   /**
    * @param {GameState} gs
    */
   constructor(gs) {
-    const { state, mapUtils, isTileWalkableByPlayer, consumePickupAt } = gs;
+    const {
+      state,
+      mapUtils,
+      isTileWalkableByPlayer,
+      getPickupAt,
+      healPlayer,
+      addPlayerAmmo,
+    } = gs;
 
     this.#state = state.player;
     this.#enemyState = state.enemies;
     this.#pickupState = state.pickups;
     this.#mapUtils = mapUtils;
     this.#isTileWalkable = isTileWalkableByPlayer;
-    this.#consumePickupAt = consumePickupAt;
+    this.#getPickupAt = getPickupAt;
+    this.#heal = healPlayer;
+    this.#addAmmo = addPlayerAmmo;
   }
 
   /**
@@ -82,6 +100,34 @@ export default class PlayerBehavior {
   //   // NO: No line of sight
   //   return false;
   // };
+
+  /**
+   * @param {number} x
+   * @param {number} z
+   */
+  #consumePickupAt = async (x, z) => {
+    const pu = this.#getPickupAt(x, z);
+    if (!pu || !pu.enabled) return;
+    pu.enabled = false;
+
+    const v = pickupDataLookup[pu.kind].value;
+    switch (pu.kind) {
+      case PickupKind.health:
+        this.#heal(v);
+        break;
+
+      case PickupKind.ammo:
+        this.#addAmmo(v);
+        break;
+
+      default:
+        break;
+    }
+
+    // Add a bit of delay so it does not disappear right away
+    await delay(150);
+    pu.view.setVisibility(false);
+  };
 
   /**
    * @param {number} x

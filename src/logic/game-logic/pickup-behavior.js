@@ -43,7 +43,6 @@ export class PickupBehavior {
     } = this.#state;
     this.#state.view = view;
     this.#state.view.setMapPos(x, z);
-    this.#state.enabled = true;
 
     return () => {
       this.#state.view = null;

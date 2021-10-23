@@ -82,6 +82,9 @@ export function mapZToPosZ(z) {
   return Math.floor(z) + 0.5;
 }
 
+export const MAX_HEALTH = 20;
+export const MAX_AMMO = 120;
+
 export const healthClassLookup = {
   [0]: 3,
   [1]: 6,
@@ -95,7 +98,7 @@ export const PickupKind = {
 
 export const pickupDataLookup = {
   [PickupKind.health]: {
-    value: 10,
+    value: 5,
   },
   [PickupKind.ammo]: {
     value: 7,

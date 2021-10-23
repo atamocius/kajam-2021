@@ -60,6 +60,7 @@ export class EnemyBehavior {
   #mapUtils;
   #isTileWalkable;
   #rotationTable;
+  #damagePlayer;
 
   /**
    * @param {EnemyState} state
@@ -70,12 +71,14 @@ export class EnemyBehavior {
       state: { player },
       mapUtils,
       isTileWalkableByEnemy,
+      damagePlayer,
     } = gs;
 
     this.#state = state;
     this.#playerState = player;
     this.#mapUtils = mapUtils;
     this.#isTileWalkable = isTileWalkableByEnemy;
+    this.#damagePlayer = damagePlayer;
 
     this.#rotationTable = {
       [Direction.north]: {
@@ -278,9 +281,10 @@ export class EnemyBehavior {
       position: { x, z },
       look,
       view,
+      attackDamage,
     } = this.#state;
 
-    // TODO: Update state
+    this.#damagePlayer(attackDamage);
 
     // Animate
     await view.attack(x, z, look);

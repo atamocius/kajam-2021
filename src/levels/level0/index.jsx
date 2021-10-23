@@ -1,6 +1,7 @@
 import { DEBUG_MODE } from '../../settings';
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
+import { Mutex } from 'async-mutex';
 
 import loadLevel from '../../utils/level-loader';
 import LevelMesh from '../../components/level-mesh';
@@ -15,8 +16,6 @@ import Enemies from '../../components/enemies';
 import { InstancedModelsProvider } from '../../meshes/instanced';
 import LevelDataProvider from '../../utils/level-data-provider';
 import { GameLogicProvider, useGameLogic } from '../../logic/game-logic';
-
-import { Mutex } from 'async-mutex';
 
 export default function Level0() {
   const level = loadLevel(
@@ -53,12 +52,21 @@ export default function Level0() {
 const mutex = new Mutex();
 
 function Content() {
-  const { player, enemies } = useGameLogic();
+  const { addGameOverListener, isGameOver, player, enemies } = useGameLogic();
+
+  useEffect(() => {
+    const unsub = addGameOverListener(() => console.log('GAME OVER!!!'));
+    return unsub;
+  }, []);
 
   /**
    * @param {KeyboardEvent} ev
    */
   const handleKeyDown = async ev => {
+    if (isGameOver()) {
+      return;
+    }
+
     await mutex.runExclusive(async () => {
       switch (ev.code) {
         case 'KeyM':

@@ -9,6 +9,7 @@ import PickupBehaviors from './pickup-behavior';
 
 /**
  * @typedef {Object} GameLogicApi
+ * @property {() => boolean} isGameOver
  * @property {PlayerBehavior} player
  * @property {EnemyBehaviors} enemies
  * @property {PickupBehaviors} pickups
@@ -22,6 +23,8 @@ export function GameLogicProvider({ children }) {
   const gs = new GameState(level);
 
   const api = {
+    isGameOver: gs.isGameOver,
+    addGameOverListener: gs.addGameOverListener,
     player: new PlayerBehavior(gs),
     enemies: new EnemyBehaviors(gs),
     pickups: new PickupBehaviors(gs),
