@@ -17,7 +17,7 @@ import {
   strafeRightOffsetLookup,
   strafeLeftOffsetLookup,
 } from '../../levels/common';
-import { distance, line } from '../../utils/math';
+import { distance } from '../../utils/math';
 import { delay } from '../../utils/promise';
 
 const THINKING_DELAY = 300;
@@ -219,39 +219,6 @@ export class EnemyBehavior {
     } else {
       await this.moveForward();
     }
-  };
-
-  canSeePlayer = () => {
-    const {
-      position: { x: px, z: pz },
-    } = this.#playerState;
-    const {
-      position: { x, z },
-      sightRange,
-    } = this.#state;
-
-    // NO: Beyond sight range
-    const dist = distance(x, z, px, pz);
-    if (dist > sightRange) {
-      return false;
-    }
-
-    const visibilityLine = line({ x, y: z }, { x: px, y: pz });
-    for (const v of visibilityLine) {
-      if (this.#mapUtils.isVisionBlocker(v.x, v.y)) {
-        // NO: No line of sight; vision obscured
-        return false;
-      }
-
-      // Is current tile the same position as the player?
-      if (v.x === px && v.y === pz) {
-        // YES: Has line of sight
-        return true;
-      }
-    }
-
-    // NO: Within sight range, but no line of sight
-    return false;
   };
 
   /**

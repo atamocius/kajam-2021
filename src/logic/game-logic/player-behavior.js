@@ -14,6 +14,7 @@ import {
   strafeRightOffsetLookup,
   strafeLeftOffsetLookup,
 } from '../../levels/common';
+import { distance, line } from '../../utils/math';
 
 export default class PlayerBehavior {
   #state;
@@ -55,6 +56,32 @@ export default class PlayerBehavior {
       this.#state.view = null;
     };
   };
+
+  // canSeePlayer = () => {
+  //   const {
+  //     position: { x: px, z: pz },
+  //   } = this.#playerState;
+  //   const {
+  //     position: { x, z },
+  //   } = this.#state;
+
+  //   const visibilityLine = line({ x, y: z }, { x: px, y: pz });
+  //   for (const v of visibilityLine) {
+  //     if (this.#mapUtils.isVisionBlocker(v.x, v.y)) {
+  //       // NO: No line of sight; vision obscured
+  //       return false;
+  //     }
+
+  //     // Is current tile the same position as the player?
+  //     if (v.x === px && v.y === pz) {
+  //       // YES: Has line of sight
+  //       return true;
+  //     }
+  //   }
+
+  //   // NO: No line of sight
+  //   return false;
+  // };
 
   /**
    * @param {number} x

@@ -73,9 +73,7 @@ export {};
  * @property {string} kind
  * @property {MapCoords} position
  * @property {Direction} look
- * @property {number} sightRange
  * @property {number} healthClass
- * @property {number} speedClass
  */
 
 /**

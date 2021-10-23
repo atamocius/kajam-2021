@@ -31,9 +31,7 @@
  * @property {MapCoords} position
  * @property {Direction} look
  * @property {string} kind
- * @property {number} sightRange
- * @property {number} healthClass
- * @property {number} speedClass
+ * @property {number} health
  */
 
 /**
@@ -46,6 +44,7 @@
  */
 
 import { delay } from '../../utils/promise';
+import { healthClassLookup } from '../../levels/common';
 
 export default class GameState {
   #state;
@@ -173,9 +172,7 @@ export default class GameState {
       position: { x, z },
       look,
       kind,
-      sightRange,
       healthClass,
-      speedClass,
     } = entity;
 
     /** @type {EnemyState} */
@@ -188,9 +185,7 @@ export default class GameState {
       },
       look,
       kind,
-      sightRange,
-      healthClass,
-      speedClass,
+      health: healthClassLookup[healthClass],
     };
 
     return state;
