@@ -37,6 +37,7 @@
  * @property {string} kind
  * @property {number} health
  * @property {number} attackDamage
+ * @property {boolean} enabled
  */
 
 /**
@@ -149,6 +150,28 @@ export default class GameState {
   };
 
   /**
+   * @param {number} index
+   * @param {number} damage
+   */
+  damageEnemy = (index, damage) => {
+    const { enemies } = this.#state;
+    const enemy = enemies[index];
+
+    const t = enemy.health - damage;
+    enemy.health = clamp(t, 0, MAX_HEALTH);
+
+    if (enemy.health > 0) {
+      return;
+    }
+
+    // Disable the enemy if it is dead
+    enemy.enabled = false;
+
+    // TODO: Animate! No need to await
+    enemy.view.setVisibility(false);
+  };
+
+  /**
    * @param {number} a
    */
   addPlayerAmmo = a => {
@@ -162,21 +185,27 @@ export default class GameState {
    * @param {number} z
    */
   hasEnemyAt = (x, z) =>
-    this.#state.enemies.some(e => e.position.x === x && e.position.z === z);
+    this.#state.enemies.some(
+      e => e.enabled && e.position.x === x && e.position.z === z
+    );
 
   /**
    * @param {number} x
    * @param {number} z
    */
   getEnemyAt = (x, z) =>
-    this.#state.enemies.find(e => e.position.x === x && e.position.z === z);
+    this.#state.enemies.find(
+      e => e.enabled && e.position.x === x && e.position.z === z
+    );
 
   /**
    * @param {number} x
    * @param {number} z
    */
   getPickupAt = (x, z) =>
-    this.#state.pickups.find(p => p.position.x === x && p.position.z === z);
+    this.#state.pickups.find(
+      p => p.enabled && p.position.x === x && p.position.z === z
+    );
 
   // /**
   //  * @param {number} x
@@ -272,6 +301,7 @@ export default class GameState {
       kind,
       health: healthClassLookup[healthClass],
       attackDamage: 1,
+      enabled: true,
     };
 
     return state;

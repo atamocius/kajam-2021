@@ -4,8 +4,6 @@
  * @typedef {import('./game-state').PlayerState} PlayerState
  */
 
-import clamp from 'lodash-es/clamp';
-
 import GameState from './game-state';
 import { Direction } from '../../utils/level-loader/common';
 import {

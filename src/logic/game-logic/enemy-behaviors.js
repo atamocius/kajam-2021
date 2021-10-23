@@ -126,6 +126,20 @@ export class EnemyBehavior {
     };
   };
 
+  attack = async () => {
+    const {
+      position: { x, z },
+      look,
+      view,
+      attackDamage,
+    } = this.#state;
+
+    this.#damagePlayer(attackDamage);
+
+    // Animate
+    await view.attack(x, z, look);
+  };
+
   #neighbors = (x, z) => {
     const result = [];
 
@@ -186,6 +200,9 @@ export class EnemyBehavior {
   };
 
   moveTowardsPlayer = async () => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
     // Exit if there is no view registered yet
     if (!this.#state.view) return;
 
@@ -274,20 +291,6 @@ export class EnemyBehavior {
 
     // Animate
     await view.rotateRight(x, z, fromLook);
-  };
-
-  attack = async () => {
-    const {
-      position: { x, z },
-      look,
-      view,
-      attackDamage,
-    } = this.#state;
-
-    this.#damagePlayer(attackDamage);
-
-    // Animate
-    await view.attack(x, z, look);
   };
 
   moveForward = async () => {

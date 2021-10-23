@@ -33,6 +33,7 @@ export default function Enemy({ index, children }) {
  * @typedef {Object} EnemyApi
  * @property {(x: number, z: number) => void} setMapPos
  * @property {(look: Direction) => void} setLook
+ * @property {(isVisible: boolean) => void} setVisibility
  * @property {() => Promise<void>} rotateRight
  * @property {() => Promise<void>} rotateLeft
  * @property {() => Promise<void>} moveForward
@@ -58,6 +59,14 @@ function makeApi(ref) {
   const setLook = look => {
     const ry = directionAngle[look];
     ref.current.rotation.set(0, ry, 0);
+  };
+
+  const setVisibility = isVisible => {
+    if (isVisible) {
+      ref.current.position.setY(0);
+    } else {
+      ref.current.position.setY(-100);
+    }
   };
 
   const rotateLeft = async (x, z, fromLook) => {
@@ -98,6 +107,7 @@ function makeApi(ref) {
   return {
     setMapPos,
     setLook,
+    setVisibility,
 
     rotateRight,
     rotateLeft,

@@ -76,7 +76,9 @@ function Content() {
           // const c = e.canSeePlayer();
           // console.log('🔫', c);
           // e.findPathToPlayer();
-          enemies.moveTowardsPlayer();
+          // enemies.moveTowardsPlayer();
+
+          // debug.damageEnemy(0, 1);
           break;
 
         // WASD
