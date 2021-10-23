@@ -118,9 +118,16 @@ export class EnemyBehavior {
 
     const visibilityLine = line({ x, y: z }, { x: px, y: pz });
     for (const v of visibilityLine) {
-      // YES: Has line of sight
+      if (this.#isTileWalkable(v.x, v.y, true)) {
+        continue;
+      }
+
       if (v.x === px && v.y === pz) {
+        // YES: Has line of sight
         return true;
+      } else {
+        // NO: No line of sight; vision obscured
+        return false;
       }
     }
 
