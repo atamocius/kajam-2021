@@ -56,6 +56,7 @@ export {};
  * @typedef {Object} Entities
  * @property {StagePropEntity[]} props
  * @property {EnemyEntity[]} enemies
+ * @property {PickupEntity[]} pickups
  */
 
 /**
@@ -71,8 +72,16 @@ export {};
  * @typedef {Object} EnemyEntity
  * @property {string} kind
  * @property {MapCoords} position
- * @property {number} sightRange
  * @property {Direction} look
+ * @property {number} sightRange
+ * @property {number} healthClass
+ * @property {number} speedClass
+ */
+
+/**
+ * @typedef {Object} PickupEntity
+ * @property {string} kind
+ * @property {MapCoords} position
  */
 
 /**
@@ -105,6 +114,7 @@ export {};
  * @property {(index: number, dir: Direction) => number} getAdjacentValueByIndex
  *
  * @property {(x: number, z: number) => StagePropEntity} getStageProp
+ * @property {(x: number, z: number) => PickupEntity} getPickup
  *
  * @property {(x: number, z: number) => boolean} isWalkable
  * @property {(x: number, z: number) => boolean} isVisionBlocker

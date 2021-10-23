@@ -6,11 +6,13 @@ import React, { createContext, useContext, useRef } from 'react';
 
 import stagePropRenders from './stage-props';
 import enemyRenders from './enemies';
+import pickupRenders from './pickups';
 
 /**
  * @typedef {Object} CountConfig
  * @property {StagePropsCountConfig} stageProps
  * @property {EnemiesCountConfig} enemies
+ * @property {PickupsCountConfig} pickups
  */
 
 /**
@@ -25,12 +27,19 @@ import enemyRenders from './enemies';
  * @property {number} bot
  */
 
+/**
+ * @typedef {Object} PickupsCountConfig
+ * @property {number} health
+ * @property {number} ammo
+ */
+
 /********************************/
 
 /**
  * @typedef {Object} Counts
  * @property {StagePropCounts} stageProps
  * @property {EnemyCounts} enemies
+ * @property {PickupCounts} pickups
  */
 
 /**
@@ -45,12 +54,19 @@ import enemyRenders from './enemies';
  * @property {number} bot
  */
 
+/**
+ * @typedef {Object} PickupCounts
+ * @property {number} health
+ * @property {number} ammo
+ */
+
 /********************************/
 
 /**
  * @typedef {Object} Refs
  * @property {StagePropRefs} stageProps
  * @property {EnemyRefs} enemies
+ * @property {PickupRefs} pickups
  */
 
 /**
@@ -63,6 +79,12 @@ import enemyRenders from './enemies';
  * @property {React.MutableRefObject<InstanceApi>} sampleEnemy2
  * @property {React.MutableRefObject<InstanceApi>} testRobot
  * @property {React.MutableRefObject<InstanceApi>} bot
+ */
+
+/**
+ * @typedef {Object} PickupRefs
+ * @property {React.MutableRefObject<InstanceApi>} health
+ * @property {React.MutableRefObject<InstanceApi>} ammo
  */
 
 /** @type {React.Context<Refs>} */
@@ -106,6 +128,7 @@ function useRefs(config) {
   const refs = {
     stageProps: {},
     enemies: {},
+    pickups: {},
   };
 
   const renders = [];
@@ -130,6 +153,16 @@ function useRefs(config) {
     );
   });
 
+  Object.entries(counts.pickups).forEach(c => {
+    const [key, count] = c;
+    const ref = useRef();
+    refs.pickups[key] = ref;
+    const PickupInstances = pickupRenders[key];
+    renders.push(
+      <PickupInstances key={`pickups_${key}`} ref={ref} count={count} />
+    );
+  });
+
   return {
     refs,
     renders,
@@ -144,6 +177,7 @@ function calcCounts(config) {
   const {
     stageProps: { crates = 0 },
     enemies: { sampleEnemy2 = 0, testRobot = 0, bot = 0 },
+    pickups: { health = 0, ammo = 0 },
   } = config;
 
   return {
@@ -154,6 +188,10 @@ function calcCounts(config) {
       sampleEnemy2,
       testRobot,
       bot,
+    },
+    pickups: {
+      health,
+      ammo,
     },
   };
 }

@@ -16,7 +16,7 @@ export default function createMapUtilFuncs(map) {
   const { tiles: mapTiles, ceilings: ceilingTiles } = map;
   const { width: mapWidth } = map.size;
   const { floors: floorTileIndices, walls: wallTileIndices } = map.types;
-  const { props } = map.logic.entities;
+  const { props, pickups } = map.logic.entities;
 
   const indexToCoords = memoize(
     /**
@@ -128,6 +128,15 @@ export default function createMapUtilFuncs(map) {
     (x, z) => `${x}_${z}`
   );
 
+  const getPickup = memoize(
+    /**
+     * @param {number} x
+     * @param {number} z
+     */
+    (x, z) => pickups.find(p => p.position.x === x && p.position.z === z),
+    (x, z) => `${x}_${z}`
+  );
+
   const isWalkable = memoize(
     /**
      * @param {number} x
@@ -168,6 +177,9 @@ export default function createMapUtilFuncs(map) {
 
     // Stage Props
     getStageProp,
+
+    // Pickups
+    getPickup,
 
     // Validation
     isWalkable,

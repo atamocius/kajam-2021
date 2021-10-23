@@ -5,6 +5,7 @@ import React, { useRef, useMemo, useState, useEffect } from 'react';
 import loadLevel from '../../utils/level-loader';
 import LevelMesh from '../../components/level-mesh';
 import StageProps from '../../components/stage-props';
+import Pickups from '../../components/pickups';
 
 import { useKeyDownNoRepeat } from '../../utils/keyboard';
 
@@ -31,6 +32,10 @@ export default function Level0() {
       sampleEnemy2: 25,
       testRobot: 25,
       bot: 25,
+    },
+    pickups: {
+      health: 25,
+      ammo: 25,
     },
   };
 
@@ -98,6 +103,12 @@ function Content() {
           await player.rotateRight();
           break;
 
+        // Attack
+        case 'Space':
+          ev.preventDefault();
+          console.log('FIRE!');
+          break;
+
         default:
           break;
       }
@@ -113,6 +124,7 @@ function Content() {
       <LevelMesh />
       <Enemies />
       <StageProps />
+      <Pickups />
     </>
   );
 }

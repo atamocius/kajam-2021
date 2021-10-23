@@ -12,123 +12,149 @@
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 9, "z": 1 },
-            "rotation": { "x": 0, "y": 5.440565827468611, "z": 0 }
+            "rotation": { "x": 0, "y": 3.652042539823319, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 10, "z": 4 },
-            "rotation": { "x": 0, "y": 2.895054896593328, "z": 0 }
+            "rotation": { "x": 0, "y": 2.9946503039802805, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 5, "z": 8 },
-            "rotation": { "x": 0, "y": 5.7983314810966995, "z": 0 }
+            "rotation": { "x": 0, "y": 1.2600272980118377, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 2, "z": 11 },
-            "rotation": { "x": 0, "y": 5.664316559611644, "z": 0 }
+            "rotation": { "x": 0, "y": 5.236349487007463, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 2, "z": 18 },
-            "rotation": { "x": 0, "y": 0.01995825824536671, "z": 0 }
+            "rotation": { "x": 0, "y": 2.8388288765250254, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 9, "z": 14 },
-            "rotation": { "x": 0, "y": 3.877995162868595, "z": 0 }
+            "rotation": { "x": 0, "y": 3.4339681755046145, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 15, "z": 16 },
-            "rotation": { "x": 0, "y": 2.60100072056573, "z": 0 }
+            "rotation": { "x": 0, "y": 4.3560450081861255, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 16, "z": 16 },
-            "rotation": { "x": 0, "y": 3.177769630228316, "z": 0 }
+            "rotation": { "x": 0, "y": 0.2884551946772162, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 14, "z": 5 },
-            "rotation": { "x": 0, "y": 3.0141004030313625, "z": 0 }
+            "rotation": { "x": 0, "y": 4.07262171168291, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 17, "z": 8 },
-            "rotation": { "x": 0, "y": 0.4573022260595264, "z": 0 }
+            "rotation": { "x": 0, "y": 4.628303219188672, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 2, "z": 3 },
-            "rotation": { "x": 0, "y": 0.9149868091073926, "z": 0 }
+            "rotation": { "x": 0, "y": 1.0751244389505137, "z": 0 }
           },
           {
             "kind": "crates",
             "isMoveBlocker": true,
             "isVisionBlocker": false,
             "position": { "x": 6, "z": 3 },
-            "rotation": { "x": 0, "y": 2.4574884002666257, "z": 0 }
+            "rotation": { "x": 0, "y": 2.318091235722891, "z": 0 }
           }
         ],
         "enemies": [
           {
             "kind": "bot",
             "sightRange": 6,
+            "healthClass": 0,
+            "speedClass": 0,
             "position": { "x": 5, "z": 2 },
             "look": "east"
           },
           {
             "kind": "bot",
             "sightRange": 6,
+            "healthClass": 0,
+            "speedClass": 0,
             "position": { "x": 3, "z": 15 },
             "look": "north"
           },
           {
             "kind": "bot",
             "sightRange": 6,
+            "healthClass": 0,
+            "speedClass": 0,
             "position": { "x": 16, "z": 13 },
             "look": "west"
           },
           {
             "kind": "bot",
             "sightRange": 6,
+            "healthClass": 0,
+            "speedClass": 0,
             "position": { "x": 17, "z": 5 },
             "look": "south"
           },
           {
             "kind": "bot",
             "sightRange": 6,
+            "healthClass": 0,
+            "speedClass": 0,
             "position": { "x": 7, "z": 11 },
             "look": "east"
           },
           {
             "kind": "bot",
             "sightRange": 6,
+            "healthClass": 0,
+            "speedClass": 0,
             "position": { "x": 4, "z": 8 },
             "look": "west"
           }
+        ],
+        "pickups": [
+          { "kind": "health", "position": { "x": 4, "z": 18 } },
+          { "kind": "health", "position": { "x": 15, "z": 11 } },
+          { "kind": "health", "position": { "x": 18, "z": 16 } },
+          { "kind": "health", "position": { "x": 18, "z": 8 } },
+          { "kind": "health", "position": { "x": 7, "z": 5 } },
+          { "kind": "health", "position": { "x": 10, "z": 7 } },
+          { "kind": "ammo", "position": { "x": 5, "z": 13 } },
+          { "kind": "ammo", "position": { "x": 7, "z": 6 } },
+          { "kind": "ammo", "position": { "x": 9, "z": 7 } },
+          { "kind": "ammo", "position": { "x": 17, "z": 16 } },
+          { "kind": "ammo", "position": { "x": 1, "z": 3 } },
+          { "kind": "ammo", "position": { "x": 1, "z": 15 } }
         ]
       }
     },
