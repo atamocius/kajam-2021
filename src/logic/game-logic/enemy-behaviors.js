@@ -21,15 +21,19 @@ import {
   strafeLeftOffsetLookup,
 } from '../../levels/common';
 import { distance, line } from '../../utils/math';
+import { delay } from '../../utils/promise';
 
 export default class EnemyBehaviors {
   #behaviors;
+  #busy;
 
   /**
    * @param {GameState} gs
    */
   constructor(gs) {
     this.#behaviors = gs.state.enemies.map(s => new EnemyBehavior(s, gs));
+
+    this.#busy = false;
   }
 
   /**
@@ -39,9 +43,16 @@ export default class EnemyBehaviors {
     return this.#behaviors[index];
   }
 
+  get isBusy() {
+    return this.#busy;
+  }
+
   async moveTowardsPlayer() {
+    this.#busy = true;
+    await delay(300);
     const p = this.#behaviors.map(b => b.moveTowardsPlayer());
     await Promise.all(p);
+    this.#busy = false;
   }
 }
 
@@ -173,9 +184,16 @@ export class EnemyBehavior {
     const { position: playerPos } = this.#playerState;
     const {
       position: { x, z },
+      view,
     } = this.#state;
 
+    // Exit if there is no view registered yet
+    if (!view) return;
+
     const neighbors = this.#neighbors(x, z);
+
+    // Exit if there are no neighbors
+    if (neighbors.length === 0) return;
 
     const scores = neighbors.map(({ dir, offset: o }) => {
       const score = distance(x + o.x, z + o.z, playerPos.x, playerPos.z);
