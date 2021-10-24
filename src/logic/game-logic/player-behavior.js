@@ -84,7 +84,6 @@ export default class PlayerBehavior {
     const {
       position: { x, z },
       look,
-      view,
       attackDamage,
     } = this.#state;
 
@@ -92,12 +91,7 @@ export default class PlayerBehavior {
 
     if (enemy) {
       this.#damageEnemy(enemy.index, attackDamage);
-      console.log(enemy);
     }
-
-    // Animate
-    // TODO: Animate the gun & a gun flash
-    // await view.attack(x, z, look);
   };
 
   /**
