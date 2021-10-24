@@ -18,3 +18,8 @@ export {};
  * @property {number} distance
  * @property {number} intensity
  */
+
+/**
+ * @typedef {Object} MaterialAnimationProperties
+ * @property {number} opacity
+ */
