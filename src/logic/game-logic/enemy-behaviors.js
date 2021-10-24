@@ -139,6 +139,8 @@ export class EnemyBehavior {
 
     this.#damagePlayer(attackDamage);
 
+    // TODO: Play SFX: "Enemy attack"
+
     // Animate
     await view.attack(x, z, look);
   };
@@ -281,6 +283,8 @@ export class EnemyBehavior {
     // Update prior to animate
     this.#state.look = toLook;
 
+    // TODO: Play SFX: "Enemy Footsteps - turning"
+
     // Animate
     await view.rotateLeft(x, z, fromLook);
   };
@@ -300,6 +304,8 @@ export class EnemyBehavior {
 
     // Update prior to animate
     this.#state.look = toLook;
+
+    // TODO: Play SFX: "Enemy Footsteps - turning"
 
     // Animate
     await view.rotateRight(x, z, fromLook);
@@ -326,6 +332,8 @@ export class EnemyBehavior {
     this.#state.position.x = toX;
     this.#state.position.z = toZ;
 
+    // TODO: Play SFX: "Enemy Footsteps"
+
     // Animate
     await view.moveForward(fromX, fromZ, look);
   };
@@ -350,6 +358,8 @@ export class EnemyBehavior {
     // Update prior to animate
     this.#state.position.x = toX;
     this.#state.position.z = toZ;
+
+    // TODO: Play SFX: "Enemy Footsteps"
 
     // Animate
     await view.moveBackward(fromX, fromZ, look);
@@ -376,6 +386,8 @@ export class EnemyBehavior {
     this.#state.position.x = toX;
     this.#state.position.z = toZ;
 
+    // TODO: Play SFX: "Enemy Footsteps"
+
     // Animate
     await view.strafeLeft(fromX, fromZ, look);
   };
@@ -400,6 +412,8 @@ export class EnemyBehavior {
     // Update prior to animate
     this.#state.position.x = toX;
     this.#state.position.z = toZ;
+
+    // TODO: Play SFX: "Enemy Footsteps"
 
     // Animate
     await view.strafeRight(fromX, fromZ, look);

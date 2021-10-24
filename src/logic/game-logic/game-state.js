@@ -148,11 +148,14 @@ export default class GameState {
     const t = player.health - d;
 
     if (t <= 0) {
+      // TODO: Play SFX: "Player death"
       this.gameOver();
       return;
     }
 
     player.health = clamp(t, 0, MAX_HEALTH);
+
+    // TODO: Play SFX: "Player damaged"
 
     // Animate damage indicator
     player.view.indicateDamage();
@@ -174,6 +177,8 @@ export default class GameState {
     const t = enemy.health - damage;
     enemy.health = clamp(t, 0, MAX_HEALTH);
 
+    // TODO: Play SFX: "Enemy damaged"
+
     // Animate hit!
     await enemy.view.damage();
 
@@ -183,6 +188,8 @@ export default class GameState {
 
     // Disable the enemy if it is dead
     enemy.enabled = false;
+
+    // TODO: Play SFX: "Enemy death"
 
     // Animate death!
     await enemy.view.death();

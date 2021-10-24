@@ -85,13 +85,22 @@ export default class PlayerBehavior {
     if (this.#isAttackInCooldown) return;
     this.#isAttackInCooldown = true;
 
+    if (this.#state.ammo <= 0) {
+      // No more ammo!
+      // TODO: Play SFX: "No Ammo"/"Gun empty"
+      return;
+    }
+
     const {
       position: { x, z },
       look,
       attackDamage,
     } = this.#state;
 
-    // TODO: Update ammo
+    // Update ammo
+    this.#addAmmo(-1);
+
+    // TODO: Play SFX: "Gun fire"
 
     // Animate muzzle flash
     this.#state.view.flashMuzzle();
@@ -145,10 +154,12 @@ export default class PlayerBehavior {
     switch (pu.kind) {
       case PickupKind.health:
         this.#heal(v);
+        // TODO: Play SFX: "Health pickup"
         break;
 
       case PickupKind.ammo:
         this.#addAmmo(v);
+        // TODO: Play SFX: "Ammo pickup"
         break;
 
       default:
@@ -191,6 +202,8 @@ export default class PlayerBehavior {
     // Update prior to animate
     this.#state.look = toLook;
 
+    // TODO: Play SFX: "Footsteps - turning"
+
     // Animate
     await view.rotateLeft(x, z, fromLook);
   };
@@ -207,6 +220,8 @@ export default class PlayerBehavior {
 
     // Update prior to animate
     this.#state.look = toLook;
+
+    // TODO: Play SFX: "Footsteps - turning"
 
     // Animate
     await view.rotateRight(x, z, fromLook);
@@ -233,6 +248,8 @@ export default class PlayerBehavior {
     // Consume any pickups
     this.#consumePickupAt(toX, toZ);
 
+    // TODO: Play SFX: "Footsteps"
+
     // Animate
     await view.moveForward(fromX, fromZ, look);
   };
@@ -257,6 +274,8 @@ export default class PlayerBehavior {
 
     // Consume any pickups
     this.#consumePickupAt(toX, toZ);
+
+    // TODO: Play SFX: "Footsteps"
 
     // Animate
     await view.moveBackward(fromX, fromZ, look);
@@ -283,6 +302,8 @@ export default class PlayerBehavior {
     // Consume any pickups
     this.#consumePickupAt(toX, toZ);
 
+    // TODO: Play SFX: "Footsteps"
+
     // Animate
     await view.strafeLeft(fromX, fromZ, look);
   };
@@ -307,6 +328,8 @@ export default class PlayerBehavior {
 
     // Consume any pickups
     this.#consumePickupAt(toX, toZ);
+
+    // TODO: Play SFX: "Footsteps"
 
     // Animate
     await view.strafeRight(fromX, fromZ, look);
