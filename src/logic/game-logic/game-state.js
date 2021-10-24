@@ -148,6 +148,8 @@ export default class GameState {
       this.gameOver();
     }
     player.health = clamp(t, 0, MAX_HEALTH);
+
+    // TODO: Show damage indicator (red screen)
   };
 
   /**
