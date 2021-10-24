@@ -1,12 +1,12 @@
 /**
- * @typedef {import('./index').PlayerAnimationTransform} PlayerAnimationTransform
+ * @typedef {import('./index').AnimationTransform} AnimationTransform
  */
 
 import anime from 'animejs';
 
 /**
- * @param {PlayerAnimationTransform} transform
- * @param {(transform: PlayerAnimationTransform) => void} onUpdate
+ * @param {AnimationTransform} transform
+ * @param {(transform: AnimationTransform) => void} onUpdate
  * @param {number} duration
  */
 export default function createMoveEastAnim(transform, onUpdate, duration) {

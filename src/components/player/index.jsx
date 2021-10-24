@@ -13,7 +13,7 @@ import Flashlight from './flashlight';
 import { mapXToPosX, mapZToPosZ, directionAngle } from '../../levels/common';
 import { Direction } from '../../utils/level-loader/common';
 
-import PlayerAnimationController from './animation-controller';
+import AnimationController from './animation-controller';
 
 export default function Player() {
   /**
@@ -53,7 +53,7 @@ export default function Player() {
  * @return {PlayerApi}
  */
 function makeApi(ref) {
-  const pac = new PlayerAnimationController(ref);
+  const pac = new AnimationController(ref);
 
   const setMapPos = (x, z) => {
     const px = mapXToPosX(x);

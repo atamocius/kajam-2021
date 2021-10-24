@@ -5,7 +5,7 @@
  */
 
 /**
- * @typedef {Object} PlayerAnimationTransform
+ * @typedef {Object} AnimationTransform
  * @property {number} x
  * @property {number} y
  * @property {number} z
@@ -27,7 +27,7 @@ import createRotateRightAnim from './rotate-right';
 const MOVE_DURATION = 300;
 const TURN_DURATION = 300;
 
-export default class PlayerAnimationController {
+export default class AnimationController {
   #playerRef;
 
   #transform;
@@ -55,7 +55,7 @@ export default class PlayerAnimationController {
   constructor(playerRef) {
     this.#playerRef = playerRef;
 
-    /** @type {PlayerAnimationTransform} */
+    /** @type {AnimationTransform} */
     this.#transform = {
       x: 0,
       // y: 0,
@@ -153,7 +153,7 @@ export default class PlayerAnimationController {
   }
 
   /**
-   * @param {PlayerAnimationTransform} transform
+   * @param {AnimationTransform} transform
    */
   #update = transform => {
     if (!this.#playerRef.current) {
