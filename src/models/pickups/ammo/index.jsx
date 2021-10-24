@@ -7,7 +7,7 @@ import React, { useRef, useEffect } from 'react';
 import { useInstancedModels } from '../../../meshes/instanced';
 import MeshInstance from '../../../meshes/helpers/mesh-instance';
 
-import { createInfiniteRotationAnim } from '../../../animations/infinite-rotation';
+import createInfiniteRotationAnim from '../../../animations/infinite-rotation';
 
 export default function Ammo(props) {
   const {

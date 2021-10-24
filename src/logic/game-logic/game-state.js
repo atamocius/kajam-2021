@@ -174,9 +174,6 @@ export default class GameState {
     const t = enemy.health - damage;
     enemy.health = clamp(t, 0, MAX_HEALTH);
 
-    // TODO: Animate player gun + light flash (use point light in front of player)
-    // TODO: Update ammo
-
     // Animate hit!
     await enemy.view.damage();
 

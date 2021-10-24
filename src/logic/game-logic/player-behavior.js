@@ -91,8 +91,14 @@ export default class PlayerBehavior {
       attackDamage,
     } = this.#state;
 
-    const enemy = this.#getVisibleEnemy(x, z, look);
+    // TODO: Update ammo
 
+    // Animate muzzle flash
+    this.#state.view.flash();
+
+    // TODO: Animate player gun
+
+    const enemy = this.#getVisibleEnemy(x, z, look);
     if (enemy) {
       this.#damageEnemy(enemy.index, attackDamage);
     }

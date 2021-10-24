@@ -9,7 +9,11 @@ import anime from 'animejs';
  * @param {(transform: AnimationTransform) => void} onUpdate
  * @param {number} duration
  */
-export function createInfiniteRotationAnim(transform, onUpdate, duration) {
+export default function createInfiniteRotationAnim(
+  transform,
+  onUpdate,
+  duration
+) {
   return anime({
     update: () => onUpdate(transform),
     autoplay: true,

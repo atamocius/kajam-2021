@@ -2,6 +2,7 @@
  * @typedef {import('@react-three/fiber').GroupProps} GroupProps
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
+ * @typedef {import('./muzzle-flash').MuzzleFlashApi} MuzzleFlashApi
  */
 
 import React, { useRef, useEffect } from 'react';
@@ -10,6 +11,8 @@ import { useGameLogic } from '../../logic/game-logic';
 
 import Camera from './camera';
 import Flashlight from './flashlight';
+import MuzzleFlash from './muzzle-flash';
+
 import { mapXToPosX, mapZToPosZ, directionAngle } from '../../levels/common';
 import { Direction } from '../../utils/level-loader/common';
 
@@ -20,17 +23,22 @@ export default function Player() {
    * @type {React.MutableRefObject<GroupProps>}
    */
   const ref = useRef();
+  /**
+   * @type {React.MutableRefObject<MuzzleFlashApi>}
+   */
+  const muzzleFlashRef = useRef();
 
   const { player } = useGameLogic();
 
   useEffect(() => {
-    const api = makeApi(ref);
+    const api = makeApi(ref, muzzleFlashRef);
     return player.register(api);
   }, []);
 
   return (
     <group ref={ref}>
       <Flashlight position={[0, 0.5, 0]} />
+      <MuzzleFlash ref={muzzleFlashRef} position={[0, 0.5, 1]} />
       <Camera position={[0, 0.5, 0]} />
     </group>
   );
@@ -46,13 +54,15 @@ export default function Player() {
  * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} moveBackward
  * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeLeft
  * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeRight
+ * @property {() => Promise<void>} flash
  */
 
 /**
  * @param {React.MutableRefObject<GroupProps>} ref
+ * @param {React.MutableRefObject<MuzzleFlashApi>} muzzleFlashRef
  * @return {PlayerApi}
  */
-function makeApi(ref) {
+function makeApi(ref, muzzleFlashRef) {
   const ac = new AnimationController(ref);
 
   const setMapPos = (x, z) => {
@@ -96,6 +106,10 @@ function makeApi(ref) {
     await ac.strafeRight();
   };
 
+  const flash = async () => {
+    await muzzleFlashRef.current.flash();
+  };
+
   return {
     setMapPos,
     setLook,
@@ -107,5 +121,7 @@ function makeApi(ref) {
     moveBackward,
     strafeLeft,
     strafeRight,
+
+    flash,
   };
 }

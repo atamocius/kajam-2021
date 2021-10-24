@@ -12,3 +12,9 @@ export {};
  * @property {number} scaleY
  * @property {number} scaleZ
  */
+
+/**
+ * @typedef {Object} LightAnimationProperties
+ * @property {number} distance
+ * @property {number} intensity
+ */
