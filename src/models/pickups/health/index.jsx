@@ -7,7 +7,7 @@ import React, { useRef, useEffect } from 'react';
 import { useInstancedModels } from '../../../meshes/instanced';
 import MeshInstance from '../../../meshes/helpers/mesh-instance';
 
-import { createAnim } from '../common';
+import { createInfiniteRotationAnim } from '../../../animations/infinite-rotation';
 
 export default function Health(props) {
   const {
@@ -24,9 +24,13 @@ export default function Health(props) {
       rotY: 0,
     };
 
-    const anim = createAnim(transform, t => {
-      ref.current.rotation.set(0, t.rotY, 0);
-    });
+    const anim = createInfiniteRotationAnim(
+      transform,
+      t => {
+        ref.current.rotation.set(0, t.rotY, 0);
+      },
+      5000
+    );
 
     return () => {
       anim.pause();
