@@ -3,6 +3,7 @@
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  * @typedef {import('./muzzle-flash').MuzzleFlashApi} MuzzleFlashApi
+ * @typedef {import('./blaster').BlasterApi} BlasterApi
  * @typedef {import('../damage-indicator').DamageIndicatorApi} DamageIndicatorApi
  */
 
@@ -19,6 +20,7 @@ import { Direction } from '../../utils/level-loader/common';
 
 import AnimationController from './animation-controller';
 import DamageIndicator from '../damage-indicator';
+import Blaster from './blaster';
 
 export default function Player() {
   /**
@@ -33,17 +35,26 @@ export default function Player() {
    * @type {React.MutableRefObject<DamageIndicatorApi>}
    */
   const dmgIndRef = useRef();
+  /**
+   * @type {React.MutableRefObject<BlasterApi>}
+   */
+  const gunRef = useRef();
 
   const { player } = useGameLogic();
 
   useEffect(() => {
-    const api = makeApi(ref, muzzleFlashRef, dmgIndRef);
+    const api = makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef);
     return player.register(api);
   }, []);
 
   return (
     <group ref={ref}>
       <Flashlight position={[0, 0.5, 0]} />
+      <Blaster
+        ref={gunRef}
+        position={[0, 0.388, 0.15]}
+        rotation={[Math.PI * -0.025, 0, 0]}
+      />
       <MuzzleFlash ref={muzzleFlashRef} position={[0, 0.5, 0]} />
       <Camera position={[0, 0.5, 0]} />
       <DamageIndicator
@@ -68,15 +79,17 @@ export default function Player() {
  * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeRight
  * @property {() => Promise<void>} flashMuzzle
  * @property {() => Promise<void>} indicateDamage
+ * @property {() => Promise<void>} recoilGun
  */
 
 /**
  * @param {React.MutableRefObject<GroupProps>} ref
  * @param {React.MutableRefObject<MuzzleFlashApi>} muzzleFlashRef
  * @param {React.MutableRefObject<DamageIndicatorApi>} dmgIndRef
+ * @param {React.MutableRefObject<BlasterApi>} gunRef
  * @return {PlayerApi}
  */
-function makeApi(ref, muzzleFlashRef, dmgIndRef) {
+function makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef) {
   const ac = new AnimationController(ref);
 
   const setMapPos = (x, z) => {
@@ -128,6 +141,10 @@ function makeApi(ref, muzzleFlashRef, dmgIndRef) {
     await dmgIndRef.current.flash();
   };
 
+  const recoilGun = async () => {
+    await gunRef.current.recoil();
+  };
+
   return {
     setMapPos,
     setLook,
@@ -142,5 +159,6 @@ function makeApi(ref, muzzleFlashRef, dmgIndRef) {
 
     flashMuzzle,
     indicateDamage,
+    recoilGun,
   };
 }

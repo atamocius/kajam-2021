@@ -108,7 +108,8 @@ export default class PlayerBehavior {
     // Animate muzzle flash
     this.#state.view.flashMuzzle();
 
-    // TODO: Animate player gun
+    // Animate player gun
+    this.#state.view.recoilGun();
 
     const enemy = this.#getVisibleEnemy(x, z, look);
     if (enemy) {
