@@ -90,7 +90,10 @@ export default class PlayerBehavior {
 
     if (this.#state.ammo <= 0) {
       // No more ammo!
+
       // TODO: Play SFX: "No Ammo"/"Gun empty"
+
+      this.#isAttackInCooldown = false;
       return;
     }
 
