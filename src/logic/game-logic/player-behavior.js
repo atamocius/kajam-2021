@@ -15,11 +15,8 @@ import {
   strafeLeftOffsetLookup,
   PickupKind,
   pickupDataLookup,
-  MAX_HEALTH,
-  MAX_AMMO,
   visibilityRayLookup,
 } from '../../levels/common';
-import { distance, line } from '../../utils/math';
 import { delay } from '../../utils/promise';
 
 export default class PlayerBehavior {
@@ -33,6 +30,8 @@ export default class PlayerBehavior {
   #heal;
   #addAmmo;
   #damageEnemy;
+
+  #isAttackInCooldown;
 
   /**
    * @param {GameState} gs
@@ -59,6 +58,8 @@ export default class PlayerBehavior {
     this.#heal = healPlayer;
     this.#addAmmo = addPlayerAmmo;
     this.#damageEnemy = damageEnemy;
+
+    this.#isAttackInCooldown = false;
   }
 
   /**
@@ -81,6 +82,9 @@ export default class PlayerBehavior {
   };
 
   attack = async () => {
+    if (this.#isAttackInCooldown) return;
+    this.#isAttackInCooldown = true;
+
     const {
       position: { x, z },
       look,
@@ -92,6 +96,9 @@ export default class PlayerBehavior {
     if (enemy) {
       this.#damageEnemy(enemy.index, attackDamage);
     }
+
+    await delay(this.#state.attackCooldown);
+    this.#isAttackInCooldown = false;
   };
 
   /**

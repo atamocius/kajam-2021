@@ -26,6 +26,7 @@
  * @property {number} health
  * @property {number} ammo
  * @property {number} attackDamage
+ * @property {number} attackCooldown
  */
 
 /**
@@ -59,6 +60,8 @@ import {
   MAX_HEALTH,
   MAX_AMMO,
 } from '../../levels/common';
+
+const PLAYER_ATTACK_COOLDOWN_MS = 200;
 
 export default class GameState {
   #state;
@@ -262,6 +265,7 @@ export default class GameState {
       health: 20,
       ammo: 15,
       attackDamage: 1,
+      attackCooldown: PLAYER_ATTACK_COOLDOWN_MS,
     };
 
     return state;
