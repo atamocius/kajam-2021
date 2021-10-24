@@ -22,9 +22,6 @@ import createAttackSouthAnim from '../../../animations/attack-south';
 import createAttackWestAnim from '../../../animations/attack-west';
 import createAttackEastAnim from '../../../animations/attack-east';
 
-import createDamageAnim from '../../../animations/damage';
-import createDeathAnim from '../../../animations/death';
-
 const MOVE_DURATION = 300;
 const TURN_DURATION = 300;
 
@@ -62,9 +59,6 @@ export default class AnimationController {
 
   #attackAnimLookup;
 
-  #damageAnim;
-  #deathAnim;
-
   /**
    * @param {React.MutableRefObject<GroupProps>} ref
    */
@@ -93,7 +87,6 @@ export default class AnimationController {
     this.#buildMoveAnims();
     this.#buildRotateAnims();
     this.#buildAttackAnims();
-    this.#buildDamageAndDeathAnims();
 
     this.#moveForwardAnimLookup = {
       [Direction.north]: this.#moveNorthAnim,
@@ -204,22 +197,6 @@ export default class AnimationController {
     });
   }
 
-  async damage() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#damageAnim;
-      a.play();
-      await a.finished;
-    });
-  }
-
-  async death() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#deathAnim;
-      a.play();
-      await a.finished;
-    });
-  }
-
   /**
    * @param {AnimationTransform} transform
    */
@@ -296,10 +273,5 @@ export default class AnimationController {
       ATTACK_DURATION,
       ATTACK_DISTANCE
     );
-  }
-
-  #buildDamageAndDeathAnims() {
-    this.#damageAnim = createDamageAnim(this.#transform, this.#update);
-    this.#deathAnim = createDeathAnim(this.#transform, this.#update);
   }
 }
