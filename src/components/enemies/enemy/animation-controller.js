@@ -34,7 +34,7 @@ const ATTACK_DISTANCE = 0.5;
 export default class AnimationController {
   #mutex;
 
-  #playerRef;
+  #ref;
 
   #transform;
   #x;
@@ -66,12 +66,12 @@ export default class AnimationController {
   #deathAnim;
 
   /**
-   * @param {React.MutableRefObject<GroupProps>} playerRef
+   * @param {React.MutableRefObject<GroupProps>} ref
    */
-  constructor(playerRef) {
+  constructor(ref) {
     this.#mutex = new Mutex();
 
-    this.#playerRef = playerRef;
+    this.#ref = ref;
 
     /** @type {AnimationTransform} */
     this.#transform = {
@@ -224,15 +224,15 @@ export default class AnimationController {
    * @param {AnimationTransform} transform
    */
   #update = transform => {
-    if (!this.#playerRef.current) {
+    if (!this.#ref.current) {
       return;
     }
 
     const t = transform;
 
-    this.#playerRef.current.position.set(this.#x + t.x, t.y, this.#z + t.z);
-    this.#playerRef.current.rotation.set(0, this.#rotY + t.rotY, 0);
-    this.#playerRef.current.scale.set(1, t.scaleY, 1);
+    this.#ref.current.position.set(this.#x + t.x, t.y, this.#z + t.z);
+    this.#ref.current.rotation.set(0, this.#rotY + t.rotY, 0);
+    this.#ref.current.scale.set(1, t.scaleY, 1);
   };
 
   #buildMoveAnims() {
