@@ -17,6 +17,7 @@ import {
   pickupDataLookup,
   MAX_HEALTH,
   MAX_AMMO,
+  visibilityRayLookup,
 } from '../../levels/common';
 import { distance, line } from '../../utils/math';
 import { delay } from '../../utils/promise';
@@ -28,8 +29,10 @@ export default class PlayerBehavior {
   #mapUtils;
   #isTileWalkable;
   #getPickupAt;
+  #getEnemyAt;
   #heal;
   #addAmmo;
+  #damageEnemy;
 
   /**
    * @param {GameState} gs
@@ -40,8 +43,10 @@ export default class PlayerBehavior {
       mapUtils,
       isTileWalkableByPlayer,
       getPickupAt,
+      getEnemyAt,
       healPlayer,
       addPlayerAmmo,
+      damageEnemy,
     } = gs;
 
     this.#state = state.player;
@@ -50,8 +55,10 @@ export default class PlayerBehavior {
     this.#mapUtils = mapUtils;
     this.#isTileWalkable = isTileWalkableByPlayer;
     this.#getPickupAt = getPickupAt;
+    this.#getEnemyAt = getEnemyAt;
     this.#heal = healPlayer;
     this.#addAmmo = addPlayerAmmo;
+    this.#damageEnemy = damageEnemy;
   }
 
   /**
@@ -73,31 +80,50 @@ export default class PlayerBehavior {
     };
   };
 
-  // canSeePlayer = () => {
-  //   const {
-  //     position: { x: px, z: pz },
-  //   } = this.#playerState;
-  //   const {
-  //     position: { x, z },
-  //   } = this.#state;
+  attack = async () => {
+    const {
+      position: { x, z },
+      look,
+      view,
+      attackDamage,
+    } = this.#state;
 
-  //   const visibilityLine = line({ x, y: z }, { x: px, y: pz });
-  //   for (const v of visibilityLine) {
-  //     if (this.#mapUtils.isVisionBlocker(v.x, v.y)) {
-  //       // NO: No line of sight; vision obscured
-  //       return false;
-  //     }
+    const enemy = this.#getVisibleEnemy(x, z, look);
 
-  //     // Is current tile the same position as the player?
-  //     if (v.x === px && v.y === pz) {
-  //       // YES: Has line of sight
-  //       return true;
-  //     }
-  //   }
+    if (enemy) {
+      this.#damageEnemy(enemy.index, attackDamage);
+      console.log(enemy);
+    }
 
-  //   // NO: No line of sight
-  //   return false;
-  // };
+    // Animate
+    // TODO: Animate the gun & a gun flash
+    // await view.attack(x, z, look);
+  };
+
+  /**
+   * @param {number} x
+   * @param {number} z
+   * @param {Direction} look
+   */
+  #getVisibleEnemy = (x, z, look) => {
+    const visibilityRay = visibilityRayLookup[look](x, z);
+
+    for (const v of visibilityRay) {
+      if (this.#mapUtils.isVisionBlocker(v.x, v.y)) {
+        // NO: No line of sight; vision obscured
+        return null;
+      }
+
+      const enemy = this.#getEnemyAt(v.x, v.y);
+      if (enemy) {
+        // YES: Found a visible enemy
+        return enemy;
+      }
+    }
+
+    // NO: No enemy found along the ray
+    return null;
+  };
 
   /**
    * @param {number} x

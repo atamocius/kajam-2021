@@ -115,7 +115,7 @@ function Content() {
         // Attack
         case 'Space':
           ev.preventDefault();
-          console.log('FIRE!');
+          await player.attack();
           break;
 
         default:

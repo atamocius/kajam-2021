@@ -127,6 +127,9 @@ export class EnemyBehavior {
   };
 
   attack = async () => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
     const {
       position: { x, z },
       look,
@@ -190,6 +193,9 @@ export class EnemyBehavior {
    * @param {Direction} dir
    */
   rotateTowards = async dir => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
     const { look } = this.#state;
 
     // Rotate to orient towards target direction
@@ -260,6 +266,11 @@ export class EnemyBehavior {
   };
 
   rotateLeft = async () => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
+    this.#state.isInvulnerable = true;
+
     const {
       position: { x, z },
       look,
@@ -274,9 +285,16 @@ export class EnemyBehavior {
 
     // Animate
     await view.rotateLeft(x, z, fromLook);
+
+    this.#state.isInvulnerable = false;
   };
 
   rotateRight = async () => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
+    this.#state.isInvulnerable = true;
+
     const {
       position: { x, z },
       look,
@@ -291,9 +309,16 @@ export class EnemyBehavior {
 
     // Animate
     await view.rotateRight(x, z, fromLook);
+
+    this.#state.isInvulnerable = false;
   };
 
   moveForward = async () => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
+    this.#state.isInvulnerable = true;
+
     const { position, look, view } = this.#state;
 
     const { x, z } = moveForwardOffsetLookup[look];
@@ -313,9 +338,16 @@ export class EnemyBehavior {
 
     // Animate
     await view.moveForward(fromX, fromZ, look);
+
+    this.#state.isInvulnerable = false;
   };
 
   moveBackward = async () => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
+    this.#state.isInvulnerable = true;
+
     const { position, look, view } = this.#state;
 
     const { x, z } = moveBackwardOffsetLookup[look];
@@ -335,9 +367,16 @@ export class EnemyBehavior {
 
     // Animate
     await view.moveBackward(fromX, fromZ, look);
+
+    this.#state.isInvulnerable = false;
   };
 
   strafeLeft = async () => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
+    this.#state.isInvulnerable = true;
+
     const { position, look, view } = this.#state;
 
     const { x, z } = strafeLeftOffsetLookup[look];
@@ -357,9 +396,16 @@ export class EnemyBehavior {
 
     // Animate
     await view.strafeLeft(fromX, fromZ, look);
+
+    this.#state.isInvulnerable = false;
   };
 
   strafeRight = async () => {
+    // Exit if it is disabled
+    if (!this.#state.enabled) return;
+
+    this.#state.isInvulnerable = true;
+
     const { position, look, view } = this.#state;
 
     const { x, z } = strafeRightOffsetLookup[look];
@@ -379,5 +425,7 @@ export class EnemyBehavior {
 
     // Animate
     await view.strafeRight(fromX, fromZ, look);
+
+    this.#state.isInvulnerable = false;
   };
 }

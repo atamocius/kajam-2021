@@ -38,6 +38,7 @@
  * @property {number} health
  * @property {number} attackDamage
  * @property {boolean} enabled
+ * @property {boolean} isInvulnerable
  */
 
 /**
@@ -159,7 +160,17 @@ export default class GameState {
     const {
       position: { x, z },
       look,
+      isInvulnerable,
+      enabled,
     } = enemy;
+
+    if (!enabled) {
+      return;
+    }
+
+    if (isInvulnerable) {
+      return;
+    }
 
     const t = enemy.health - damage;
     enemy.health = clamp(t, 0, MAX_HEALTH);
@@ -282,6 +293,7 @@ export default class GameState {
       health: healthClassLookup[healthClass],
       attackDamage: 1,
       enabled: true,
+      isInvulnerable: false,
     };
 
     return state;

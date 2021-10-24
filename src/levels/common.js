@@ -3,6 +3,7 @@
  */
 
 import { Direction } from '../utils/level-loader/common';
+import { line } from '../utils/math';
 
 export const directionAngle = {
   [Direction.north]: Math.PI,
@@ -103,4 +104,15 @@ export const pickupDataLookup = {
   [PickupKind.ammo]: {
     value: 7,
   },
+};
+
+const RAY_LENGTH = 50;
+
+export const visibilityRayLookup = {
+  [Direction.north]: (x, z) =>
+    line({ x: x, y: z }, { x: x, y: z - RAY_LENGTH }),
+  [Direction.south]: (x, z) =>
+    line({ x: x, y: z }, { x: x, y: z + RAY_LENGTH }),
+  [Direction.west]: (x, z) => line({ x: x, y: z }, { x: x - RAY_LENGTH, y: z }),
+  [Direction.east]: (x, z) => line({ x: x, y: z }, { x: x + RAY_LENGTH, y: z }),
 };

@@ -17,6 +17,8 @@
  * @property {number} scaleZ
  */
 
+import { Mutex } from 'async-mutex';
+
 import {
   mapXToPosX,
   mapZToPosZ,
@@ -46,6 +48,8 @@ const ATTACK_DURATION = 200;
 const ATTACK_DISTANCE = 0.5;
 
 export default class EnemyAnimationController {
+  #mutex;
+
   #playerRef;
 
   #transform;
@@ -81,6 +85,8 @@ export default class EnemyAnimationController {
    * @param {React.MutableRefObject<GroupProps>} playerRef
    */
   constructor(playerRef) {
+    this.#mutex = new Mutex();
+
     this.#playerRef = playerRef;
 
     /** @type {EnemyAnimationTransform} */
@@ -159,57 +165,75 @@ export default class EnemyAnimationController {
   }
 
   async moveForward() {
-    const a = this.#moveForwardAnimLookup[this.#look];
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#moveForwardAnimLookup[this.#look];
+      a.play();
+      await a.finished;
+    });
   }
 
   async moveBackward() {
-    const a = this.#moveBackwardAnimLookup[this.#look];
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#moveBackwardAnimLookup[this.#look];
+      a.play();
+      await a.finished;
+    });
   }
 
   async strafeLeft() {
-    const a = this.#strafeLeftAnimLookup[this.#look];
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#strafeLeftAnimLookup[this.#look];
+      a.play();
+      await a.finished;
+    });
   }
 
   async strafeRight() {
-    const a = this.#strafeRightAnimLookup[this.#look];
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#strafeRightAnimLookup[this.#look];
+      a.play();
+      await a.finished;
+    });
   }
 
   async rotateLeft() {
-    const a = this.#rotateLeftAnim;
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#rotateLeftAnim;
+      a.play();
+      await a.finished;
+    });
   }
 
   async rotateRight() {
-    const a = this.#rotateRightAnim;
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#rotateRightAnim;
+      a.play();
+      await a.finished;
+    });
   }
 
   async attack() {
-    const a = this.#attackAnimLookup[this.#look];
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#attackAnimLookup[this.#look];
+      a.play();
+      await a.finished;
+    });
   }
 
   async damage() {
-    const a = this.#damageAnim;
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#damageAnim;
+      a.play();
+      await a.finished;
+    });
   }
 
   async death() {
-    const a = this.#deathAnim;
-    a.play();
-    await a.finished;
+    await this.#mutex.runExclusive(async () => {
+      const a = this.#deathAnim;
+      a.play();
+      await a.finished;
+    });
   }
 
   /**
