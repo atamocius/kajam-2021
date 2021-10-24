@@ -12,6 +12,7 @@ import { mapXToPosX, mapZToPosZ, directionAngle } from '../../../levels/common';
 import { Direction } from '../../../utils/level-loader/common';
 
 import AnimationController from './animation-controller';
+import LocalAnimationController from './local-animation-controller';
 
 export default function Enemy({ index, children }) {
   /**
@@ -19,14 +20,23 @@ export default function Enemy({ index, children }) {
    */
   const ref = useRef();
 
+  /**
+   * @type {React.MutableRefObject<GroupProps>}
+   */
+  const localRef = useRef();
+
   const { enemies } = useGameLogic();
 
   useEffect(() => {
-    const api = makeApi(ref);
+    const api = makeApi(ref, localRef);
     return enemies.get(index).register(api);
   }, []);
 
-  return <group ref={ref}>{children}</group>;
+  return (
+    <group ref={ref}>
+      <group ref={localRef}>{children}</group>
+    </group>
+  );
 }
 
 /**
@@ -41,16 +51,18 @@ export default function Enemy({ index, children }) {
  * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeLeft
  * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeRight
  * @property {(x: number, z: number, look: number) => Promise<void>} attack
- * @property {(x: number, z: number, look: number) => Promise<void>} damage
- * @property {(x: number, z: number, look: number) => Promise<void>} death
+ * @property {() => Promise<void>} damage
+ * @property {() => Promise<void>} death
  */
 
 /**
  * @param {React.MutableRefObject<GroupProps>} ref
+ * @param {React.MutableRefObject<GroupProps>} localRef
  * @return {EnemyApi}
  */
-function makeApi(ref) {
+function makeApi(ref, localRef) {
   const ac = new AnimationController(ref);
+  const lac = new LocalAnimationController(localRef);
 
   const setMapPos = (x, z) => {
     const px = mapXToPosX(x);
@@ -106,14 +118,14 @@ function makeApi(ref) {
     await ac.attack();
   };
 
-  const damage = async (x, z, look) => {
-    ac.reset(x, z, look);
-    await ac.damage();
+  const damage = async () => {
+    lac.reset();
+    await lac.damage();
   };
 
-  const death = async (x, z, look) => {
-    ac.reset(x, z, look);
-    await ac.death();
+  const death = async () => {
+    lac.reset();
+    await lac.death();
   };
 
   return {

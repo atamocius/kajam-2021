@@ -269,8 +269,6 @@ export class EnemyBehavior {
     // Exit if it is disabled
     if (!this.#state.enabled) return;
 
-    this.#state.isInvulnerable = true;
-
     const {
       position: { x, z },
       look,
@@ -285,15 +283,11 @@ export class EnemyBehavior {
 
     // Animate
     await view.rotateLeft(x, z, fromLook);
-
-    this.#state.isInvulnerable = false;
   };
 
   rotateRight = async () => {
     // Exit if it is disabled
     if (!this.#state.enabled) return;
-
-    this.#state.isInvulnerable = true;
 
     const {
       position: { x, z },
@@ -309,15 +303,11 @@ export class EnemyBehavior {
 
     // Animate
     await view.rotateRight(x, z, fromLook);
-
-    this.#state.isInvulnerable = false;
   };
 
   moveForward = async () => {
     // Exit if it is disabled
     if (!this.#state.enabled) return;
-
-    this.#state.isInvulnerable = true;
 
     const { position, look, view } = this.#state;
 
@@ -338,15 +328,11 @@ export class EnemyBehavior {
 
     // Animate
     await view.moveForward(fromX, fromZ, look);
-
-    this.#state.isInvulnerable = false;
   };
 
   moveBackward = async () => {
     // Exit if it is disabled
     if (!this.#state.enabled) return;
-
-    this.#state.isInvulnerable = true;
 
     const { position, look, view } = this.#state;
 
@@ -367,15 +353,11 @@ export class EnemyBehavior {
 
     // Animate
     await view.moveBackward(fromX, fromZ, look);
-
-    this.#state.isInvulnerable = false;
   };
 
   strafeLeft = async () => {
     // Exit if it is disabled
     if (!this.#state.enabled) return;
-
-    this.#state.isInvulnerable = true;
 
     const { position, look, view } = this.#state;
 
@@ -396,15 +378,11 @@ export class EnemyBehavior {
 
     // Animate
     await view.strafeLeft(fromX, fromZ, look);
-
-    this.#state.isInvulnerable = false;
   };
 
   strafeRight = async () => {
     // Exit if it is disabled
     if (!this.#state.enabled) return;
-
-    this.#state.isInvulnerable = true;
 
     const { position, look, view } = this.#state;
 
@@ -425,7 +403,5 @@ export class EnemyBehavior {
 
     // Animate
     await view.strafeRight(fromX, fromZ, look);
-
-    this.#state.isInvulnerable = false;
   };
 }

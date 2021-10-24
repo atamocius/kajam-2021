@@ -38,7 +38,6 @@
  * @property {number} health
  * @property {number} attackDamage
  * @property {boolean} enabled
- * @property {boolean} isInvulnerable
  */
 
 /**
@@ -160,17 +159,12 @@ export default class GameState {
     const { enemies } = this.#state;
     const enemy = enemies[index];
     const {
-      position: { x, z },
-      look,
-      isInvulnerable,
+      // position: { x, z },
+      // look,
       enabled,
     } = enemy;
 
     if (!enabled) {
-      return;
-    }
-
-    if (isInvulnerable) {
       return;
     }
 
@@ -181,7 +175,7 @@ export default class GameState {
     // TODO: Update ammo
 
     // Animate hit!
-    await enemy.view.damage(x, z, look);
+    await enemy.view.damage();
 
     if (enemy.health > 0) {
       return;
@@ -191,7 +185,7 @@ export default class GameState {
     enemy.enabled = false;
 
     // Animate death!
-    await enemy.view.death(x, z, look);
+    await enemy.view.death();
     enemy.view.setVisibility(false);
   };
 
@@ -298,7 +292,6 @@ export default class GameState {
       health: healthClassLookup[healthClass],
       attackDamage: 1,
       enabled: true,
-      isInvulnerable: false,
     };
 
     return state;
