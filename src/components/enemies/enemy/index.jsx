@@ -11,7 +11,7 @@ import { useGameLogic } from '../../../logic/game-logic';
 import { mapXToPosX, mapZToPosZ, directionAngle } from '../../../levels/common';
 import { Direction } from '../../../utils/level-loader/common';
 
-import EnemyAnimationController from './animation-controller';
+import AnimationController from './animation-controller';
 
 export default function Enemy({ index, children }) {
   /**
@@ -50,7 +50,7 @@ export default function Enemy({ index, children }) {
  * @return {EnemyApi}
  */
 function makeApi(ref) {
-  const pac = new EnemyAnimationController(ref);
+  const pac = new AnimationController(ref);
 
   const setMapPos = (x, z) => {
     const px = mapXToPosX(x);

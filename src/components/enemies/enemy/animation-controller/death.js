@@ -1,12 +1,12 @@
 /**
- * @typedef {import('./index').EnemyAnimationTransform} EnemyAnimationTransform
+ * @typedef {import('./index').AnimationTransform} AnimationTransform
  */
 
 import anime from 'animejs';
 
 /**
- * @param {EnemyAnimationTransform} transform
- * @param {(transform: EnemyAnimationTransform) => void} onUpdate
+ * @param {AnimationTransform} transform
+ * @param {(transform: AnimationTransform) => void} onUpdate
  */
 export default function createDeathAnim(transform, onUpdate) {
   return anime({

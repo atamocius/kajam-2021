@@ -5,7 +5,7 @@
  */
 
 /**
- * @typedef {Object} EnemyAnimationTransform
+ * @typedef {Object} AnimationTransform
  * @property {number} x
  * @property {number} y
  * @property {number} z
@@ -47,7 +47,7 @@ const TURN_DURATION = 300;
 const ATTACK_DURATION = 200;
 const ATTACK_DISTANCE = 0.5;
 
-export default class EnemyAnimationController {
+export default class AnimationController {
   #mutex;
 
   #playerRef;
@@ -89,7 +89,7 @@ export default class EnemyAnimationController {
 
     this.#playerRef = playerRef;
 
-    /** @type {EnemyAnimationTransform} */
+    /** @type {AnimationTransform} */
     this.#transform = {
       x: 0,
       y: 0,
@@ -237,7 +237,7 @@ export default class EnemyAnimationController {
   }
 
   /**
-   * @param {EnemyAnimationTransform} transform
+   * @param {AnimationTransform} transform
    */
   #update = transform => {
     if (!this.#playerRef.current) {
