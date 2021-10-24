@@ -19,10 +19,7 @@ export default function Flashlight({ position, rotation }) {
         ref={spotLightRef}
         object={spotLight}
         position={[0, 0, 0]}
-        // color={0xffffff}
-        // angle={Math.PI / 24}
-        // angle={Math.PI / 12}
-        angle={Math.PI / 6}
+        angle={Math.PI / 5.7}
         distance={8}
         intensity={0.7}
         penumbra={0.2}
