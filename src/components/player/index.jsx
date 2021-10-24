@@ -53,7 +53,7 @@ export default function Player() {
  * @return {PlayerApi}
  */
 function makeApi(ref) {
-  const pac = new AnimationController(ref);
+  const ac = new AnimationController(ref);
 
   const setMapPos = (x, z) => {
     const px = mapXToPosX(x);
@@ -67,33 +67,33 @@ function makeApi(ref) {
   };
 
   const rotateLeft = async (x, z, fromLook) => {
-    pac.reset(x, z, fromLook);
-    await pac.rotateLeft();
+    ac.reset(x, z, fromLook);
+    await ac.rotateLeft();
   };
 
   const rotateRight = async (x, z, fromLook) => {
-    pac.reset(x, z, fromLook);
-    await pac.rotateRight();
+    ac.reset(x, z, fromLook);
+    await ac.rotateRight();
   };
 
   const moveForward = async (fromX, fromZ, look) => {
-    pac.reset(fromX, fromZ, look);
-    await pac.moveForward();
+    ac.reset(fromX, fromZ, look);
+    await ac.moveForward();
   };
 
   const moveBackward = async (fromX, fromZ, look) => {
-    pac.reset(fromX, fromZ, look);
-    await pac.moveBackward();
+    ac.reset(fromX, fromZ, look);
+    await ac.moveBackward();
   };
 
   const strafeLeft = async (fromX, fromZ, look) => {
-    pac.reset(fromX, fromZ, look);
-    await pac.strafeLeft();
+    ac.reset(fromX, fromZ, look);
+    await ac.strafeLeft();
   };
 
   const strafeRight = async (fromX, fromZ, look) => {
-    pac.reset(fromX, fromZ, look);
-    await pac.strafeRight();
+    ac.reset(fromX, fromZ, look);
+    await ac.strafeRight();
   };
 
   return {
