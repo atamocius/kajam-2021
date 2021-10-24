@@ -52,14 +52,7 @@
 
 import clamp from 'lodash-es/clamp';
 
-import { delay } from '../../utils/promise';
-import {
-  healthClassLookup,
-  PickupKind,
-  pickupDataLookup,
-  MAX_HEALTH,
-  MAX_AMMO,
-} from '../../levels/common';
+import { healthClassLookup, MAX_HEALTH, MAX_AMMO } from '../../levels/common';
 
 const PLAYER_ATTACK_COOLDOWN_MS = 200;
 
@@ -68,6 +61,7 @@ export default class GameState {
   #mapUtils;
 
   #gameOverEvent;
+  #exitLevelEvent;
 
   /**
    * @param {LoadedLevelData} level
@@ -76,16 +70,17 @@ export default class GameState {
     const { logic, utils } = level;
     const {
       start,
-      goal,
       entities: { enemies, pickups },
     } = logic;
 
     this.#mapUtils = utils;
 
     this.#gameOverEvent = new Event('gameOver');
+    this.#exitLevelEvent = new Event('exitLevel');
 
     this.#state = {
       isGameOver: false,
+      hasExitedLevel: false,
       player: this.#createPlayerState(start),
       enemies: enemies.map(this.#createEnemyState),
       pickups: pickups.map(this.#createPickupState),
@@ -107,6 +102,10 @@ export default class GameState {
     return this.#state.isGameOver;
   };
 
+  hasExitedLevel = () => {
+    return this.#state.hasExitedLevel;
+  };
+
   /**
    * @param {() => void} listener
    * @returns {() => void} Unsubscribe function.
@@ -116,12 +115,29 @@ export default class GameState {
     return () => document.removeEventListener('gameOver', listener, false);
   };
 
+  /**
+   * @param {() => void} listener
+   * @returns {() => void} Unsubscribe function.
+   */
+  addExitLevelListener = listener => {
+    document.addEventListener('exitLevel', listener, false);
+    return () => document.removeEventListener('exitLevel', listener, false);
+  };
+
   gameOver = () => {
     if (this.#state.isGameOver) {
       return;
     }
     this.#state.isGameOver = true;
     document.dispatchEvent(this.#gameOverEvent);
+  };
+
+  exitLevel = () => {
+    if (this.#state.hasExitedLevel) {
+      return;
+    }
+    this.#state.hasExitedLevel = true;
+    document.dispatchEvent(this.#exitLevelEvent);
   };
 
   /**

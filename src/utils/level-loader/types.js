@@ -116,4 +116,6 @@ export {};
  *
  * @property {(x: number, z: number) => boolean} isWalkable
  * @property {(x: number, z: number) => boolean} isVisionBlocker
+ *
+ * @property {(x: number, z: number) => boolean} isGoal
  */

@@ -17,6 +17,7 @@ export default function createMapUtilFuncs(map) {
   const { width: mapWidth } = map.size;
   const { floors: floorTileIndices, walls: wallTileIndices } = map.types;
   const { props, pickups } = map.logic.entities;
+  const { goal } = map.logic;
 
   const indexToCoords = memoize(
     /**
@@ -163,6 +164,17 @@ export default function createMapUtilFuncs(map) {
     (x, z) => `${x}_${z}`
   );
 
+  const isGoal = memoize(
+    /**
+     * @param {number} x
+     * @param {number} z
+     */
+    (x, z) => {
+      return goal.x === x && goal.z === z;
+    },
+    (x, z) => `${x}_${z}`
+  );
+
   return {
     indexToCoords,
     coordsToIndex,
@@ -184,5 +196,7 @@ export default function createMapUtilFuncs(map) {
     // Validation
     isWalkable,
     isVisionBlocker,
+
+    isGoal,
   };
 }

@@ -52,18 +52,23 @@ export default function Level0() {
 const mutex = new Mutex();
 
 function Content() {
-  const { addGameOverListener, isGameOver, player, enemies } = useGameLogic();
+  const {
+    addGameOverListener,
+    isGameOver,
+    addExitLevelListener,
+    hasExitedLevel,
+    player,
+  } = useGameLogic();
 
-  useEffect(() => {
-    const unsub = addGameOverListener(() => console.log('GAME OVER!!!'));
-    return unsub;
-  }, []);
+  useEffect(() => addGameOverListener(() => console.log('GAME OVER!!!')), []);
+
+  useEffect(() => addExitLevelListener(() => console.log('GOAL!!!')), []);
 
   /**
    * @param {KeyboardEvent} ev
    */
   const handleKeyDown = async ev => {
-    if (isGameOver()) {
+    if (isGameOver() || hasExitedLevel()) {
       return;
     }
 

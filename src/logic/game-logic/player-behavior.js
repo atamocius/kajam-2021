@@ -30,6 +30,7 @@ export default class PlayerBehavior {
   #heal;
   #addAmmo;
   #damageEnemy;
+  #exitLevel;
 
   #isAttackInCooldown;
 
@@ -46,6 +47,7 @@ export default class PlayerBehavior {
       healPlayer,
       addPlayerAmmo,
       damageEnemy,
+      exitLevel,
     } = gs;
 
     this.#state = state.player;
@@ -58,6 +60,7 @@ export default class PlayerBehavior {
     this.#heal = healPlayer;
     this.#addAmmo = addPlayerAmmo;
     this.#damageEnemy = damageEnemy;
+    this.#exitLevel = exitLevel;
 
     this.#isAttackInCooldown = false;
   }
@@ -171,6 +174,21 @@ export default class PlayerBehavior {
     pu.view.setVisibility(false);
   };
 
+  #checkIfAtGoal = () => {
+    const {
+      position: { x, z },
+    } = this.#state;
+
+    const atGoal = this.#mapUtils.isGoal(x, z);
+
+    if (!atGoal) {
+      return;
+    }
+
+    // Exit the level if already at the goal!
+    this.#exitLevel();
+  };
+
   /**
    * @param {number} x
    * @param {number} z
@@ -252,6 +270,8 @@ export default class PlayerBehavior {
 
     // Animate
     await view.moveForward(fromX, fromZ, look);
+
+    this.#checkIfAtGoal();
   };
 
   moveBackward = async () => {
@@ -279,6 +299,8 @@ export default class PlayerBehavior {
 
     // Animate
     await view.moveBackward(fromX, fromZ, look);
+
+    this.#checkIfAtGoal();
   };
 
   strafeLeft = async () => {
@@ -306,6 +328,8 @@ export default class PlayerBehavior {
 
     // Animate
     await view.strafeLeft(fromX, fromZ, look);
+
+    this.#checkIfAtGoal();
   };
 
   strafeRight = async () => {
@@ -333,5 +357,7 @@ export default class PlayerBehavior {
 
     // Animate
     await view.strafeRight(fromX, fromZ, look);
+
+    this.#checkIfAtGoal();
   };
 }
