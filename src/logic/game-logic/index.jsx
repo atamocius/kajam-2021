@@ -23,9 +23,6 @@ export function GameLogicProvider({ children }) {
   const gs = new GameState(level);
 
   const api = {
-    // debug: {
-    //   damageEnemy: gs.damageEnemy,
-    // },
     isGameOver: gs.isGameOver,
     addGameOverListener: gs.addGameOverListener,
     player: new PlayerBehavior(gs),

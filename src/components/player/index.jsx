@@ -40,12 +40,12 @@ export default function Player() {
  * @typedef {Object} PlayerApi
  * @property {(x: number, z: number) => void} setMapPos
  * @property {(look: Direction) => void} setLook
- * @property {() => Promise<void>} rotateRight
- * @property {() => Promise<void>} rotateLeft
- * @property {() => Promise<void>} moveForward
- * @property {() => Promise<void>} moveBackward
- * @property {() => Promise<void>} strafeLeft
- * @property {() => Promise<void>} strafeRight
+ * @property {(x: number, z: number, fromLook: number) => Promise<void>} rotateRight
+ * @property {(x: number, z: number, fromLook: number) => Promise<void>} rotateLeft
+ * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} moveForward
+ * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} moveBackward
+ * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeLeft
+ * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeRight
  */
 
 /**

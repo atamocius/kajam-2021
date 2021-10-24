@@ -153,12 +153,19 @@ export default class GameState {
    * @param {number} index
    * @param {number} damage
    */
-  damageEnemy = (index, damage) => {
+  damageEnemy = async (index, damage) => {
     const { enemies } = this.#state;
     const enemy = enemies[index];
+    const {
+      position: { x, z },
+      look,
+    } = enemy;
 
     const t = enemy.health - damage;
     enemy.health = clamp(t, 0, MAX_HEALTH);
+
+    // Animate hit!
+    await enemy.view.damage(x, z, look);
 
     if (enemy.health > 0) {
       return;
@@ -167,7 +174,8 @@ export default class GameState {
     // Disable the enemy if it is dead
     enemy.enabled = false;
 
-    // TODO: Animate! No need to await
+    // Animate death!
+    await enemy.view.death(x, z, look);
     enemy.view.setVisibility(false);
   };
 
@@ -206,34 +214,6 @@ export default class GameState {
     this.#state.pickups.find(
       p => p.enabled && p.position.x === x && p.position.z === z
     );
-
-  // /**
-  //  * @param {number} x
-  //  * @param {number} z
-  //  */
-  // consumePickupAt = async (x, z) => {
-  //   const pu = this.getPickupAt(x, z);
-  //   if (!pu || !pu.enabled) return;
-  //   pu.enabled = false;
-  //   // TODO: Do calculations and state updates
-
-  //   // const v = pickupDataLookup[pu.kind].value;
-  //   // switch (pu.kind) {
-  //   //   case PickupKind.health:
-  //   //     this.healPlayer()
-  //   //     break;
-
-  //   //   case PickupKind.health:
-  //   //     break;
-
-  //   //   default:
-  //   //     break;
-  //   // }
-
-  //   // Add a bit of delay so it does not disappear right away
-  //   await delay(150);
-  //   pu.view.setVisibility(false);
-  // };
 
   /**
    * @param {number} x

@@ -34,13 +34,15 @@ export default function Enemy({ index, children }) {
  * @property {(x: number, z: number) => void} setMapPos
  * @property {(look: Direction) => void} setLook
  * @property {(isVisible: boolean) => void} setVisibility
- * @property {() => Promise<void>} rotateRight
- * @property {() => Promise<void>} rotateLeft
- * @property {() => Promise<void>} moveForward
- * @property {() => Promise<void>} moveBackward
- * @property {() => Promise<void>} strafeLeft
- * @property {() => Promise<void>} strafeRight
- * @property {() => Promise<void>} attack
+ * @property {(x: number, z: number, fromLook: number) => Promise<void>} rotateLeft
+ * @property {(x: number, z: number, fromLook: number) => Promise<void>} rotateRight
+ * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} moveForward
+ * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} moveBackward
+ * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeLeft
+ * @property {(fromX: number, fromZ: number, look: number) => Promise<void>} strafeRight
+ * @property {(x: number, z: number, look: number) => Promise<void>} attack
+ * @property {(x: number, z: number, look: number) => Promise<void>} damage
+ * @property {(x: number, z: number, look: number) => Promise<void>} death
  */
 
 /**
@@ -99,9 +101,19 @@ function makeApi(ref) {
     await pac.strafeRight();
   };
 
-  const attack = async (fromX, fromZ, look) => {
-    pac.reset(fromX, fromZ, look);
+  const attack = async (x, z, look) => {
+    pac.reset(x, z, look);
     await pac.attack();
+  };
+
+  const damage = async (x, z, look) => {
+    pac.reset(x, z, look);
+    await pac.damage();
+  };
+
+  const death = async (x, z, look) => {
+    pac.reset(x, z, look);
+    await pac.death();
   };
 
   return {
@@ -118,5 +130,7 @@ function makeApi(ref) {
     strafeRight,
 
     attack,
+    damage,
+    death,
   };
 }

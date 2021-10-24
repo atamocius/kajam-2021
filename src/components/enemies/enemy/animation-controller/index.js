@@ -12,6 +12,9 @@
  * @property {number} rotX
  * @property {number} rotY
  * @property {number} rotZ
+ * @property {number} scaleX
+ * @property {number} scaleY
+ * @property {number} scaleZ
  */
 
 import {
@@ -32,6 +35,9 @@ import createAttackNorthAnim from './attack-north';
 import createAttackSouthAnim from './attack-south';
 import createAttackWestAnim from './attack-west';
 import createAttackEastAnim from './attack-east';
+
+import createDamageAnim from './damage';
+import createDeathAnim from './death';
 
 const MOVE_DURATION = 300;
 const TURN_DURATION = 300;
@@ -68,6 +74,9 @@ export default class EnemyAnimationController {
 
   #attackAnimLookup;
 
+  #damageAnim;
+  #deathAnim;
+
   /**
    * @param {React.MutableRefObject<GroupProps>} playerRef
    */
@@ -77,11 +86,14 @@ export default class EnemyAnimationController {
     /** @type {EnemyAnimationTransform} */
     this.#transform = {
       x: 0,
-      // y: 0,
+      y: 0,
       z: 0,
       // rotX: 0,
       rotY: 0,
       // rotZ: 0,
+      // scaleX: 0,
+      scaleY: 0,
+      // scaleZ: 0,
     };
 
     this.#x = 0;
@@ -91,6 +103,7 @@ export default class EnemyAnimationController {
     this.#buildMoveAnims();
     this.#buildRotateAnims();
     this.#buildAttackAnims();
+    this.#buildDamageAndDeathAnims();
 
     this.#moveForwardAnimLookup = {
       [Direction.north]: this.#moveNorthAnim,
@@ -137,8 +150,10 @@ export default class EnemyAnimationController {
     this.#rotY = directionAngle[look];
 
     this.#transform.x = 0;
+    this.#transform.y = 0;
     this.#transform.z = 0;
     this.#transform.rotY = 0;
+    this.#transform.scaleY = 1;
 
     this.#update(this.#transform);
   }
@@ -185,6 +200,18 @@ export default class EnemyAnimationController {
     await a.finished;
   }
 
+  async damage() {
+    const a = this.#damageAnim;
+    a.play();
+    await a.finished;
+  }
+
+  async death() {
+    const a = this.#deathAnim;
+    a.play();
+    await a.finished;
+  }
+
   /**
    * @param {EnemyAnimationTransform} transform
    */
@@ -195,8 +222,9 @@ export default class EnemyAnimationController {
 
     const t = transform;
 
-    this.#playerRef.current.position.set(this.#x + t.x, 0, this.#z + t.z);
+    this.#playerRef.current.position.set(this.#x + t.x, t.y, this.#z + t.z);
     this.#playerRef.current.rotation.set(0, this.#rotY + t.rotY, 0);
+    this.#playerRef.current.scale.set(1, t.scaleY, 1);
   };
 
   #buildMoveAnims() {
@@ -260,5 +288,10 @@ export default class EnemyAnimationController {
       ATTACK_DURATION,
       ATTACK_DISTANCE
     );
+  }
+
+  #buildDamageAndDeathAnims() {
+    this.#damageAnim = createDamageAnim(this.#transform, this.#update);
+    this.#deathAnim = createDeathAnim(this.#transform, this.#update);
   }
 }

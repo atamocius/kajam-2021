@@ -77,7 +77,6 @@ function Content() {
           // console.log('🔫', c);
           // e.findPathToPlayer();
           // enemies.moveTowardsPlayer();
-
           // debug.damageEnemy(0, 1);
           break;
 
