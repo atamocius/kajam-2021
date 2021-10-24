@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./index').AnimationTransform} AnimationTransform
+ * @typedef {import('./types').AnimationTransform} AnimationTransform
  */
 
 import anime from 'animejs';
@@ -9,7 +9,7 @@ import anime from 'animejs';
  * @param {(transform: AnimationTransform) => void} onUpdate
  * @param {number} duration
  */
-export default function createRotateLeftAnim(transform, onUpdate, duration) {
+export default function createRotateRightAnim(transform, onUpdate, duration) {
   return anime({
     update: () => onUpdate(transform),
     autoplay: false,
@@ -18,7 +18,7 @@ export default function createRotateLeftAnim(transform, onUpdate, duration) {
     rotY: [
       { value: 0, duration: 0 },
       {
-        value: Math.PI * 0.5,
+        value: -Math.PI * 0.5,
         duration,
         easing: 'easeInOutSine',
       },

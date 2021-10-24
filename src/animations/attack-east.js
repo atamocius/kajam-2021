@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./index').AnimationTransform} AnimationTransform
+ * @typedef {import('./types').AnimationTransform} AnimationTransform
  */
 
 import anime from 'animejs';
@@ -8,8 +8,14 @@ import anime from 'animejs';
  * @param {AnimationTransform} transform
  * @param {(transform: AnimationTransform) => void} onUpdate
  * @param {number} duration
+ * @param {number} distance
  */
-export default function createMoveWestAnim(transform, onUpdate, duration) {
+export default function createAttackEastAnim(
+  transform,
+  onUpdate,
+  duration,
+  distance
+) {
   return anime({
     update: () => onUpdate(transform),
     autoplay: false,
@@ -18,9 +24,14 @@ export default function createMoveWestAnim(transform, onUpdate, duration) {
     x: [
       { value: 0, duration: 0 },
       {
-        value: -1,
+        value: distance,
         duration,
-        easing: 'easeInOutSine',
+        easing: 'easeInSine',
+      },
+      {
+        value: 0,
+        duration,
+        easing: 'easeOutSine',
       },
     ],
     z: [{ value: 0, duration: 0 }],

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./index').AnimationTransform} AnimationTransform
+ * @typedef {import('./types').AnimationTransform} AnimationTransform
  */
 
 import anime from 'animejs';
@@ -10,7 +10,7 @@ import anime from 'animejs';
  * @param {number} duration
  * @param {number} distance
  */
-export default function createAttackNorthAnim(
+export default function createAttackSouthAnim(
   transform,
   onUpdate,
   duration,
@@ -25,7 +25,7 @@ export default function createAttackNorthAnim(
     z: [
       { value: 0, duration: 0 },
       {
-        value: -distance,
+        value: distance,
         duration,
         easing: 'easeInSine',
       },

@@ -1,28 +1,19 @@
 /**
+ * @typedef {import('../../animations/types').AnimationTransform} AnimationTransform
  * @typedef {import('@react-three/fiber').GroupProps} GroupProps
- * @typedef {import('../../../utils/level-loader/types').Direction} Direction
- * @typedef {import('..').PlayerApi} PlayerApi
+ * @typedef {import('../../utils/level-loader/types').Direction} Direction
+ * @typedef {import('./').PlayerApi} PlayerApi
  */
 
-/**
- * @typedef {Object} AnimationTransform
- * @property {number} x
- * @property {number} y
- * @property {number} z
- * @property {number} rotX
- * @property {number} rotY
- * @property {number} rotZ
- */
+import { mapXToPosX, mapZToPosZ, directionAngle } from '../../levels/common';
+import { Direction } from '../../utils/level-loader/common';
 
-import { mapXToPosX, mapZToPosZ, directionAngle } from '../../../levels/common';
-import { Direction } from '../../../utils/level-loader/common';
-
-import createMoveNorthAnim from './move-north';
-import createMoveSouthAnim from './move-south';
-import createMoveWestAnim from './move-west';
-import createMoveEastAnim from './move-east';
-import createRotateLeftAnim from './rotate-left';
-import createRotateRightAnim from './rotate-right';
+import createMoveNorthAnim from '../../animations/move-north';
+import createMoveSouthAnim from '../../animations/move-south';
+import createMoveWestAnim from '../../animations/move-west';
+import createMoveEastAnim from '../../animations/move-east';
+import createRotateLeftAnim from '../../animations/rotate-left';
+import createRotateRightAnim from '../../animations/rotate-right';
 
 const MOVE_DURATION = 300;
 const TURN_DURATION = 300;
@@ -58,11 +49,14 @@ export default class AnimationController {
     /** @type {AnimationTransform} */
     this.#transform = {
       x: 0,
-      // y: 0,
+      y: 0,
       z: 0,
-      // rotX: 0,
+      rotX: 0,
       rotY: 0,
-      // rotZ: 0,
+      rotZ: 0,
+      scaleX: 0,
+      scaleY: 0,
+      scaleZ: 0,
     };
 
     this.#x = 0;
