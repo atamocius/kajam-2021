@@ -146,12 +146,16 @@ export default class GameState {
   damagePlayer = d => {
     const { player } = this.#state;
     const t = player.health - d;
+
     if (t <= 0) {
       this.gameOver();
+      return;
     }
+
     player.health = clamp(t, 0, MAX_HEALTH);
 
-    // TODO: Show damage indicator (red screen)
+    // Animate damage indicator
+    player.view.indicateDamage();
   };
 
   /**
@@ -161,11 +165,7 @@ export default class GameState {
   damageEnemy = async (index, damage) => {
     const { enemies } = this.#state;
     const enemy = enemies[index];
-    const {
-      // position: { x, z },
-      // look,
-      enabled,
-    } = enemy;
+    const { enabled } = enemy;
 
     if (!enabled) {
       return;

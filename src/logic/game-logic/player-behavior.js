@@ -94,7 +94,7 @@ export default class PlayerBehavior {
     // TODO: Update ammo
 
     // Animate muzzle flash
-    this.#state.view.flash();
+    this.#state.view.flashMuzzle();
 
     // TODO: Animate player gun
 
