@@ -5,8 +5,6 @@
  * @typedef {import('./').EnemyApi} EnemyApi
  */
 
-import { Mutex } from 'async-mutex';
-
 import { mapXToPosX, mapZToPosZ, directionAngle } from '../../../levels/common';
 import { Direction } from '../../../utils/level-loader/common';
 
@@ -29,8 +27,6 @@ const ATTACK_DURATION = 200;
 const ATTACK_DISTANCE = 0.5;
 
 export default class AnimationController {
-  #mutex;
-
   #ref;
 
   #transform;
@@ -63,8 +59,6 @@ export default class AnimationController {
    * @param {React.MutableRefObject<GroupProps>} ref
    */
   constructor(ref) {
-    this.#mutex = new Mutex();
-
     this.#ref = ref;
 
     /** @type {AnimationTransform} */
@@ -142,59 +136,45 @@ export default class AnimationController {
   }
 
   async moveForward() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#moveForwardAnimLookup[this.#look];
-      a.play();
-      await a.finished;
-    });
+    const a = this.#moveForwardAnimLookup[this.#look];
+    a.play();
+    await a.finished;
   }
 
   async moveBackward() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#moveBackwardAnimLookup[this.#look];
-      a.play();
-      await a.finished;
-    });
+    const a = this.#moveBackwardAnimLookup[this.#look];
+    a.play();
+    await a.finished;
   }
 
   async strafeLeft() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#strafeLeftAnimLookup[this.#look];
-      a.play();
-      await a.finished;
-    });
+    const a = this.#strafeLeftAnimLookup[this.#look];
+    a.play();
+    await a.finished;
   }
 
   async strafeRight() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#strafeRightAnimLookup[this.#look];
-      a.play();
-      await a.finished;
-    });
+    const a = this.#strafeRightAnimLookup[this.#look];
+    a.play();
+    await a.finished;
   }
 
   async rotateLeft() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#rotateLeftAnim;
-      a.play();
-      await a.finished;
-    });
+    const a = this.#rotateLeftAnim;
+    a.play();
+    await a.finished;
   }
 
   async rotateRight() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#rotateRightAnim;
-      a.play();
-      await a.finished;
-    });
+    const a = this.#rotateRightAnim;
+    a.play();
+    await a.finished;
   }
 
   async attack() {
-    await this.#mutex.runExclusive(async () => {
-      const a = this.#attackAnimLookup[this.#look];
-      a.play();
-      await a.finished;
-    });
+    const a = this.#attackAnimLookup[this.#look];
+    a.play();
+    await a.finished;
   }
 
   /**
