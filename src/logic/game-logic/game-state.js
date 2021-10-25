@@ -140,6 +140,12 @@ export default class GameState {
     document.dispatchEvent(this.#exitLevelEvent);
   };
 
+  updatePlayerHud = () => {
+    const { health, ammo, view } = this.#state.player;
+    view.updateHudHealth(health);
+    view.updateHudAmmo(ammo);
+  };
+
   /**
    * @param {number} x
    * @param {number} z
@@ -154,6 +160,9 @@ export default class GameState {
     const { player } = this.#state;
     const t = player.health + h;
     player.health = clamp(t, 0, MAX_HEALTH);
+
+    // Update HUD
+    this.updatePlayerHud();
   };
 
   /**
@@ -162,14 +171,16 @@ export default class GameState {
   damagePlayer = d => {
     const { player } = this.#state;
     const t = player.health - d;
+    player.health = clamp(t, 0, MAX_HEALTH);
+
+    // Update HUD
+    this.updatePlayerHud();
 
     if (t <= 0) {
       // TODO: Play SFX: "Player death"
       this.gameOver();
       return;
     }
-
-    player.health = clamp(t, 0, MAX_HEALTH);
 
     // TODO: Play SFX: "Player damaged"
 
@@ -219,6 +230,9 @@ export default class GameState {
     const { player } = this.#state;
     const t = player.ammo + a;
     player.ammo = clamp(t, 0, MAX_AMMO);
+
+    // Update HUD
+    this.updatePlayerHud();
   };
 
   /**

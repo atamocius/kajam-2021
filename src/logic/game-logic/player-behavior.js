@@ -73,11 +73,15 @@ export default class PlayerBehavior {
     const {
       position: { x, z },
       look,
+      health,
+      ammo,
     } = this.#state;
 
     this.#state.view = view;
     this.#state.view.setMapPos(x, z);
     this.#state.view.setLook(look);
+    this.#state.view.updateHudHealth(health);
+    this.#state.view.updateHudAmmo(ammo);
 
     return () => {
       this.#state.view = null;

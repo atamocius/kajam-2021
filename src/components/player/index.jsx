@@ -4,6 +4,7 @@
  * @typedef {import('../../utils/level-loader/types').MapUtilFuncs} MapUtilFuncs
  * @typedef {import('./muzzle-flash').MuzzleFlashApi} MuzzleFlashApi
  * @typedef {import('./blaster').BlasterApi} BlasterApi
+ * @typedef {import('./hud').HeadsUpDisplayApi} HeadsUpDisplayApi
  * @typedef {import('../damage-indicator').DamageIndicatorApi} DamageIndicatorApi
  */
 
@@ -21,6 +22,7 @@ import { Direction } from '../../utils/level-loader/common';
 import AnimationController from './animation-controller';
 import DamageIndicator from '../damage-indicator';
 import Blaster from './blaster';
+import HeadsUpDisplay from './hud';
 
 export default function Player() {
   /**
@@ -39,11 +41,15 @@ export default function Player() {
    * @type {React.MutableRefObject<BlasterApi>}
    */
   const gunRef = useRef();
+  /**
+   * @type {React.MutableRefObject<HeadsUpDisplayApi>}
+   */
+  const hudRef = useRef();
 
   const { player } = useGameLogic();
 
   useEffect(() => {
-    const api = makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef);
+    const api = makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef, hudRef);
     return player.register(api);
   }, []);
 
@@ -63,6 +69,7 @@ export default function Player() {
         scale={5}
         color={0xe03940}
       />
+      <HeadsUpDisplay ref={hudRef} position={[0, 0.5, 0]} />
     </group>
   );
 }
@@ -80,6 +87,8 @@ export default function Player() {
  * @property {() => Promise<void>} flashMuzzle
  * @property {() => Promise<void>} indicateDamage
  * @property {() => Promise<void>} recoilGun
+ * @property {(health) => void} updateHudHealth
+ * @property {(ammo) => void} updateHudAmmo
  */
 
 /**
@@ -87,9 +96,10 @@ export default function Player() {
  * @param {React.MutableRefObject<MuzzleFlashApi>} muzzleFlashRef
  * @param {React.MutableRefObject<DamageIndicatorApi>} dmgIndRef
  * @param {React.MutableRefObject<BlasterApi>} gunRef
+ * @param {React.MutableRefObject<HeadsUpDisplayApi>} hudRef
  * @return {PlayerApi}
  */
-function makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef) {
+function makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef, hudRef) {
   const ac = new AnimationController(ref);
 
   const setMapPos = (x, z) => {
@@ -145,6 +155,14 @@ function makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef) {
     await gunRef.current.recoil();
   };
 
+  const updateHudHealth = health => {
+    hudRef.current.updateHealth(health);
+  };
+
+  const updateHudAmmo = ammo => {
+    hudRef.current.updateAmmo(ammo);
+  };
+
   return {
     setMapPos,
     setLook,
@@ -160,5 +178,8 @@ function makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef) {
     flashMuzzle,
     indicateDamage,
     recoilGun,
+
+    updateHudHealth,
+    updateHudAmmo,
   };
 }
