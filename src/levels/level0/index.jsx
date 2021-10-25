@@ -22,7 +22,7 @@ import {
   BgmIndex,
 } from '../../utils/audio-manager';
 
-export default function Level0() {
+export default function Level0({ onGameOver, onExitedLevel }) {
   const level = loadLevel(
     '/levels/level0/data.json',
     '/levels/level0/geometry.json'
@@ -48,7 +48,7 @@ export default function Level0() {
       <AudioManagerProvider>
         <GameLogicProvider>
           <InstancedModelsProvider config={instancedModelsConfig}>
-            <Content />
+            <Content onGameOver={onGameOver} onExitedLevel={onExitedLevel} />
           </InstancedModelsProvider>
         </GameLogicProvider>
       </AudioManagerProvider>
@@ -58,7 +58,7 @@ export default function Level0() {
 
 const mutex = new Mutex();
 
-function Content() {
+function Content({ onGameOver, onExitedLevel }) {
   const {
     addGameOverListener,
     isGameOver,
@@ -67,13 +67,18 @@ function Content() {
     player,
   } = useGameLogic();
 
-  useEffect(() => addGameOverListener(() => console.log('GAME OVER!!!')), []);
-
-  useEffect(() => addExitedLevelListener(() => console.log('GOAL!!!')), []);
-
   const audioMgr = useAudioManager();
 
   useEffect(() => {
+    addGameOverListener(() => {
+      audioMgr.stopBgm(BgmIndex.level1Bgm);
+      onGameOver();
+    });
+    addExitedLevelListener(() => {
+      audioMgr.stopBgm(BgmIndex.level1Bgm);
+      onExitedLevel();
+    });
+
     audioMgr.playBgm(BgmIndex.level1Bgm);
   }, []);
 
@@ -87,17 +92,6 @@ function Content() {
 
     await mutex.runExclusive(async () => {
       switch (ev.code) {
-        case 'KeyM':
-          ev.preventDefault();
-          // await player.moveForward();
-          // const e = enemies.get(0);
-          // const c = e.canSeePlayer();
-          // console.log('🔫', c);
-          // e.findPathToPlayer();
-          // enemies.moveTowardsPlayer();
-          // debug.damageEnemy(0, 1);
-          break;
-
         // WASD
         case 'KeyW':
           ev.preventDefault();

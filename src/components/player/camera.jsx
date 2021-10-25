@@ -32,9 +32,9 @@ export default function Camera({ position }) {
 
     ref.current.add(audioMgr.listener);
 
-    return () => {
-      ref.current.remove(audioMgr.listener);
-    };
+    // return () => {
+    //   ref.current.remove(audioMgr.listener);
+    // };
   }, []);
 
   if (DEBUG_MODE) {

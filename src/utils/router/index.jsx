@@ -8,7 +8,7 @@ import React, {
   isValidElement,
 } from 'react';
 
-const RouterContext = createContext();
+export const RouterContext = createContext();
 
 export function Route({ name, visible, children }) {
   return visible ? children : null;

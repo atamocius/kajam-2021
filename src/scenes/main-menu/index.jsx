@@ -13,7 +13,7 @@ export default function MainMenu() {
   const { changeRoute } = useRouter();
 
   const handleGameStart = () => {
-    setNextScene(r.gameplay);
+    setNextScene(r.level1);
     setShutterOpen(false);
   };
 

@@ -28,6 +28,7 @@ export default function Key(props) {
     const anim = createInfiniteRotationAnim(
       transform,
       t => {
+        if (!ref.current) return;
         ref.current.rotation.set(0, t.rotY, 0);
       },
       10000

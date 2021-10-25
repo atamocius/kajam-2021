@@ -5,61 +5,63 @@ import { Canvas } from '@react-three/fiber';
 
 import { useRouter } from '../../utils/router';
 import { routes as r } from '..';
-import { useKeyDownNoRepeat } from '../../utils/keyboard';
+// import { useKeyDownNoRepeat } from '../../utils/keyboard';
 
 import Shutter from '../../components/shutter';
 
-import Level0 from '../../levels/level0';
-
 import Gizmo from '../../components/gizmo';
 
-// TODO: Pass the level as a prop
-export default function Gameplay() {
+export default function Gameplay({ level, nextLevel }) {
   const [shutterOpen, setShutterOpen] = useState(true);
+  const [targetRoute, setTargetRoute] = useState(nextLevel);
   const { changeRoute } = useRouter();
 
-  const exitToMenu = () => {
+  // const exitToMenu = () => {
+  //   setShutterOpen(false);
+  // };
+
+  const handleShutterClosed = () => {
+    changeRoute(targetRoute);
+  };
+
+  const handleGameOver = () => {
+    setTargetRoute(r.mainMenu);
+    setShutterOpen(false);
+  };
+  const handleExitedLevel = () => {
+    setTargetRoute(nextLevel);
     setShutterOpen(false);
   };
 
-  const handleShutterClosed = () => {
-    changeRoute(r.main);
-  };
+  // /**
+  //  * @param {KeyboardEvent} ev
+  //  */
+  // const handleKeyDown = async ev => {
+  //   switch (ev.code) {
+  //     case 'Escape':
+  //       ev.preventDefault();
+  //       exitToMenu();
+  //       break;
 
-  /**
-   * @param {KeyboardEvent} ev
-   */
-  const handleKeyDown = async ev => {
-    switch (ev.code) {
-      case 'Escape':
-        ev.preventDefault();
-        exitToMenu();
-        break;
+  //     case 'F1':
+  //       ev.preventDefault();
+  //       console.log('Help');
+  //       break;
 
-      case 'F1':
-        ev.preventDefault();
-        console.log('Help');
-        break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
-      default:
-        break;
-    }
-  };
-
-  useKeyDownNoRepeat(handleKeyDown);
+  // useKeyDownNoRepeat(handleKeyDown);
 
   return (
     <>
       <div className={classes.base}>
-        <Canvas
-          shadows
-          gl={{ alpha: false }}
-          // camera={{ position: [0, 2, 2], fov: 50 }}
-        >
+        <Canvas shadows gl={{ alpha: false }}>
           <Suspense fallback={null}>
-            <Level0 />
+            {level(handleGameOver, handleExitedLevel)}
           </Suspense>
-
           <Gizmo />
         </Canvas>
       </div>
