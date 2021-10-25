@@ -22,8 +22,6 @@ import pickupRenders from './pickups';
 
 /**
  * @typedef {Object} EnemiesCountConfig
- * @property {number} sampleEnemy2
- * @property {number} testRobot
  * @property {number} bot
  */
 
@@ -49,8 +47,6 @@ import pickupRenders from './pickups';
 
 /**
  * @typedef {Object} EnemyCounts
- * @property {number} sampleEnemy2
- * @property {number} testRobot
  * @property {number} bot
  */
 
@@ -76,8 +72,6 @@ import pickupRenders from './pickups';
 
 /**
  * @typedef {Object} EnemyRefs
- * @property {React.MutableRefObject<InstanceApi>} sampleEnemy2
- * @property {React.MutableRefObject<InstanceApi>} testRobot
  * @property {React.MutableRefObject<InstanceApi>} bot
  */
 
@@ -176,7 +170,7 @@ function useRefs(config) {
 function calcCounts(config) {
   const {
     stageProps: { crates = 0 },
-    enemies: { sampleEnemy2 = 0, testRobot = 0, bot = 0 },
+    enemies: { bot = 0 },
     pickups: { health = 0, ammo = 0 },
   } = config;
 
@@ -185,8 +179,6 @@ function calcCounts(config) {
       crates,
     },
     enemies: {
-      sampleEnemy2,
-      testRobot,
       bot,
     },
     pickups: {
