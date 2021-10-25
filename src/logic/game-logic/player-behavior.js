@@ -2,6 +2,7 @@
  * @typedef {import('../../components/player').PlayerApi} PlayerApi
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('./game-state').PlayerState} PlayerState
+ * @typedef {import('../../utils/audio-manager').AudioManagerApi} AudioManagerApi
  */
 
 import GameState from './game-state';
@@ -18,6 +19,7 @@ import {
   visibilityRayLookup,
 } from '../../levels/common';
 import { delay } from '../../utils/promise';
+import { SfxIndex } from '../../utils/audio-manager';
 
 export default class PlayerBehavior {
   #state;
@@ -33,12 +35,15 @@ export default class PlayerBehavior {
   #exitLevel;
   #acquireKeycard;
 
+  #audioMgr;
+
   #isAttackInCooldown;
 
   /**
    * @param {GameState} gs
+   * @param {AudioManagerApi} audioMgr
    */
-  constructor(gs) {
+  constructor(gs, audioMgr) {
     const {
       state,
       mapUtils,
@@ -51,6 +56,8 @@ export default class PlayerBehavior {
       exitLevel,
       acquireKeycard,
     } = gs;
+
+    this.#audioMgr = audioMgr;
 
     this.#state = state.player;
     this.#enemyState = state.enemies;
@@ -93,12 +100,12 @@ export default class PlayerBehavior {
 
   attack = async () => {
     if (this.#isAttackInCooldown) return;
-    this.#isAttackInCooldown = true;
 
     if (this.#state.ammo <= 0) {
       // No more ammo!
 
-      // TODO: Play SFX: "No Ammo"/"Gun empty"
+      // Play SFX: "No Ammo"/"Gun empty"
+      this.#audioMgr.playSfx(SfxIndex.gunEmpty);
 
       this.#isAttackInCooldown = false;
       return;
@@ -113,10 +120,11 @@ export default class PlayerBehavior {
     // Update ammo
     this.#addAmmo(-1);
 
-    // TODO: Play SFX: "Gun fire"
-
     // Animate muzzle flash
     this.#state.view.flashMuzzle();
+
+    // Play SFX: "Gun fire"
+    this.#audioMgr.playSfx(SfxIndex.gunShot);
 
     // Animate player gun
     this.#state.view.recoilGun();
@@ -126,6 +134,7 @@ export default class PlayerBehavior {
       this.#damageEnemy(enemy.index, attackDamage);
     }
 
+    this.#isAttackInCooldown = true;
     await delay(this.#state.attackCooldown);
     this.#isAttackInCooldown = false;
   };
@@ -168,17 +177,20 @@ export default class PlayerBehavior {
     switch (pu.kind) {
       case PickupKind.health:
         this.#heal(v);
-        // TODO: Play SFX: "Health pickup"
+        // Play SFX: "Health pickup"
+        this.#audioMgr.playSfx(SfxIndex.healthPickup);
         break;
 
       case PickupKind.ammo:
         this.#addAmmo(v);
-        // TODO: Play SFX: "Ammo pickup"
+        // Play SFX: "Ammo pickup"
+        this.#audioMgr.playSfx(SfxIndex.ammoPickup);
         break;
 
       case PickupKind.key:
         this.#acquireKeycard();
-        // TODO: Play SFX: "Key pickup"
+        // Play SFX: "Key pickup"
+        this.#audioMgr.playSfx(SfxIndex.keycardPickup);
         break;
 
       default:
@@ -190,7 +202,7 @@ export default class PlayerBehavior {
     pu.view.setVisibility(false);
   };
 
-  #checkIfAtGoal = () => {
+  #checkIfAtGoal = async () => {
     const {
       position: { x, z },
     } = this.#state;
@@ -202,7 +214,7 @@ export default class PlayerBehavior {
     }
 
     // Exit the level if already at the goal!
-    this.#exitLevel();
+    await this.#exitLevel();
   };
 
   /**
@@ -236,7 +248,8 @@ export default class PlayerBehavior {
     // Update prior to animate
     this.#state.look = toLook;
 
-    // TODO: Play SFX: "Footsteps - turning"
+    // Play SFX: "Footsteps - turning"
+    this.#audioMgr.playSfx(SfxIndex.playerFootsteps);
 
     // Animate
     await view.rotateLeft(x, z, fromLook);
@@ -255,7 +268,8 @@ export default class PlayerBehavior {
     // Update prior to animate
     this.#state.look = toLook;
 
-    // TODO: Play SFX: "Footsteps - turning"
+    // Play SFX: "Footsteps - turning"
+    this.#audioMgr.playSfx(SfxIndex.playerFootsteps);
 
     // Animate
     await view.rotateRight(x, z, fromLook);
@@ -282,12 +296,13 @@ export default class PlayerBehavior {
     // Consume any pickups
     this.#consumePickupAt(toX, toZ);
 
-    // TODO: Play SFX: "Footsteps"
+    // Play SFX: "Footsteps"
+    this.#audioMgr.playSfx(SfxIndex.playerFootsteps);
 
     // Animate
     await view.moveForward(fromX, fromZ, look);
 
-    this.#checkIfAtGoal();
+    await this.#checkIfAtGoal();
   };
 
   moveBackward = async () => {
@@ -311,12 +326,13 @@ export default class PlayerBehavior {
     // Consume any pickups
     this.#consumePickupAt(toX, toZ);
 
-    // TODO: Play SFX: "Footsteps"
+    // Play SFX: "Footsteps"
+    this.#audioMgr.playSfx(SfxIndex.playerFootsteps);
 
     // Animate
     await view.moveBackward(fromX, fromZ, look);
 
-    this.#checkIfAtGoal();
+    await this.#checkIfAtGoal();
   };
 
   strafeLeft = async () => {
@@ -340,12 +356,13 @@ export default class PlayerBehavior {
     // Consume any pickups
     this.#consumePickupAt(toX, toZ);
 
-    // TODO: Play SFX: "Footsteps"
+    // Play SFX: "Footsteps"
+    this.#audioMgr.playSfx(SfxIndex.playerFootsteps);
 
     // Animate
     await view.strafeLeft(fromX, fromZ, look);
 
-    this.#checkIfAtGoal();
+    await this.#checkIfAtGoal();
   };
 
   strafeRight = async () => {
@@ -369,11 +386,12 @@ export default class PlayerBehavior {
     // Consume any pickups
     this.#consumePickupAt(toX, toZ);
 
-    // TODO: Play SFX: "Footsteps"
+    // Play SFX: "Footsteps"
+    this.#audioMgr.playSfx(SfxIndex.playerFootsteps);
 
     // Animate
     await view.strafeRight(fromX, fromZ, look);
 
-    this.#checkIfAtGoal();
+    await this.#checkIfAtGoal();
   };
 }

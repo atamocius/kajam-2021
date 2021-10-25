@@ -1,6 +1,6 @@
 import { DEBUG_MODE } from '../../settings';
 
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Mutex } from 'async-mutex';
 
 import loadLevel from '../../utils/level-loader';
@@ -16,6 +16,11 @@ import Enemies from '../../components/enemies';
 import { InstancedModelsProvider } from '../../meshes/instanced';
 import LevelDataProvider from '../../utils/level-data-provider';
 import { GameLogicProvider, useGameLogic } from '../../logic/game-logic';
+import {
+  AudioManagerProvider,
+  useAudioManager,
+  BgmIndex,
+} from '../../utils/audio-manager';
 
 export default function Level0() {
   const level = loadLevel(
@@ -40,11 +45,13 @@ export default function Level0() {
 
   return (
     <LevelDataProvider levelData={level}>
-      <GameLogicProvider>
-        <InstancedModelsProvider config={instancedModelsConfig}>
-          <Content />
-        </InstancedModelsProvider>
-      </GameLogicProvider>
+      <AudioManagerProvider>
+        <GameLogicProvider>
+          <InstancedModelsProvider config={instancedModelsConfig}>
+            <Content />
+          </InstancedModelsProvider>
+        </GameLogicProvider>
+      </AudioManagerProvider>
     </LevelDataProvider>
   );
 }
@@ -63,6 +70,12 @@ function Content() {
   useEffect(() => addGameOverListener(() => console.log('GAME OVER!!!')), []);
 
   useEffect(() => addExitedLevelListener(() => console.log('GOAL!!!')), []);
+
+  const audioMgr = useAudioManager();
+
+  useEffect(() => {
+    audioMgr.playBgm(BgmIndex.level1Bgm);
+  }, []);
 
   /**
    * @param {KeyboardEvent} ev

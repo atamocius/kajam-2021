@@ -8,6 +8,7 @@
  * @typedef {import('../../utils/level-loader/types').MapCoords} MapCoords
  * @typedef {import('../../utils/level-loader/types').Direction} Direction
  * @typedef {import('../../utils/level-loader/types').PlayerStartData} PlayerStartData
+ * @typedef {import('../../utils/audio-manager').AudioManagerApi} AudioManagerApi
  */
 
 /**
@@ -54,8 +55,10 @@
 import clamp from 'lodash-es/clamp';
 
 import { healthClassLookup, MAX_HEALTH, MAX_AMMO } from '../../levels/common';
+import { SfxIndex } from '../../utils/audio-manager';
+import { delay } from '../../utils/promise';
 
-const PLAYER_ATTACK_COOLDOWN_MS = 200;
+const PLAYER_ATTACK_COOLDOWN_MS = 300;
 
 export default class GameState {
   #state;
@@ -65,10 +68,15 @@ export default class GameState {
   #keyAcquiredEvent;
   #exitedLevelEvent;
 
+  #audioMgr;
+
+  #enemyAudioApis;
+
   /**
    * @param {LoadedLevelData} level
+   * @param {AudioManagerApi} audioMgr
    */
-  constructor(level) {
+  constructor(level, audioMgr) {
     const { logic, utils } = level;
     const {
       start,
@@ -76,6 +84,9 @@ export default class GameState {
     } = logic;
 
     this.#mapUtils = utils;
+
+    this.#audioMgr = audioMgr;
+    this.#enemyAudioApis = [];
 
     this.#gameOverEvent = new Event('gameOver');
     this.#keyAcquiredEvent = new Event('keyAcquired');
@@ -89,6 +100,9 @@ export default class GameState {
       pickups: pickups.map(this.#createPickupState),
     };
   }
+
+  registerEnemyAudioApis = enemyAudioApis =>
+    (this.#enemyAudioApis = enemyAudioApis);
 
   /**
    * @returns {State}
@@ -144,14 +158,22 @@ export default class GameState {
     document.dispatchEvent(this.#gameOverEvent);
   };
 
-  exitLevel = () => {
+  exitLevel = async () => {
     if (this.#state.hasExitedLevel) {
       return;
     }
     if (!this.#state.player.hasKey) {
       this.#state.player.view.showHudDangerMessage('Access Card Required');
+      // Play SFX: "Access Denied"
+      this.#audioMgr.playSfx(SfxIndex.accessDenied);
       return;
     }
+
+    // Play SFX: "Access Grantes"
+    this.#audioMgr.playSfx(SfxIndex.accessGranted);
+
+    await delay(1500);
+
     this.#state.hasExitedLevel = true;
     document.dispatchEvent(this.#exitedLevelEvent);
   };
@@ -191,7 +213,9 @@ export default class GameState {
   /**
    * @param {number} d
    */
-  damagePlayer = d => {
+  damagePlayer = async d => {
+    if (this.#state.player.health <= 0) return;
+
     const { player } = this.#state;
     const t = player.health - d;
     player.health = clamp(t, 0, MAX_HEALTH);
@@ -200,12 +224,17 @@ export default class GameState {
     this.updatePlayerHud();
 
     if (t <= 0) {
-      // TODO: Play SFX: "Player death"
+      // Play SFX: "Player death"
+      this.#audioMgr.playSfx(SfxIndex.playerDeath);
+
+      await delay(1500);
+
       this.gameOver();
       return;
     }
 
-    // TODO: Play SFX: "Player damaged"
+    // Play SFX: "Player damaged"
+    this.#audioMgr.playSfx(SfxIndex.playerDamaged);
 
     // Animate damage indicator
     player.view.indicateDamage();
@@ -227,7 +256,8 @@ export default class GameState {
     const t = enemy.health - damage;
     enemy.health = clamp(t, 0, MAX_HEALTH);
 
-    // TODO: Play SFX: "Enemy damaged"
+    // Play SFX: "Enemy damaged"
+    this.#enemyAudioApis[enemy.index].playDamagedSfx();
 
     // Animate hit!
     await enemy.view.damage();
@@ -239,7 +269,8 @@ export default class GameState {
     // Disable the enemy if it is dead
     enemy.enabled = false;
 
-    // TODO: Play SFX: "Enemy death"
+    // Play SFX: "Enemy death"
+    this.#enemyAudioApis[enemy.index].playDeathSfx();
 
     // Animate death!
     await enemy.view.death();

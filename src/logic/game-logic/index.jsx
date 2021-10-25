@@ -6,6 +6,7 @@ import GameState from './game-state';
 import PlayerBehavior from './player-behavior';
 import EnemyBehaviors from './enemy-behaviors';
 import PickupBehaviors from './pickup-behavior';
+import { useAudioManager } from '../../utils/audio-manager';
 
 /**
  * @typedef {Object} GameLogicApi
@@ -24,7 +25,12 @@ const GameLogicContext = createContext();
 
 export function GameLogicProvider({ children }) {
   const level = useLevelData();
-  const gs = new GameState(level);
+  const am = useAudioManager();
+
+  const gs = new GameState(level, am);
+  const enemyBehaviors = new EnemyBehaviors(gs, am);
+  const enemyAudioApis = enemyBehaviors.getAllAudioApis();
+  gs.registerEnemyAudioApis(enemyAudioApis);
 
   const api = {
     isGameOver: gs.isGameOver,
@@ -32,8 +38,8 @@ export function GameLogicProvider({ children }) {
     addGameOverListener: gs.addGameOverListener,
     addKeyAcquiredListener: gs.addKeyAcquiredListener,
     addExitedLevelListener: gs.addExitedLevelListener,
-    player: new PlayerBehavior(gs),
-    enemies: new EnemyBehaviors(gs),
+    player: new PlayerBehavior(gs, am),
+    enemies: enemyBehaviors,
     pickups: new PickupBehaviors(gs),
   };
 
