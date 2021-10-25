@@ -59,6 +59,8 @@ const Blaster = forwardRef(
       };
 
       fwdRef.current = api;
+
+      return () => (fwdRef.current = null);
     }, []);
 
     return (

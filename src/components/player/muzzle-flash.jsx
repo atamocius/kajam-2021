@@ -47,6 +47,8 @@ const MuzzleFlash = forwardRef(
       };
 
       fwdRef.current = api;
+
+      return () => (fwdRef.current = null);
     }, []);
 
     return (
