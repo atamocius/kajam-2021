@@ -43,20 +43,20 @@ const HeadsUpDisplay = forwardRef(
     }, []);
 
     return (
-      <group position={position}>
-        <group position={[0, 0, 0.1]}>
+      <group position={position} rotation={[0, Math.PI, 0]}>
+        <group position={[0, 0, -0.1]}>
           <Text
             ref={healthRef}
-            position={[0.0845, -0.055, 0]}
-            scale={[-0.001, 0.001, 0.001]}
+            position={[-0.0845, -0.055, 0]}
+            scale={0.001}
             color={color}
             fontSize={8}
             font={font}
           />
           <Text
             ref={ammoRef}
-            position={[-0.0885, -0.055, 0]}
-            scale={[-0.001, 0.001, 0.001]}
+            position={[0.0885, -0.055, 0]}
+            scale={0.001}
             color={color}
             fontSize={8}
             font={font}
