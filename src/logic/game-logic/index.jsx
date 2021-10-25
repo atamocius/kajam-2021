@@ -12,7 +12,8 @@ import PickupBehaviors from './pickup-behavior';
  * @property {() => boolean} isGameOver
  * @property {() => boolean} hasExitedLevel
  * @property {(listener: () => void) => () => void} addGameOverListener
- * @property {(listener: () => void) => () => void} addExitLevelListener
+ * @property {(listener: () => void) => () => void} addKeyAcquiredListener
+ * @property {(listener: () => void) => () => void} addExitedLevelListener
  * @property {PlayerBehavior} player
  * @property {EnemyBehaviors} enemies
  * @property {PickupBehaviors} pickups
@@ -29,7 +30,8 @@ export function GameLogicProvider({ children }) {
     isGameOver: gs.isGameOver,
     hasExitedLevel: gs.hasExitedLevel,
     addGameOverListener: gs.addGameOverListener,
-    addExitLevelListener: gs.addExitLevelListener,
+    addKeyAcquiredListener: gs.addKeyAcquiredListener,
+    addExitedLevelListener: gs.addExitedLevelListener,
     player: new PlayerBehavior(gs),
     enemies: new EnemyBehaviors(gs),
     pickups: new PickupBehaviors(gs),

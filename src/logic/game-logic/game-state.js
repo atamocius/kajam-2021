@@ -27,6 +27,7 @@
  * @property {number} ammo
  * @property {number} attackDamage
  * @property {number} attackCooldown
+ * @property {boolean} hasKey
  */
 
 /**
@@ -61,7 +62,8 @@ export default class GameState {
   #mapUtils;
 
   #gameOverEvent;
-  #exitLevelEvent;
+  #keyAcquiredEvent;
+  #exitedLevelEvent;
 
   /**
    * @param {LoadedLevelData} level
@@ -76,7 +78,8 @@ export default class GameState {
     this.#mapUtils = utils;
 
     this.#gameOverEvent = new Event('gameOver');
-    this.#exitLevelEvent = new Event('exitLevel');
+    this.#keyAcquiredEvent = new Event('keyAcquired');
+    this.#exitedLevelEvent = new Event('exitedLevel');
 
     this.#state = {
       isGameOver: false,
@@ -119,9 +122,18 @@ export default class GameState {
    * @param {() => void} listener
    * @returns {() => void} Unsubscribe function.
    */
-  addExitLevelListener = listener => {
-    document.addEventListener('exitLevel', listener, false);
-    return () => document.removeEventListener('exitLevel', listener, false);
+  addKeyAcquiredListener = listener => {
+    document.addEventListener('keyAcquired', listener, false);
+    return () => document.removeEventListener('keyAcquired', listener, false);
+  };
+
+  /**
+   * @param {() => void} listener
+   * @returns {() => void} Unsubscribe function.
+   */
+  addExitedLevelListener = listener => {
+    document.addEventListener('exitedLevel', listener, false);
+    return () => document.removeEventListener('exitedLevel', listener, false);
   };
 
   gameOver = () => {
@@ -136,8 +148,19 @@ export default class GameState {
     if (this.#state.hasExitedLevel) {
       return;
     }
+    if (!this.#state.player.hasKey) {
+      this.#state.player.view.showHudDangerMessage('Access Card Required');
+      return;
+    }
     this.#state.hasExitedLevel = true;
-    document.dispatchEvent(this.#exitLevelEvent);
+    document.dispatchEvent(this.#exitedLevelEvent);
+  };
+
+  acquireKeycard = () => {
+    const { player } = this.#state;
+    player.hasKey = true;
+    document.dispatchEvent(this.#keyAcquiredEvent);
+    player.view.showHudSuccessMessage('Access Card Acquired');
   };
 
   updatePlayerHud = () => {
@@ -300,6 +323,7 @@ export default class GameState {
       ammo: 15,
       attackDamage: 1,
       attackCooldown: PLAYER_ATTACK_COOLDOWN_MS,
+      hasKey: false,
     };
 
     return state;

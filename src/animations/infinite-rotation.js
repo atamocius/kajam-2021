@@ -23,7 +23,7 @@ export default function createInfiniteRotationAnim(
     rotY: [
       { value: 0, duration: 0 },
       {
-        value: Math.PI,
+        value: Math.PI * 2,
         duration,
         easing: 'linear',
       },

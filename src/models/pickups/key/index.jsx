@@ -3,19 +3,20 @@
  */
 
 import React, { useRef, useEffect } from 'react';
-
-import { useInstancedModels } from '../../../meshes/instanced';
-import MeshInstance from '../../../meshes/helpers/mesh-instance';
+import { BufferGeometryLoader } from 'three';
+import { useLoader } from '@react-three/fiber';
 
 import createInfiniteRotationAnim from '../../../animations/infinite-rotation';
 
-export default function Health(props) {
-  const {
-    pickups: { health: instRef },
-  } = useInstancedModels();
+import { star32Mat as material } from '../../../meshes/materials';
 
+const data = '/models/pickups/keycard.json';
+
+export default function Key(props) {
   /** @type {React.MutableRefObject<GroupProps>} */
   const ref = useRef();
+
+  const geometry = useLoader(BufferGeometryLoader, data);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -39,8 +40,8 @@ export default function Health(props) {
 
   return (
     <group ref={ref} {...props}>
-      <group position={[0, 0.35, 0]} scale={0.025}>
-        <MeshInstance instancedModelRef={instRef} />
+      <group position={[0, 0.4, 0]} scale={0.015}>
+        <mesh geometry={geometry} material={material} />
       </group>
     </group>
   );

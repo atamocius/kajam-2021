@@ -31,6 +31,7 @@ export default class PlayerBehavior {
   #addAmmo;
   #damageEnemy;
   #exitLevel;
+  #acquireKeycard;
 
   #isAttackInCooldown;
 
@@ -48,6 +49,7 @@ export default class PlayerBehavior {
       addPlayerAmmo,
       damageEnemy,
       exitLevel,
+      acquireKeycard,
     } = gs;
 
     this.#state = state.player;
@@ -61,6 +63,7 @@ export default class PlayerBehavior {
     this.#addAmmo = addPlayerAmmo;
     this.#damageEnemy = damageEnemy;
     this.#exitLevel = exitLevel;
+    this.#acquireKeycard = acquireKeycard;
 
     this.#isAttackInCooldown = false;
   }
@@ -171,6 +174,11 @@ export default class PlayerBehavior {
       case PickupKind.ammo:
         this.#addAmmo(v);
         // TODO: Play SFX: "Ammo pickup"
+        break;
+
+      case PickupKind.key:
+        this.#acquireKeycard();
+        // TODO: Play SFX: "Key pickup"
         break;
 
       default:

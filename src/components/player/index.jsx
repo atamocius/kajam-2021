@@ -89,6 +89,8 @@ export default function Player() {
  * @property {() => Promise<void>} recoilGun
  * @property {(health) => void} updateHudHealth
  * @property {(ammo) => void} updateHudAmmo
+ * @property {(msg: string) => Promise<void>} showHudSuccessMessage
+ * @property {(msg: string) => Promise<void>} showHudDangerMessage
  */
 
 /**
@@ -163,6 +165,14 @@ function makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef, hudRef) {
     hudRef.current.updateAmmo(ammo);
   };
 
+  const showHudSuccessMessage = msg => {
+    hudRef.current.showSuccessMessage(msg);
+  };
+
+  const showHudDangerMessage = msg => {
+    hudRef.current.showDangerMessage(msg);
+  };
+
   return {
     setMapPos,
     setLook,
@@ -181,5 +191,7 @@ function makeApi(ref, muzzleFlashRef, dmgIndRef, gunRef, hudRef) {
 
     updateHudHealth,
     updateHudAmmo,
+    showHudSuccessMessage,
+    showHudDangerMessage,
   };
 }

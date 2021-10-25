@@ -95,6 +95,7 @@ export const healthClassLookup = {
 export const PickupKind = {
   health: 'health',
   ammo: 'ammo',
+  key: 'key',
 };
 
 export const pickupDataLookup = {
@@ -103,6 +104,9 @@ export const pickupDataLookup = {
   },
   [PickupKind.ammo]: {
     value: 7,
+  },
+  [PickupKind.key]: {
+    value: 1,
   },
 };
 

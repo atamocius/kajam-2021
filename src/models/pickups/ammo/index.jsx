@@ -29,7 +29,7 @@ export default function Ammo(props) {
       t => {
         ref.current.rotation.set(0, t.rotY, 0);
       },
-      5000
+      10000
     );
 
     return () => {

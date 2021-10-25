@@ -55,14 +55,14 @@ function Content() {
   const {
     addGameOverListener,
     isGameOver,
-    addExitLevelListener,
+    addExitedLevelListener,
     hasExitedLevel,
     player,
   } = useGameLogic();
 
   useEffect(() => addGameOverListener(() => console.log('GAME OVER!!!')), []);
 
-  useEffect(() => addExitLevelListener(() => console.log('GOAL!!!')), []);
+  useEffect(() => addExitedLevelListener(() => console.log('GOAL!!!')), []);
 
   /**
    * @param {KeyboardEvent} ev
