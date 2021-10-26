@@ -10,6 +10,8 @@ import Gameplay from './scenes/gameplay';
 import GameOver from './scenes/game-over';
 
 import Level0 from './levels/level0';
+import Level1 from './levels/level1';
+import Level2 from './levels/level2';
 
 export default function App() {
   return (
@@ -18,27 +20,27 @@ export default function App() {
         <Route name={r.mainMenu}>
           <MainMenu />
         </Route>
+        <Route name={r.level0}>
+          <Gameplay
+            nextLevel={r.level1}
+            level={(onGameOver, onExitedLevel) => (
+              <Level0 onGameOver={onGameOver} onExitedLevel={onExitedLevel} />
+            )}
+          />
+        </Route>
         <Route name={r.level1}>
           <Gameplay
             nextLevel={r.level2}
             level={(onGameOver, onExitedLevel) => (
-              <Level0 onGameOver={onGameOver} onExitedLevel={onExitedLevel} />
+              <Level1 onGameOver={onGameOver} onExitedLevel={onExitedLevel} />
             )}
           />
         </Route>
         <Route name={r.level2}>
           <Gameplay
-            nextLevel={r.level3}
-            level={(onGameOver, onExitedLevel) => (
-              <Level0 onGameOver={onGameOver} onExitedLevel={onExitedLevel} />
-            )}
-          />
-        </Route>
-        <Route name={r.level3}>
-          <Gameplay
             nextLevel={r.mainMenu}
             level={(onGameOver, onExitedLevel) => (
-              <Level0 onGameOver={onGameOver} onExitedLevel={onExitedLevel} />
+              <Level2 onGameOver={onGameOver} onExitedLevel={onExitedLevel} />
             )}
           />
         </Route>

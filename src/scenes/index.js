@@ -1,9 +1,8 @@
 export const routes = {
   mainMenu: 'mainMenu',
-  gameplay: 'gameplay',
   gameOver: 'gameOver',
 
+  level0: 'level0',
   level1: 'level1',
   level2: 'level2',
-  level3: 'level4',
 };

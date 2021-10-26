@@ -100,10 +100,10 @@ export const PickupKind = {
 
 export const pickupDataLookup = {
   [PickupKind.health]: {
-    value: 30,
+    value: 35,
   },
   [PickupKind.ammo]: {
-    value: 7,
+    value: 8,
   },
   [PickupKind.key]: {
     value: 1,
