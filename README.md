@@ -21,7 +21,7 @@ This is a grid-based, first person shooter, so the controls are somewhat familia
 
 ## Credits
 
-A game by Anton Mata.
+A game by **Anton Mata**.
 
 Dedicated to all my family and friends who have been patient with me this past week. ❤😅
 
@@ -56,3 +56,9 @@ Attribution 3.0 Unported (CC BY 3.0) - https://creativecommons.org/licenses/by/3
 Attribution-NonCommercial 3.0 Unported (CC BY-NC 3.0) - https://creativecommons.org/licenses/by-nc/3.0/
 
 - https://freesound.org/people/Natty23/sounds/257276/
+
+## Issues & Concerns
+
+As a backup, I have deployed this project to _Vercel_: https://retumbos.vercel.app/.
+
+If by any chance, you are having issues running it, feel free to use the _Vercel_ link.
