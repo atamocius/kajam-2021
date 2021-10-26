@@ -3,7 +3,7 @@
 }
 
 .button {
-  fill: black;
+  fill: #75cefb;
   fill-opacity: 0.25;
 
   /* transition: fill-opacity 200ms; */
@@ -13,13 +13,13 @@
 
 .base:hover .button {
   /* fill: red; */
-  fill-opacity: 0.35;
+  fill-opacity: 0.4;
 
   transition-duration: 500ms;
 }
 
 .base:active .button {
-  fill: blue;
+  fill: #e03940;
   transition-duration: 50ms;
 }
 
@@ -27,7 +27,8 @@
   /* fill: violet; */
   /* transform: translate(50%, 50%); */
   /* font-size: 2em; */
-  font-weight: 600;
-  font-style: italic;
+  fill: #cce8eb;
+  font-weight: 300;
+  /* font-style: italic; */
   line-height: 2em;
 }
