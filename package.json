@@ -14,12 +14,10 @@
     "animejs": "3.2.1",
     "async-mutex": "0.3.2",
     "classnames": "2.3.1",
-    "immer": "9.0.6",
     "lodash-es": "4.17.21",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "three": "0.133.1",
-    "zustand": "3.5.14"
+    "three": "0.133.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "1.0.5",
