@@ -8,6 +8,10 @@ Stranded in HGE-01, an abandoned off-world genetics facility, _you must find you
 
 But beware, **_you are not alone_**.
 
+> If by any chance you are having issues running it, I have deployed the app externally https://retumbos.vercel.app/ as a backup.
+>
+> You can find the GitHub repo for this project here: https://github.com/atamocius/kajam-2021
+
 ## Controls
 
 This is a grid-based, first person shooter, so the controls are somewhat familiar.
@@ -18,6 +22,13 @@ This is a grid-based, first person shooter, so the controls are somewhat familia
   - Rotate 90 degrees Left & Right
 - <kbd>Space</kbd>
   - Shoot
+
+## Level Objectives
+
+- Find the 💳 Access Card
+- Head for the **🚪 Exit**
+
+> The **🚪 Exit** is lit by a 🟢 Green Light if you have the 💳 Access Card, or a 🔴 Red Light if you don't.
 
 ## Credits
 
@@ -56,9 +67,3 @@ Attribution 3.0 Unported (CC BY 3.0) - https://creativecommons.org/licenses/by/3
 Attribution-NonCommercial 3.0 Unported (CC BY-NC 3.0) - https://creativecommons.org/licenses/by-nc/3.0/
 
 - https://freesound.org/people/Natty23/sounds/257276/
-
-## Issues & Concerns
-
-As a backup, I have deployed this project to _Vercel_: https://retumbos.vercel.app/.
-
-If by any chance, you are having issues running it, feel free to use the _Vercel_ link.
