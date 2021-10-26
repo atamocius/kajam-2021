@@ -23,6 +23,8 @@ import pickupRenders from './pickups';
 /**
  * @typedef {Object} EnemiesCountConfig
  * @property {number} bot
+ * @property {number} alienBody
+ * @property {number} alienLegs
  */
 
 /**
@@ -48,6 +50,8 @@ import pickupRenders from './pickups';
 /**
  * @typedef {Object} EnemyCounts
  * @property {number} bot
+ * @property {number} alienBody
+ * @property {number} alienLegs
  */
 
 /**
@@ -73,6 +77,8 @@ import pickupRenders from './pickups';
 /**
  * @typedef {Object} EnemyRefs
  * @property {React.MutableRefObject<InstanceApi>} bot
+ * @property {React.MutableRefObject<InstanceApi>} alienBody
+ * @property {React.MutableRefObject<InstanceApi>} alienLegs
  */
 
 /**
@@ -170,7 +176,7 @@ function useRefs(config) {
 function calcCounts(config) {
   const {
     stageProps: { crates = 0 },
-    enemies: { bot = 0 },
+    enemies: { bot = 0, alienBody = 0, alienLegs = 0 },
     pickups: { health = 0, ammo = 0 },
   } = config;
 
@@ -180,6 +186,8 @@ function calcCounts(config) {
     },
     enemies: {
       bot,
+      alienBody,
+      alienLegs,
     },
     pickups: {
       health,

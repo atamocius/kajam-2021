@@ -33,9 +33,9 @@ export default function Level0({ onGameOver, onExitedLevel }) {
       crates: 25,
     },
     enemies: {
-      sampleEnemy2: 25,
-      testRobot: 25,
       bot: 25,
+      alienBody: 25,
+      alienLegs: 25,
     },
     pickups: {
       health: 25,
