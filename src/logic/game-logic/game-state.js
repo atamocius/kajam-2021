@@ -350,7 +350,7 @@ export default class GameState {
         z,
       },
       look,
-      health: 20,
+      health: 100,
       ammo: 15,
       attackDamage: 1,
       attackCooldown: PLAYER_ATTACK_COOLDOWN_MS,
@@ -383,7 +383,7 @@ export default class GameState {
       look,
       kind,
       health: healthClassLookup[healthClass],
-      attackDamage: 1,
+      attackDamage: 10,
       enabled: true,
     };
 
